@@ -1,0 +1,305 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx;h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\async++">
+      <UniqueIdentifier>{45912d98-c2eb-472c-999d-e465a2813964}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\com">
+      <UniqueIdentifier>{70b22225-ebc7-469e-bcb7-1c6a43f2917a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\df">
+      <UniqueIdentifier>{7518ec54-84a9-4100-bf5e-eb3baf32ed27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ent">
+      <UniqueIdentifier>{e3bda7c5-c31c-4ea9-91a9-38e282c9ec9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\map">
+      <UniqueIdentifier>{4c37cbc2-48fa-4373-9ac2-8e5377a13071}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\math">
+      <UniqueIdentifier>{7bea6cbd-dd5b-4fb0-80c0-5208731a1542}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\res">
+      <UniqueIdentifier>{bd10168d-bf3c-4f0d-b3aa-887bd95a87ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\task">
+      <UniqueIdentifier>{15ba5210-0f9b-4a33-9c29-5ce5b90caca3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\tinyxml">
+      <UniqueIdentifier>{aa1b11cd-8cea-4b9d-8b72-47fca85dc960}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\util">
+      <UniqueIdentifier>{f90291e0-81f3-4d60-b79a-67e8129413a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\vox">
+      <UniqueIdentifier>{bb42c393-59e8-445b-bf00-3f319753dcef}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\async++\aligned_alloc.h">
+      <Filter>Source Files\async++</Filter>
+    </ClInclude>
+    <ClInclude Include="src\async++\cancel.h">
+      <Filter>Source Files\async++</Filter>
+    </ClInclude>
+    <ClInclude Include="src\async++\continuation_vector.h">
+      <Filter>Source Files\async++</Filter>
+    </ClInclude>
+    <ClInclude Include="src\async++\parallel_for.h">
+      <Filter>Source Files\async++</Filter>
+    </ClInclude>
+    <ClInclude Include="src\async++\parallel_invoke.h">
+      <Filter>Source Files\async++</Filter>
+    </ClInclude>
+    <ClInclude Include="src\async++\parallel_reduce.h">
+      <Filter>Source Files\async++</Filter>
+    </ClInclude>
+    <ClInclude Include="src\async++\partitioner.h">
+      <Filter>Source Files\async++</Filter>
+    </ClInclude>
+    <ClInclude Include="src\async++\range.h">
+      <Filter>Source Files\async++</Filter>
+    </ClInclude>
+    <ClInclude Include="src\async++\ref_count.h">
+      <Filter>Source Files\async++</Filter>
+    </ClInclude>
+    <ClInclude Include="src\async++\scheduler.h">
+      <Filter>Source Files\async++</Filter>
+    </ClInclude>
+    <ClInclude Include="src\async++\scheduler_fwd.h">
+      <Filter>Source Files\async++</Filter>
+    </ClInclude>
+    <ClInclude Include="src\async++\task.h">
+      <Filter>Source Files\async++</Filter>
+    </ClInclude>
+    <ClInclude Include="src\async++\task_base.h">
+      <Filter>Source Files\async++</Filter>
+    </ClInclude>
+    <ClInclude Include="src\async++\traits.h">
+      <Filter>Source Files\async++</Filter>
+    </ClInclude>
+    <ClInclude Include="src\async++\when_all_any.h">
+      <Filter>Source Files\async++</Filter>
+    </ClInclude>
+    <ClInclude Include="src\com\ComHealth.h">
+      <Filter>Source Files\com</Filter>
+    </ClInclude>
+    <ClInclude Include="src\com\Component.h">
+      <Filter>Source Files\com</Filter>
+    </ClInclude>
+    <ClInclude Include="src\df\com.h">
+      <Filter>Source Files\df</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ent\ent.h">
+      <Filter>Source Files\ent</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ent\entityId.h">
+      <Filter>Source Files\ent</Filter>
+    </ClInclude>
+    <ClInclude Include="src\map\map.h">
+      <Filter>Source Files\map</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\SimplexNoise.h">
+      <Filter>Source Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\units.h">
+      <Filter>Source Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\units64.h">
+      <Filter>Source Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\res\ResConfig.h">
+      <Filter>Source Files\res</Filter>
+    </ClInclude>
+    <ClInclude Include="src\res\Resource.h">
+      <Filter>Source Files\res</Filter>
+    </ClInclude>
+    <ClInclude Include="src\res\ResourceMgr.h">
+      <Filter>Source Files\res</Filter>
+    </ClInclude>
+    <ClInclude Include="src\task\async++\fifo_queue.h">
+      <Filter>Source Files\task</Filter>
+    </ClInclude>
+    <ClInclude Include="src\task\async++\internal.h">
+      <Filter>Source Files\task</Filter>
+    </ClInclude>
+    <ClInclude Include="src\task\async++\singleton.h">
+      <Filter>Source Files\task</Filter>
+    </ClInclude>
+    <ClInclude Include="src\task\async++\task_wait_event.h">
+      <Filter>Source Files\task</Filter>
+    </ClInclude>
+    <ClInclude Include="src\task\async++\work_steal_queue.h">
+      <Filter>Source Files\task</Filter>
+    </ClInclude>
+    <ClInclude Include="src\task\ctpl.h">
+      <Filter>Source Files\task</Filter>
+    </ClInclude>
+    <ClInclude Include="src\task\task.h">
+      <Filter>Source Files\task</Filter>
+    </ClInclude>
+    <ClInclude Include="src\task\thread_pool.h">
+      <Filter>Source Files\task</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tinyxml\tinystr.h">
+      <Filter>Source Files\tinyxml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tinyxml\tinyxml.h">
+      <Filter>Source Files\tinyxml</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\AngelReg.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\Clock.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\concurrentqueue.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\Config.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\expected_lite.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\id.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\index.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\lvalue_ref.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\markable.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\not_null.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\only_when.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\optional.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\out_param.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\profile\profile.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\Reflection.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\Serialization.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\String.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\Symbol.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\tagged_bool.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\util.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\XMLReader.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\vox\vox.h">
+      <Filter>Source Files\vox</Filter>
+    </ClInclude>
+    <ClInclude Include="src\async++.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\stdafx.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\com\ComHealth.cpp">
+      <Filter>Source Files\com</Filter>
+    </ClCompile>
+    <ClCompile Include="src\com\Component.cpp">
+      <Filter>Source Files\com</Filter>
+    </ClCompile>
+    <ClCompile Include="src\df\com.cpp">
+      <Filter>Source Files\df</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ent\ent.cpp">
+      <Filter>Source Files\ent</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ent\entityId.cpp">
+      <Filter>Source Files\ent</Filter>
+    </ClCompile>
+    <ClCompile Include="src\map\map.cpp">
+      <Filter>Source Files\map</Filter>
+    </ClCompile>
+    <ClCompile Include="src\math\SimplexNoise.cpp">
+      <Filter>Source Files\math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\res\ResConfig.cpp">
+      <Filter>Source Files\res</Filter>
+    </ClCompile>
+    <ClCompile Include="src\res\Resource.cpp">
+      <Filter>Source Files\res</Filter>
+    </ClCompile>
+    <ClCompile Include="src\res\ResourceMgr.cpp">
+      <Filter>Source Files\res</Filter>
+    </ClCompile>
+    <ClCompile Include="src\task\async++\scheduler.cpp">
+      <Filter>Source Files\task</Filter>
+    </ClCompile>
+    <ClCompile Include="src\task\async++\threadpool_scheduler.cpp">
+      <Filter>Source Files\task</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tinyxml\tinystr.cpp">
+      <Filter>Source Files\tinyxml</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tinyxml\tinyxml.cpp">
+      <Filter>Source Files\tinyxml</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tinyxml\tinyxmlerror.cpp">
+      <Filter>Source Files\tinyxml</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tinyxml\tinyxmlparser.cpp">
+      <Filter>Source Files\tinyxml</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\AngelReg.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\Clock.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\Config.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\Serialization.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\Symbol.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\XMLReader.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\vox\vox.cpp">
+      <Filter>Source Files\vox</Filter>
+    </ClCompile>
+    <ClCompile Include="src\stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
