@@ -228,7 +228,10 @@ u16 vox::CubitArr::get_slow( LPos pos )
 	return m_arr.m_arr[ m_arr.index( pos ) ];
 }
 
-static i32 s_triangleCount = 0;
+
+
+
+
 
 /*
 
@@ -764,6 +767,8 @@ public:
 };
 
 */
+
+
 
 
 void vox::Cubit::genWorld( Plane<Cubit> * pPlane, const CPos pos )

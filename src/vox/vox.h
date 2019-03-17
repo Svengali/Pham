@@ -246,6 +246,21 @@ class ChunkHolder: public Chunk<ChunkHolder<CHUNK>, typename CHUNK::Ptr, 16>
 };
 */
 
+class ChunkMesh
+{
+public:
+	typedef std::shared_ptr<ChunkMesh> Ptr;
+	typedef std::optional<Ptr>    Opt;
+
+	virtual ~ChunkMesh()
+	{
+
+	}
+
+	virtual void release() = 0;
+
+};
+
 //Like an existance plane
 template<typename CHUNK>
 class Plane
@@ -331,6 +346,8 @@ protected:
 
 
 
+
+
 class Cubit: public Chunk<Cubit, u16, 16>
 {
 public:
@@ -357,12 +374,13 @@ public:
 	//virtual void genGeo( Plane<Cubit> * pPlane, Vulkan::Device * const pDev, Granite::Scene * const pScene, const CPos pos ) override;
 
 
+	StorageArr<Cubit> m_arr;
+
 
 private:
 
-	friend class ChunkMesh;
+	friend class DGChunkMesh;
 
-	StorageArr<Cubit> m_arr;
 };
 
 class CubitPlane: public Plane<Cubit>
