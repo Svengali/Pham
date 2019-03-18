@@ -42,6 +42,9 @@
     <Filter Include="Source Files\vox">
       <UniqueIdentifier>{bb42c393-59e8-445b-bf00-3f319753dcef}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\grx">
+      <UniqueIdentifier>{081de4a4-c828-4bc0-a44d-58d0e6574746}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\async++\aligned_alloc.h">
@@ -227,6 +230,9 @@
     <ClInclude Include="src\stdafx.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\grx\Renderable.h">
+      <Filter>Source Files\grx</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\com\ComHealth.cpp">
@@ -300,6 +306,9 @@
     </ClCompile>
     <ClCompile Include="src\stdafx.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\grx\Renderable.cpp">
+      <Filter>Source Files\grx</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

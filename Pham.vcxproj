@@ -40,6 +40,7 @@
     <ClInclude Include="src\df\com.h" />
     <ClInclude Include="src\ent\ent.h" />
     <ClInclude Include="src\ent\entityId.h" />
+    <ClInclude Include="src\grx\Renderable.h" />
     <ClInclude Include="src\map\map.h" />
     <ClInclude Include="src\math\SimplexNoise.h" />
     <ClInclude Include="src\math\units.h" />
@@ -87,6 +88,7 @@
     <ClCompile Include="src\df\com.cpp" />
     <ClCompile Include="src\ent\ent.cpp" />
     <ClCompile Include="src\ent\entityId.cpp" />
+    <ClCompile Include="src\grx\Renderable.cpp" />
     <ClCompile Include="src\map\map.cpp" />
     <ClCompile Include="src\math\SimplexNoise.cpp" />
     <ClCompile Include="src\res\ResConfig.cpp" />
