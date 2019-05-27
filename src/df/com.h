@@ -202,6 +202,7 @@ public:
 
 public:
 
+
 	template <uint32_t tupleIndex >
 	void setFromTuple( const BlockTupleIndex index, const typename TIndividualTuple &tuple )
 	{
@@ -265,14 +266,14 @@ class BlockMeta
 {
 public:
 
-    typedef BlockTuple<TEnum, Args...> TTuple;
+    typedef BlockTuple<TEnum, Args...> TBlock;
 
     std::vector<uint32_t> m_allocated;
 
     std::vector<ent::EntityId> m_start;
     std::vector<ent::EntityId> m_end;
 
-    std::vector<std::shared_ptr<TTuple>> m_tuple;
+    std::vector<std::shared_ptr<TBlock>> m_block;
 
 	BlockMeta()
 	{
@@ -328,7 +329,7 @@ public:
 		m_allocated.push_back( 0 );
 		m_start.push_back( ent::EntityId::invalid );
 		m_end.push_back( ent::EntityId::invalid );
-		m_tuple.push_back( std::make_shared<BlockTuple<TEnum, Args...>>() );
+		m_block.push_back( std::make_shared<BlockTuple<TEnum, Args...>>() );
 
 		return iBlock;
 	}
@@ -344,7 +345,7 @@ public:
 			m_allocated.back()++;
 
 			m_end.back() = entityId.next();
-			m_tuple.back()->init( newIndex, entityId, args... );
+			m_block.back()->init( newIndex, entityId, args... );
 
 			return curBlock;
 		}
@@ -359,7 +360,7 @@ public:
 
 
 	// DUPE :: Of above, but with a tuple
-	BlockIndex append( const typename TTuple::TIndividualTuple &tuple )
+	BlockIndex append( const typename TBlock::TIndividualTuple &tuple )
 	{
 		auto curBlock = BlockIndex( cast<BlockIndex::Base>( m_allocated.size() - 1 ) );
 
@@ -373,7 +374,7 @@ public:
 			m_allocated.back()++;
 
 			m_end.back() = entId.next();
-			m_tuple.back()->init( newIndex, tuple );
+			m_block.back()->init( newIndex, tuple );
 
 			return curBlock;
 		}
@@ -385,7 +386,7 @@ public:
 		return append( tuple );
 	}
 
-	void insert( BlockIndex iBlock, const typename TTuple::TIndividualTuple &tuple )
+	void insert( BlockIndex iBlock, const typename TBlock::TIndividualTuple &tuple )
 	{
 		if ( iBlock < m_allocated.size() )
 		{
@@ -425,7 +426,7 @@ class ComBlocks
 public:
 	typedef BlockMeta<TEnum, Args...> AllBlocks;
 
-	typedef typename AllBlocks::TTuple::TIndividualTuple TTuple;
+	typedef typename AllBlocks::TBlock::TIndividualTuple TTuple;
 
     ComBlocks()
     {
@@ -536,7 +537,7 @@ public:
 
 public:
 
-	int updateBlock( const uint64_t dtMs, TCom::AllBlocks::TTuple &blocks );
+	int updateBlock( const uint64_t dtMs, TCom::AllBlocks::TBlock &blocks );
 
 	void update( const uint64_t dtMs );
 };
@@ -566,7 +567,7 @@ public:
 
 public:
 
-	int updateBlock( const uint64_t dtMs, TCom::AllBlocks::TTuple &blocks );
+	int updateBlock( const uint64_t dtMs, TCom::AllBlocks::TBlock &blocks );
 
 	void update( const uint64_t dtMs );
 };
@@ -596,7 +597,7 @@ public:
 
 public:
 
-	int updateBlock( const uint64_t dtMs, TCom::AllBlocks::TTuple &blocks );
+	int updateBlock( const uint64_t dtMs, TCom::AllBlocks::TBlock &blocks );
 
 	void update( const uint64_t dtMs );
 
@@ -639,7 +640,7 @@ public:
 
 public:
 
-    int updateBlock( const uint64_t dtMs, TCom::AllBlocks::TTuple &blocks );
+    int updateBlock( const uint64_t dtMs, TCom::AllBlocks::TBlock &blocks );
 
     void update( const uint64_t dtMs );
 };

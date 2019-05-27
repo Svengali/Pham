@@ -27,7 +27,7 @@ union Thingy
 #define BitwiseCast( f ) (*(int*)&f)
 
 
-int df::ComDynamicBlocks::updateBlock( const uint64_t dtMs, TCom::AllBlocks::TTuple &blocks )
+int df::ComDynamicBlocks::updateBlock( const uint64_t dtMs, TCom::AllBlocks::TBlock &blocks )
 {
     const int hint = _MM_HINT_T0;
     const int ahead = 96;
@@ -188,11 +188,11 @@ void df::ComDynamicBlocks::update( const uint64_t dtMs )
     /*
 
 
-    //const auto size = (int)m_com.m_blocks.m_tuple.size();
+    //const auto size = (int)m_com.m_blocks.m_block.size();
 
-    for( int32_t iBlock = 0; iBlock < (int)m_com.m_blocks.m_tuple.size(); iBlock += 1 )
+    for( int32_t iBlock = 0; iBlock < (int)m_com.m_blocks.m_block.size(); iBlock += 1 )
     {
-        auto &blocks = m_com.m_blocks.m_tuple[iBlock];
+        auto &blocks = m_com.m_blocks.m_block[iBlock];
 
         const auto total = updateBlock( dtMs, *blocks.get() );
 
@@ -204,10 +204,10 @@ void df::ComDynamicBlocks::update( const uint64_t dtMs )
     /*/
 
 
-    const auto size = (int)m_com.m_blocks.m_tuple.size();
+    const auto size = (int)m_com.m_blocks.m_block.size();
 
     async::parallel_for( async::irange( 0, size ), [this, dtMs ]( int iBlock ) {
-        auto &blocks = m_com.m_blocks.m_tuple[iBlock];
+        auto &blocks = m_com.m_blocks.m_block[iBlock];
 
         const auto total = updateBlock( dtMs, *blocks.get() );
 
@@ -232,7 +232,7 @@ void df::ComDynamicBlocks::update( const uint64_t dtMs )
 
 ////////
 
-int df::ComDynamicBlocksVec::updateBlock( const uint64_t dtMs, TCom::AllBlocks::TTuple &blocks )
+int df::ComDynamicBlocksVec::updateBlock( const uint64_t dtMs, TCom::AllBlocks::TBlock &blocks )
 {
 	const int hint = _MM_HINT_T0;
 	const int ahead = 96;
@@ -272,10 +272,10 @@ void df::ComDynamicBlocksVec::update( const uint64_t dtMs )
 {
 
 
-	const auto size = (int)m_com.m_blocks.m_tuple.size();
+	const auto size = (int)m_com.m_blocks.m_block.size();
 
 	async::parallel_for( async::irange( 0, size ), [ this, dtMs ]( int iBlock ) {
-		auto &blocks = m_com.m_blocks.m_tuple[iBlock];
+		auto &blocks = m_com.m_blocks.m_block[iBlock];
 
 		const auto total = updateBlock( dtMs, *blocks.get() );
 
@@ -330,10 +330,10 @@ void df::ComDynamicBlocksXM::update( const uint64_t dtMs )
 {
 
 
-	const auto size = (int)m_com.m_blocks.m_tuple.size();
+	const auto size = (int)m_com.m_blocks.m_block.size();
 
 	async::parallel_for( async::irange( 0, size ), [ this, dtMs ]( int iBlock ) {
-		auto &blocks = m_com.m_blocks.m_tuple[iBlock];
+		auto &blocks = m_com.m_blocks.m_block[iBlock];
 
 		const auto total = updateBlock( dtMs, *blocks.get() );
 
@@ -345,11 +345,11 @@ void df::ComDynamicBlocksXM::update( const uint64_t dtMs )
 
 void df::ComDynamicBlocksXM::printRandom()
 {
-	const auto size = (int)m_com.m_blocks.m_tuple.size();
+	const auto size = (int)m_com.m_blocks.m_block.size();
 
 	for ( int i = 0; i < 10; ++i )
 	{
-		auto &blocks = *m_com.m_blocks.m_tuple[i].get();
+		auto &blocks = *m_com.m_blocks.m_block[i].get();
 
 		SpecialType * pSrcPos = blocks.src<Pos, SpecialType>();
 
@@ -361,7 +361,7 @@ void df::ComDynamicBlocksXM::printRandom()
 
 
 
-int df::ComDynamicBlocksAoS::updateBlock( const uint64_t dtMs, TCom::AllBlocks::TTuple &blocks )
+int df::ComDynamicBlocksAoS::updateBlock( const uint64_t dtMs, TCom::AllBlocks::TBlock &blocks )
 {
     int total = 0;
 
@@ -369,6 +369,8 @@ int df::ComDynamicBlocksAoS::updateBlock( const uint64_t dtMs, TCom::AllBlocks::
     //ent::EntityId *pId;
     Physical * pSrc = blocks.src<Pos, Physical>();
     Physical * pDst = blocks.dst<Pos, Physical>();
+
+    //blocks.m_pSrc->
 
     //blocks.getPointers( &pBS, &pId, &pX, &pY, &pZ, &pDX, &pDY, &pDZ );
 
@@ -426,11 +428,11 @@ void df::ComDynamicBlocksAoS::update( const uint64_t dtMs )
     /*
 
 
-    //const auto size = (int)m_com.m_blocks.m_tuple.size();
+    //const auto size = (int)m_com.m_blocks.m_block.size();
 
-    for( int32_t iBlock = 0; iBlock < (int)m_com.m_blocks.m_tuple.size(); iBlock += 1 )
+    for( int32_t iBlock = 0; iBlock < (int)m_com.m_blocks.m_block.size(); iBlock += 1 )
     {
-        auto &blocks = m_com.m_blocks.m_tuple[iBlock];
+        auto &blocks = m_com.m_blocks.m_block[iBlock];
 
         const auto total = updateBlock( dtMs, *blocks.get() );
 
@@ -442,10 +444,10 @@ void df::ComDynamicBlocksAoS::update( const uint64_t dtMs )
     /*/
 
 
-    const auto size = (int)m_com.m_blocks.m_tuple.size();
+    const auto size = (int)m_com.m_blocks.m_block.size();
 
     async::parallel_for( async::irange( 0, size ), [this, dtMs ]( int iBlock ) {
-        auto &blocks = m_com.m_blocks.m_tuple[iBlock];
+        auto &blocks = m_com.m_blocks.m_block[iBlock];
 
         const auto total = updateBlock( dtMs, *blocks.get() );
 
