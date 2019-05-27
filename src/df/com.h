@@ -114,7 +114,7 @@ public:
 
 
 
-
+    /*
     void setFromArgs( const uint32_t index, const ent::EntityId id, Args...args )
     {
         //setSingle<std::tuple_size<TTuple>::value - 1>( index, args... );
@@ -137,6 +137,7 @@ public:
     {
         std::get<0>( *pInd ) = std::get<0>( m_blocks ).m_data.m_v[index];
     }
+    */
 
 	/*
 	TIndividualTuple getIndividual( const uint32_t index )
@@ -447,6 +448,7 @@ protected:
 };
 
 
+/*
 template<typename TPrimary, typename ...Args>
 class ComSet
 {
@@ -485,7 +487,7 @@ protected:
 	std::tuple<Args...> m_secondaries;
 
 };
-
+*/
 
 
 
