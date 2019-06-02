@@ -180,8 +180,9 @@ public:
 	template < typename T >
 	void operator() ( const TiXmlElement * const pNamedElem, T &val )
 	{
-		cb::BoolToType< Conversion< T, cb::HasReflection >::exists > has_reflection;
-		(*this)( pNamedElem, val, has_reflection ); 
+		//cb::BoolToType< Conversion< T, cb::hasReflection >::exists > has_reflection;
+
+		(*this)( pNamedElem, val, cb::TypeTraits<T>().hasReflection );
 	}	
 
 

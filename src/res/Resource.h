@@ -6,7 +6,7 @@
 #pragma once
 
 
-class Resource : public cb::HasReflection
+class Resource //: public cb::hasReflection
 {
 
 public:
@@ -37,6 +37,17 @@ private:
 	AbsoluteTime m_lastUsedTime;
 	
 };
+
+
+template <> 
+struct cb::TypeTraits<Resource>
+{
+    BoolAsType_True     hasReflection;
+    BoolAsType_False	isPrimitive;
+    BoolAsType_False	ioBytes;
+};
+
+
 
 StdPtr( Resource );
 

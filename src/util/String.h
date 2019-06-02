@@ -14,4 +14,17 @@ namespace util
 #ifdef _DEBUG
 	typedef std::string DebugString;
 #endif _DEBUG
+
+
+
+
 }
+
+
+template <>
+struct cb::TypeTraits<util::RuntimeString>
+{
+    BoolAsType_False    hasReflection;
+    BoolAsType_False	isPrimitive;
+    BoolAsType_False	ioBytes;
+};

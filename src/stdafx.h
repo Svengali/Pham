@@ -14,6 +14,9 @@
 
 // TODO: reference additional headers your program requires here
 
+// Needs to be in front of everything
+#include "cblib/stl_basics.h"
+
 
 #include <Windows.h>
 
@@ -25,6 +28,9 @@
 #include <vector>
 #include <cassert>
 
+
+// S T L 
+
 #undef min
 #undef max
 
@@ -32,7 +38,9 @@
 #include <hash_map>
 
 
-//
+// cblib
+#include "cblib/File.h"
+#include "cblib/FileUtil.h"
 #include "cblib/Link.h"
 #include "cblib/Vec3.h"
 #include "cblib/Vec3i.h"
@@ -40,6 +48,7 @@
 #include "cblib/CRC.h"
 #include "cblib/Reflection.h"
 #include "cblib/AxialBox.h"
+#include "cblib/TypeTraits.h"
 
 
 //Source level compiled in dependencies

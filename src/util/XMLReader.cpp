@@ -14,7 +14,7 @@
 
 /*
 template <>
-void XMLReader::operator() ( const char * name, cb::HasReflection &val )
+void XMLReader::operator() ( const char * name, cb::hasReflection &val )
 {
 	const TiXmlElement * const pNamedElem = m_pCurElement->FirstChildElement( name );
 	
