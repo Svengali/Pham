@@ -134,6 +134,11 @@
     <ClCompile Include="src\util\XMLReader.cpp" />
     <ClCompile Include="src\vox\vox.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\cblib\cblib.vcxproj">
+      <Project>{428c5bd5-d039-4373-81a2-42233350d84b}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{66091708-83E0-4556-A9CB-10518EBBD7D6}</ProjectGuid>
