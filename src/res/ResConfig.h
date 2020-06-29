@@ -7,7 +7,6 @@
 
 #include "Resource.h"
 
-StdPtr( ResConfig );
 
 class TiXmlElement;
 
@@ -41,6 +40,7 @@ private:
 };
 
 
+PtrDef( ResConfig );
 
 
 

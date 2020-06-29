@@ -27,6 +27,7 @@
 #include <memory>
 #include <vector>
 #include <cassert>
+#include <optional>
 
 
 // S T L 
@@ -45,13 +46,15 @@
 #include "cblib/Vec3.h"
 #include "cblib/Vec3i.h"
 #include "cblib/Frame3.h"
+#include "cblib/Mat4.h"
 #include "cblib/CRC.h"
 #include "cblib/Reflection.h"
 #include "cblib/AxialBox.h"
 #include "cblib/TypeTraits.h"
-
+// all cblib stuff needs to be above here
 
 //Source level compiled in dependencies
+#include "util/sptr_util.h"
 #include "tinyxml/tinyxml.h"
 #include "util/profile/profile.h"
 #include "util/concurrentqueue.h"
@@ -63,7 +66,7 @@
 #include "util/index.h"
 #include "util/id.h"
 #include "util/expected_lite.h"
-#include "util/optional.h"
+//#include "util/optional.h"
 #include "util/markable.h"
 #include "util/lvalue_ref.h"
 #include "util/not_null.h"

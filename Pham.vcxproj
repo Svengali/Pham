@@ -48,7 +48,8 @@
     <ClInclude Include="src\df\com.h" />
     <ClInclude Include="src\ent\ent.h" />
     <ClInclude Include="src\ent\entityId.h" />
-    <ClInclude Include="src\grx\Renderable.h" />
+    <ClInclude Include="src\grx\Geometry.h" />
+    <ClInclude Include="src\grx\RenderContext.h" />
     <ClInclude Include="src\map\map.h" />
     <ClInclude Include="src\math\SimplexNoise.h" />
     <ClInclude Include="src\math\units.h" />
@@ -78,11 +79,11 @@
     <ClInclude Include="src\util\markable.h" />
     <ClInclude Include="src\util\not_null.h" />
     <ClInclude Include="src\util\only_when.h" />
-    <ClInclude Include="src\util\optional.h" />
     <ClInclude Include="src\util\out_param.h" />
     <ClInclude Include="src\util\profile\profile.h" />
     <ClInclude Include="src\util\Reflection.h" />
     <ClInclude Include="src\util\Serialization.h" />
+    <ClInclude Include="src\util\sptr_util.h" />
     <ClInclude Include="src\util\String.h" />
     <ClInclude Include="src\util\Symbol.h" />
     <ClInclude Include="src\util\tagged_bool.h" />
@@ -96,7 +97,8 @@
     <ClCompile Include="src\df\com.cpp" />
     <ClCompile Include="src\ent\ent.cpp" />
     <ClCompile Include="src\ent\entityId.cpp" />
-    <ClCompile Include="src\grx\Renderable.cpp" />
+    <ClCompile Include="src\grx\Geometry.cpp" />
+    <ClCompile Include="src\grx\RenderContext.cpp" />
     <ClCompile Include="src\map\map.cpp" />
     <ClCompile Include="src\math\SimplexNoise.cpp" />
     <ClCompile Include="src\res\ResConfig.cpp" />
@@ -162,7 +164,7 @@
     <ProjectGuid>{66091708-83E0-4556-A9CB-10518EBBD7D6}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Pham</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -312,7 +314,7 @@
       <MinimalRebuild>true</MinimalRebuild>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <StringPooling>true</StringPooling>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

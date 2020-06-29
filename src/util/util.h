@@ -16,11 +16,12 @@ TO cast( FROM from )
     return static_cast<TO>( from );
 }
 
+/*
 #define StdPtr(CLASS) \
 class CLASS; \
 typedef std::shared_ptr<CLASS> CLASS ## Ptr; \
 //#end define StdPtr
-
+*/
 
 
 template< typename TO, typename FROM >

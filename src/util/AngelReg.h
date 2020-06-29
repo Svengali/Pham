@@ -34,7 +34,7 @@ public:
 	CEGUI::Window *m_window;
 };
 
-StdPtr( CEGUIWrapper );
+PtrDef( CEGUIWrapper );
 
 
 #define AS_REG_RC_CLASS( _CLASS ) \

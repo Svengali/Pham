@@ -6,7 +6,7 @@
 #pragma once
 
 
-class Resource //: public cb::hasReflection
+class Resource
 {
 
 public:
@@ -49,7 +49,7 @@ struct cb::TypeTraits<Resource>
 
 
 
-StdPtr( Resource );
+PtrDef( Resource );
 
 
 

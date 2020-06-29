@@ -31,7 +31,7 @@ public:
 };
 
 // ???
-StdPtr( ComponentConfig );
+PtrDef( ComponentConfig );
 
 template< typename TCFG >
 class Component : std::enable_shared_from_this<Component<TCFG>>

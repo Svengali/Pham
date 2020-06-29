@@ -191,9 +191,6 @@
     <ClInclude Include="src\util\only_when.h">
       <Filter>Source Files\util</Filter>
     </ClInclude>
-    <ClInclude Include="src\util\optional.h">
-      <Filter>Source Files\util</Filter>
-    </ClInclude>
     <ClInclude Include="src\util\out_param.h">
       <Filter>Source Files\util</Filter>
     </ClInclude>
@@ -230,8 +227,14 @@
     <ClInclude Include="src\stdafx.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\grx\Renderable.h">
+    <ClInclude Include="src\grx\Geometry.h">
       <Filter>Source Files\grx</Filter>
+    </ClInclude>
+    <ClInclude Include="src\grx\RenderContext.h">
+      <Filter>Source Files\grx</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\sptr_util.h">
+      <Filter>Source Files\util</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -307,7 +310,10 @@
     <ClCompile Include="src\stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\grx\Renderable.cpp">
+    <ClCompile Include="src\grx\Geometry.cpp">
+      <Filter>Source Files\grx</Filter>
+    </ClCompile>
+    <ClCompile Include="src\grx\RenderContext.cpp">
       <Filter>Source Files\grx</Filter>
     </ClCompile>
   </ItemGroup>

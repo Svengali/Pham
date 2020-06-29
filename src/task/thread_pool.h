@@ -92,7 +92,8 @@ namespace mt {
                             while( !terminating &&
                                 tasks.empty() &&
                                 ( active > 0 || !joining ) ) {
-                                cv.wait( lock );
+                                // @@@@ TODO PORT BROKEN
+                                // cv.wait( lock );
                             }
                             if( tasks.empty() ) {
                                 break; /* all done */

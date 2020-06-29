@@ -11,8 +11,8 @@
 //#include "../Renderer/Geometry.h"
 
 /*
-SPtrFwd( ComHealthConfig );
-SPtrFwd( RenderContext );
+PPtrFwd( ComHealthConfig );
+PPtrFwd( RenderContext );
 */
 
 
@@ -35,7 +35,7 @@ public:
 
 };
 
-StdPtr( ComHealthConfig );
+PtrDef( ComHealthConfig );
 
 class ComHealth : public Component<ComHealthConfig>
 {
@@ -57,6 +57,7 @@ private:
 
 };
 
+PtrDef( ComHealth );
+
 }
 
-StdPtr( ComHealth );

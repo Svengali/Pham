@@ -35,7 +35,7 @@ public:
 	std::vector< com::ComponentConfigPtr > m_coms;
 };
 
-StdPtr( EntityConfig );
+PtrDef( EntityConfig );
 
 class Entity
 {
@@ -70,7 +70,7 @@ protected:
 
 };
 
-StdPtr( Entity );
+PtrDef( Entity );
 
 
 

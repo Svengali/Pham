@@ -5,7 +5,7 @@
 // copyright 2005-2017 Marc Hernandez
 #pragma once
 
-StdPtr( Resource );
+PtrFwd( Resource );
 
 namespace ResourceMgr
 {
