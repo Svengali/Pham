@@ -6,7 +6,7 @@
 
 
 
-#include "stdafx.h"
+#include "../stdafx.h"
 #include ".\GeoD3D.h"
 #include "../Resource/ResXMesh.h"
 #include "../Resource/ResXEffect.h"

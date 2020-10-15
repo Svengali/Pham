@@ -24,7 +24,7 @@
 * or copy at http://opensource.org/licenses/MIT)
 */
 
-#include "stdafx.h"
+#include "../stdafx.h"
 
 #include "SimplexNoise.h"
 

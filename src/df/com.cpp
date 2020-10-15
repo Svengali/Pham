@@ -4,7 +4,7 @@
 //
 // copyright 2005-2017 Marc Hernandez
 
-#include "stdafx.h"
+#include "../stdafx.h"
 
 
 #include "com.h"

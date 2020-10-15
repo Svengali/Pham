@@ -6,7 +6,7 @@
 
 
 
-#include "stdafx.h"
+#include "../stdafx.h"
 #include "./GeoD3DDynamic.h"
 
 #include "../Renderer/RenderContext.h"
