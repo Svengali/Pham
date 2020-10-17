@@ -6,7 +6,7 @@
 #pragma once
 
 
-class Resource
+class Resource : public std::enable_shared_from_this<Resource>
 {
 
 public:

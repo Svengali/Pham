@@ -10,21 +10,25 @@
 
 #include "./ComRenderable.h"
 
-#include "../Renderer/Geometry.h"
+#include "../grx/Geometry.h"
+
+namespace com
+{
+
 
 SERIALIZABLE( ComRenderableConfig );
 SERIALIZABLE( ComRenderable );
 
-Component *ComRenderableConfig::CreateCom( Entity * const pEnt )
+/*
+Component *ComRenderableConfig::CreateCom( ent::Entity * const pEnt )
 {
 	return new ComRenderable( pEnt, ComRenderableConfigPtr( this ) );
 }
+*/
 
-
-ComRenderable::ComRenderable( Entity * const pEnt, const ComRenderableConfigPtr &config )
+ComRenderable::ComRenderable( ent::Entity * const pEnt, const ComRenderableConfigPtr &config )
 	:
-	Component( pEnt ),
-	m_config( config )
+    Component(pEnt, config)
 {
 }
 
@@ -32,9 +36,11 @@ ComRenderable::~ComRenderable()
 {
 }
 
-void ComRenderable::Render( const RenderContextPtr &rcon, const Frame3 &frame )
+void ComRenderable::Render( const RenderContextPtr &rcon, const cb::Frame3 &frame )
 {
-	m_config->m_geo->Render( rcon, frame );
+	
+	this->cfg()->m_geo->Render(rcon, frame);
 }
 
 
+}

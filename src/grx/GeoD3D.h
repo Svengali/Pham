@@ -8,6 +8,8 @@
 
 #include "Geometry.h"
 
+#if 0
+
 #include <d3dx9mesh.h>
 
 SPtrFwd( ResXMesh );
@@ -44,7 +46,7 @@ private:
 
 SPtrDef( GeoD3D );
 
-
+#endif
 
 
 

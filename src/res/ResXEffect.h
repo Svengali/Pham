@@ -7,6 +7,8 @@
 
 #include "Resource.h"
 
+#if 0 
+
 SPtrFwd( ResXEffect );
 
 struct ID3DXEffect;
@@ -38,21 +40,4 @@ private:
 
 };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// -
+#endif

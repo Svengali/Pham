@@ -15,7 +15,7 @@
 
 typedef unsigned long DWORD;
 
-#include <cblib/DirChangeWatcher.h>
+#include "../../../cblib/DirChangeWatcher.h"
 
 //std::hash_map< util::Symbol 
 

@@ -10,7 +10,7 @@ PtrFwd( RenderContext );
 
 //#include "RenderContext.h"
 
-class Geometry : public std::enable_shared_from_this<Geometry>
+class Geometry : public Resource
 {
 
 public:
@@ -20,7 +20,7 @@ public:
 	Geometry();
 	virtual ~Geometry();
 	
-	virtual void Render( const RenderContextPtr &rcon, const cb::Mat4 &pos ) = 0;
+	virtual void Render( const RenderContextPtr &rcon, const cb::Frame3 &pos ) = 0;
 	
 	/*
 	void SetPosition( const Vec3 pos )

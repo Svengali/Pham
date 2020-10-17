@@ -12,8 +12,12 @@
 #include <string>
 #include <assert.h>
 #include <math.h>
-#include <angelscript.h>
+
+#if 0
 #include <scriptstring.h>
+
+#include <angelscript.h>
+
 
 #include <Windows.h>
 
@@ -222,6 +226,7 @@ void ExecString( asIScriptEngine * const engine, std::string * const pOutput, co
 	engine->SetCommonMessageStream(0);
 }
 
+
 void grab(int v)
 {
 	char buf[128];
@@ -268,3 +273,5 @@ void grab()
 {
 	s_output.append( "<void>" );
 }
+
+#endif

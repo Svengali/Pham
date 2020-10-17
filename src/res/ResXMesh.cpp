@@ -6,6 +6,7 @@
 
 #include "../stdafx.h"
 
+#if 0 
 
 #include "./ResXMesh.h"
 #include "./ResXEffect.h"
@@ -423,14 +424,4 @@ End:
 }
 */
 
-
-
-
-
-
-
-
-
-
-
-// -
+#endif

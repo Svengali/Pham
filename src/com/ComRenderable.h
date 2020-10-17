@@ -7,63 +7,49 @@
 
 #include "./Component.h"
 
-#include "../Renderer/Geometry.h"
+#include "../grx/Geometry.h"
 
-SPtrFwd( ComRenderableConfig );
-SPtrFwd( RenderContext );
+
+namespace com
+{
 
 class ComRenderableConfig : public ComponentConfig
 {
 public:
-	CLASS( ComRenderableConfig, ComponentConfig );
+    CLASS(ComRenderableConfig, ComponentConfig);
 
-  REFLECT_BEGIN( ComRenderableConfig, ComponentConfig );
-		REFLECT( m_geo );
-  REFLECT_END();
+    REFLECT_BEGIN(ComRenderableConfig, ComponentConfig);
+        REFLECT(m_geo);
+    REFLECT_END();
 
-	GeometryPtr m_geo;
+    GeometryPtr m_geo;
 
-	virtual Component *CreateCom( Entity * const pEnt );
-
-
+    //virtual Component<ComRenderableConfig>* CreateCom(ent::Entity* const pEnt);
 };
 
-class ComRenderable : public Component
+PtrDef(ComRenderableConfig);
+
+
+class ComRenderable : public Component<ComRenderableConfig>
 {
 
 public:
+    CLASS(ComRenderable, Component);
 
-	CLASS( ComRenderable, Component );
+    ComRenderable( ent::Entity* const pEnt = NULL, const ComRenderableConfigPtr& config = ComRenderableConfigPtr(NULL));
 
-	ComRenderable( Entity * const pEnt = NULL, const ComRenderableConfigPtr &config = ComRenderableConfigPtr( NULL ) );
+    virtual ~ComRenderable();
 
-	virtual ~ComRenderable();
+    void Render(const RenderContextPtr& rcon, const cb::Frame3& frame);
 
-	void Render( const RenderContextPtr &rcon, const Frame3 &frame );
-
-  REFLECT_BEGIN( ComRenderable, Component );
-		REFLECT( m_config );
-  REFLECT_END();
+    REFLECT_BEGIN(ComRenderable, Component);
+    REFLECT_END();
 
 private:
-	ComRenderableConfigPtr m_config;
-
 };
 
 
-SPtrDef( ComRenderable );
+PtrDef(ComRenderable);
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-// -
+}

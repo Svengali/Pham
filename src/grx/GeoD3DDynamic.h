@@ -9,6 +9,8 @@
 
 //#include <d3dx9mesh.h>
 
+#if 0
+
 SPtrFwd( ResXMesh );
 SPtrFwd( RenderContext );
 
@@ -27,7 +29,7 @@ public:
 	
 	virtual ~GeoD3DDynamic();
 	
-	virtual void Render( const RenderContextPtr &rcon, const Frame3 &frame );
+	virtual void Render( const RenderContextPtr &rcon, const cb::Frame3 &frame );
 	
 	REFLECT_BEGIN( GeoD3DDynamic, Geometry );
 	REFLECT_END();
@@ -38,17 +40,4 @@ private:
 
 SPtrDef( GeoD3DDynamic );
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-// -
+#endif

@@ -5,9 +5,10 @@
 
 #include "Pham.h"
 
-#include "post/hdr.hpp"
+//#include "post/hdr.hpp"
 
 
+#if 0
 /*
 class PhamApp : public Granite::Application, public Granite::EventHandler
 {
@@ -772,4 +773,4 @@ int main(int argc, char **argv)
 	
 	return 0;
 }
-
+#endif

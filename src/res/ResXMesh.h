@@ -7,6 +7,8 @@
 
 #include "Resource.h"
 
+#if 0 
+
 #include <d3d9.h>
 #include <d3dx9mesh.h>
 #include "../DXUT/Core/DXUT.h"
@@ -124,21 +126,5 @@ private:
 	
 };
 
+#endif
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// -

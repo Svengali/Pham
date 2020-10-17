@@ -7,6 +7,8 @@
 
 #include "Resource.h"
 
+#if 0 
+
 SPtrFwd( ResXTex );
 
 struct IDirect3DTexture9;
@@ -34,21 +36,4 @@ private:
 
 };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// -
+#endif

@@ -7,21 +7,22 @@
 #include "../stdafx.h"
 
 
+#if 0
 
 #include ".\ComController.h"
 
 SERIALIZABLE( ComControllerConfig );
 SERIALIZABLE( ComController );
 
-Component *ComControllerConfig::CreateCom( Entity * const pEnt )
+com::Component<ComControllerConfig>* ComControllerConfig::CreateCom(ent::Entity* const pEnt)
 {
 	return new ComController( pEnt, ComControllerConfigPtr( this ) );
 }
 
 
-ComController::ComController( Entity * const pEnt, const ComControllerConfigPtr &config )
+ComController::ComController( ent::Entity * const pEnt, const ComControllerConfigPtr &config )
 	:
-	Component( pEnt )
+	Component( pEnt, config )
 {
 }
 
@@ -29,4 +30,4 @@ ComController::~ComController()
 {
 }
 
-
+#endif

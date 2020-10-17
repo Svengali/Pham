@@ -5,8 +5,6 @@
 // copyright 2005-2017 Marc Hernandez
 #pragma once
 
-#include <cblib/String.h>
-
 namespace util
 {
 	typedef std::string RuntimeString;

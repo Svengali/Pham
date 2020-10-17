@@ -3452,7 +3452,7 @@ namespace units
         * @anchor		chargeContainers
         * @sa			See unit_t for more information on unit type containers.
         */
-        UNIT_ADD_WITH_METRIC_PREFIXES( charge, coulomb, coulombs, C, unit<std::ratio<1>, units::category::charge_unit> )
+        UNIT_ADD_WITH_METRIC_PREFIXES( charge, coulomb, coulombs, col, unit<std::ratio<1>, units::category::charge_unit> )
         UNIT_ADD_WITH_METRIC_PREFIXES( charge, ampere_hour, ampere_hours, Ah, compound_unit<current::ampere, time::hours> )
 
         UNIT_ADD_CATEGORY_TRAIT( charge )

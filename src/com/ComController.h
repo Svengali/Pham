@@ -7,13 +7,15 @@
 
 #include "./Component.h"
 
+#if 0
+
 SPtrFwd( ComController );
 SPtrFwd( ComControllerConfig );
 SPtrFwd( ComConPlayerConfig );
 
 
 //This might be unnecessary
-class ComControllerConfig : public ComponentConfig
+class ComControllerConfig : public com::ComponentConfig
 {
 public:
 	CLASS( ComControllerConfig, ComponentConfig );
@@ -21,16 +23,16 @@ public:
   REFLECT_BEGIN( ComControllerConfig, ComponentConfig );
   REFLECT_END();
 
-	virtual Component *CreateCom( Entity * const pEnt );
+	virtual com::Component<ComControllerConfig> *CreateCom( ent::Entity * const pEnt );
 };
 
-class ComController : public Component
+class ComController : public com::Component<ComControllerConfig>
 {
 public:
 
 	CLASS( ComController, Component );
 
-	ComController( Entity * const pEnt = NULL, const ComControllerConfigPtr &config = ComControllerConfigPtr( NULL ) );
+	ComController(ent::Entity* const pEnt = NULL, const ComControllerConfigPtr& config = ComControllerConfigPtr(NULL));
 
 	virtual ~ComController();
 
@@ -51,7 +53,7 @@ public:
   REFLECT_BEGIN( ComConPlayerConfig, ComControllerConfig );
   REFLECT_END();
 
-	virtual Component *CreateCom( Entity * const pEnt );
+	virtual com::Component<ComControllerConfig>* CreateCom(ent::Entity* const pEnt);
 };
 
 class ComConPlayer : public ComController
@@ -60,7 +62,7 @@ public:
 
 	CLASS( ComConPlayer, ComController );
 
-	ComConPlayer( Entity * const pEnt = NULL, const ComConPlayerConfigPtr &config = ComConPlayerConfigPtr( NULL ) );
+	ComConPlayer(ent::Entity* const pEnt = NULL, const ComConPlayerConfigPtr& config = ComConPlayerConfigPtr(NULL));
 
 	virtual ~ComConPlayer();
 
@@ -71,3 +73,5 @@ public:
 private:
 	ComConPlayerConfigPtr m_config;
 };
+
+#endif

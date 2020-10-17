@@ -5,8 +5,9 @@
 // copyright 2005-2017 Marc Hernandez
 #pragma once
 
-#include "Resource.h"
+#if 0
 
+#include "Resource.h"
 
 class asIScriptEngine;
 class asIScriptContext;
@@ -48,19 +49,4 @@ private:
 
 SPtrDef( ResScript );
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// -
+#endif

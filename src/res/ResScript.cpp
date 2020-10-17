@@ -6,6 +6,7 @@
 
 #include "../stdafx.h"
 
+#if 0
 
 #include ".\ResScript.h"
 
@@ -161,14 +162,4 @@ int ResScript::GetFunctionIDByDecl( const char * const pFn ) const
 	return s_pEngine->GetFunctionIDByDecl( m_module.CStr(), pFn );
 }
 
-
-
-
-
-
-
-
-
-
-
-// -
+#endif

@@ -8,7 +8,7 @@
 
 
 #include "vox.h"
-#include "math/SimplexNoise.h"
+#include "../math/SimplexNoise.h"
 
 /*
 

@@ -7,6 +7,9 @@
 
 
 #include "../stdafx.h"
+
+#if 0
+
 #include "./GeoD3DDynamic.h"
 
 #include "../Renderer/RenderContext.h"
@@ -32,3 +35,5 @@ void GeoD3DDynamic::Render( const RenderContextPtr &rcon, const cb::Frame3 &fram
 {
 
 }
+
+#endif

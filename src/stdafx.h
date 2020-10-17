@@ -15,7 +15,7 @@
 // TODO: reference additional headers your program requires here
 
 // Needs to be in front of everything
-#include "cblib/stl_basics.h"
+#include "../../cblib/stl_basics.h"
 
 
 #include <Windows.h>
@@ -51,6 +51,8 @@
 #include "cblib/Reflection.h"
 #include "cblib/AxialBox.h"
 #include "cblib/TypeTraits.h"
+#include "cblib/String.h"
+
 // all cblib stuff needs to be above here
 
 //Source level compiled in dependencies

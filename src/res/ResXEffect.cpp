@@ -6,6 +6,7 @@
 
 #include "../stdafx.h"
 
+#if 0
 
 #include ".\ResXEffect.h"
 
@@ -48,17 +49,4 @@ void ResXEffect::Load( const char * const pFilename )
 	//gD3DUtil::ShowHR( hr );
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-// -
+#endif

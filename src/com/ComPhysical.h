@@ -7,8 +7,6 @@
 
 #include "./Component.h"
 
-SPtrFwd( ComPhysicalConfig );
-
 namespace com
 {
 
@@ -24,10 +22,13 @@ public:
 
 	cb::Vec3 m_AABB;
 
-	virtual Component<ComPhysicalConfig> *CreateCom( ent::Entity * const pEnt );
+	//virtual Component<ComPhysicalConfig> *CreateCom( ent::Entity * const pEnt );
 
 
 };
+
+PtrDef(ComPhysicalConfig);
+
 
 class ComPhysical : public Component<ComPhysicalConfig>
 {
@@ -35,8 +36,7 @@ class ComPhysical : public Component<ComPhysicalConfig>
 public:
 
 	CLASS( ComPhysical, Component );
-
-	ComPhysical( ent::Entity * const pEnt = NULL, const ComPhysicalConfigPtr &config = ComPhysicalConfigPtr( NULL ) );
+	ComPhysical( ent::Entity* const pEnt = NULL, const ComPhysicalConfigPtr &config = ComPhysicalConfigPtr( NULL ) );
 
 	virtual ~ComPhysical();
 

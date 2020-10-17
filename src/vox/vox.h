@@ -46,6 +46,7 @@ class GPos: public cb::Vec3i
 public:
 	using cb::Vec3i::Vec3i;
 
+	// DOC eps?  I presume its to make sure 
 	static GPos from( const cb::Vec3 pos, const float eps = 1.0f / 32.0f )
 	{
 		return GPos( pos.x + eps, pos.y + eps, pos.z + eps );

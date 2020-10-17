@@ -6,7 +6,7 @@
 
 #include "../stdafx.h"
 
-
+#if 0
 
 #include "./Script.h"
 
@@ -89,10 +89,4 @@ void Script::MakeFnCall_raw( const RuntimeString &name, const RuntimeString &ret
 	//m_pContext->Get
 }
 
-
-
-
-
-
-
-// -
+#endif

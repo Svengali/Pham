@@ -7,6 +7,8 @@
 #include "../stdafx.h"
 
 
+#if 0
+
 #include ".\ResXTex.h"
 
 #include "../DXUT/Core/DXUT.h"
@@ -50,17 +52,4 @@ void ResXTex::Load( const char * const pFilename )
 	//gD3DUtil::ShowHR( hr );
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-// -
+#endif

@@ -5,6 +5,7 @@
 // copyright 2005-2017 Marc Hernandez
 #pragma once
 
+#if 0
 
 SPtrFwd( ResScript );
 
@@ -122,7 +123,7 @@ private:
 
 SPtrDef( Script );
 
-
+#endif
 
 
 

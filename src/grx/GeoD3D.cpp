@@ -7,6 +7,9 @@
 
 
 #include "../stdafx.h"
+
+#if 0
+
 #include ".\GeoD3D.h"
 #include "../Resource/ResXMesh.h"
 #include "../Resource/ResXEffect.h"
@@ -256,16 +259,4 @@ void GeoD3D::Render( const RenderContextPtr &rcon, const Frame3 &frame )
     
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-// -
+#endif
