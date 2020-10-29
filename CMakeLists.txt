@@ -1,4 +1,7 @@
 cmake_minimum_required(VERSION 3.0.0)
+
+include(${CMAKE_TOOLS_DIR}/Macros.cmake)
+
 project(Pham VERSION 0.1.0)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -32,6 +35,9 @@ file(
   RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
     src/*.cpp
 )
+
+GenerateSourceGroups(src)
+
 
 #ADD_MSVC_PRECOMPILED_HEADER("stdafx.h" "src/stdafx.cpp" PHAM_SRC)
 

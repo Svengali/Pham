@@ -8,6 +8,8 @@
 
 #include "../stdafx.h"
 
+
+
 #if 0
 
 #include ".\GeoD3D.h"

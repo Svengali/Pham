@@ -49,7 +49,7 @@ public:
 	// DOC eps?  I presume its to make sure 
 	static GPos from( const cb::Vec3 pos, const float eps = 1.0f / 32.0f )
 	{
-		return GPos( pos.x + eps, pos.y + eps, pos.z + eps );
+        return GPos( cast<i32>(pos.x + eps), cast<i32>(pos.y + eps), cast<i32>(pos.z + eps) );
 	}
 
 	GPos operator +(const LPos pos) const;

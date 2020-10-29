@@ -26,6 +26,8 @@ TileMetric operator %( const TileMetric lhs, const ChunkSize rhs )
 
 
 
+
+
 map::ChunkMetric operator"" _chunk( unsigned long long int metric )
 {
     return map::ChunkMetric( cast<uint32_t>( metric ) );

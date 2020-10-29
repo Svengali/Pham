@@ -1161,6 +1161,9 @@ void doSomething( TValue &v )
 
 }
 
+void testImmutables();
+
+
 
 void vox::testVox()
 {
@@ -1169,7 +1172,9 @@ void vox::testVox()
 
 	//plane.genWorld( cb::Vec3( 55.4f, 72.3f, 14.4f ) );
 
+	//testDatatypes();
 
+	testImmutables();
 
 }
 
@@ -1210,13 +1215,10 @@ void testDatatypes()
 	const auto v_1 = cast<i32>( val );
 
 
-	auto val_f_1 = ValuePrint<ValueOnChange<ValueRangeFloat<ValueTrack<Value<f32>>>>>( 100.0f );
-
-	//*
-	val_f_1.initOnChange( []( f32 oldV, f32 newV ) {
+	auto val_f_1 = ValuePrint<ValueOnChange<ValueRangeFloat<ValueTrack<Value<f32>>>>>( 100.0f )
+	.initOnChange( []( f32 oldV, f32 newV ) {
 		std::cout << "Value is changing from " << oldV << " " << newV << std::endl;
 	} ).initRangeFloat( 35, 75 );
-	//*/
 
 	doSomething( val_f_1 );
 
@@ -1250,17 +1252,20 @@ void testDatatypes()
 template <typename Value, typename Struct>
 struct param
 {
-	Value Struct::*pmd;
+	const Value Struct::*pmd;
 	Value value;
 
 	void set( Struct &s )
 	{
-		s.*pmd = std::move( value );
+        //This is hinky, but necessary
+        Value Struct::*pmd_nc = (Value Struct::*)pmd;
+
+        s.*pmd_nc = std::move(value);
 	}
 };
 
 template <typename Value, typename Struct>
-param<Value, Struct> make_param( Value Struct::*pmd, Value value )
+param<Value, Struct> with( const Value Struct::*pmd, Value value )
 {
 	return param<Value, Struct>{pmd, value};
 }
@@ -1275,14 +1280,84 @@ T copy( const T &val, Params &&...params )
 	return value_copy;
 }
 
-struct person {
-	std::string name;
-	int age;
+template< typename T >
+struct Imm
+{
+    /*
+    template <typename Value>
+    param<Value, T> with(const Value T::*pmd, const Value value)
+    {
+        return param<Value, Struct>{pmd, value};
+    }
+	*/
+
+
+
+	template <typename Value>
+	T with(const Value T::*pmd, Value value)
+    {
+        return param<Value, T>{pmd, value}.set(this);
+    }
+
 };
 
-void test()
+
+struct ImmPerson : public Imm<ImmPerson>
 {
-	const person p1{ "name1", 25 };
-	const person p2 = copy( p1,
-		make_param( &person::name, std::string( "name2" ) ) );
+	//using Imm::Imm;
+    //ImmPerson() = default;
+
+	ImmPerson(std::string _name, int _age)
+		:
+		name(_name),
+		age(_age)
+	{
+
+	}
+
+    const std::string name;
+    const int         age;
+};
+
+struct Person {
+	const std::string name;
+	const int age;
+};
+
+struct Person_nc
+{
+    std::string name;
+    int         age;
+};
+
+void testImmutables()
+{
+    ImmPerson immP1 { "hello", 32 };
+
+	//immP1.with(&ImmPerson::name, std::string("name2"));
+
+
+	Person p1{ "name1", 25 };
+	Person p2 = copy( p1,
+		with( &Person::name, std::string( "name2" ) ),
+		with( &Person::age, -21 )
+		);
+
+	Person p5 = p1;
+
+
+	
+	//Illegal
+	//p1.name = "badname";
+
+	const Person_nc p3 { "name3", 43 };
+
+	Person_nc p4 = copy(p3, with(&Person_nc::name, std::string("name4")));
+
+	Person_nc p6;
+
+
+	//Also illegal, but requires every use case to use const
+	//p3.name = "badname";
+	
 }
