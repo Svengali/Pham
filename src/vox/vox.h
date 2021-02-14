@@ -306,9 +306,9 @@ public:
 
 			const auto lPos = LPos::from( cPos, pos );
 
-			if (lPos.x < 0 || lPos.x > 15 ||
-				lPos.y < 0 || lPos.y > 15 || 
-				lPos.z < 0 || lPos.z > 15 )
+			if( lPos.x < 0 | lPos.x > 15 |
+					lPos.y < 0 | lPos.y > 15 | 
+					lPos.z < 0 | lPos.z > 15 )
 			{
 				int dummy = 0;
 			}

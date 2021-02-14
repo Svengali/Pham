@@ -65,6 +65,7 @@ inline cb::Frame3 cast_from_string( const char * const pStr )
 {
 	float x,y,z;
 
+	// @@@@ TODO BROKEN Need to properly parse Frame3 text.
 	sscanf( pStr, "%f,%f,%f", &x, &y, &z );
 
 	return cb::Frame3( cb::Frame3::eIdentity );

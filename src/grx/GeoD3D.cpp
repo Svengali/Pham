@@ -262,3 +262,37 @@ void GeoD3D::Render( const RenderContextPtr &rcon, const Frame3 &frame )
 }
 
 #endif
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// -

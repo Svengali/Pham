@@ -39,7 +39,7 @@ ComRenderable::~ComRenderable()
 void ComRenderable::Render( const RenderContextPtr &rcon, const cb::Frame3 &frame )
 {
 	
-	this->cfg()->m_geo->Render(rcon, frame);
+	this->cfg()->m_geo->render(rcon, frame);
 }
 
 

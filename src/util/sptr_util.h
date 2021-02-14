@@ -12,13 +12,13 @@
 
 #define PtrDef(BaseClass)	\
 typedef std::shared_ptr<BaseClass> BaseClass##Ptr; \
-typedef std::weak_ptr<BaseClass> BaseClass##WeakPtr; \
+typedef std::weak_ptr<BaseClass> BaseClass##Weak; \
 //#define PPtrDef(BaseClass)	
 
 #define PtrFwd(BaseClass) \
 class BaseClass; \
 typedef std::shared_ptr<BaseClass> BaseClass##Ptr; \
-typedef std::weak_ptr<BaseClass> BaseClass##WeakPtr; \
+typedef std::weak_ptr<BaseClass> BaseClass##Weak; \
 // end #define PPtrFwd(BaseClass)	
 
 

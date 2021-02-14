@@ -3,6 +3,7 @@
 //   P h a m 
 //
 // copyright 2005-2017 Marc Hernandez
+
 #pragma once
 
 
@@ -20,6 +21,7 @@ public:
 		//REFLECT( m_lastUsedTime );
 	REFLECT_END();
 	
+	// @@@@ TODO Not a fan of this at all.
 	virtual void load( const char * const pFilename ) = 0;
 	
 	virtual void onPreLoad();

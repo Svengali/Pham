@@ -10,6 +10,13 @@
 //#include <d3dx9math.h>
 
 
+template<>
+inline cb::Mat4 cast_from_string( const char *const pStr )
+{
+	return cb::Mat4();
+}
+
+
 class RenderContext : public std::enable_shared_from_this<RenderContext>
 {
 public:
@@ -23,7 +30,7 @@ public:
 	
 
 
-	const cb::Mat4 &GetProjectionMat() const
+	const cb::Frame3 &GetProjectionMat() const
 	{
 		return m_proj;
 	}
@@ -38,7 +45,8 @@ public:
 
 private:
 
-	cb::Mat4 m_proj;
+	cb::Frame3 m_proj;
+
 };
 
 
