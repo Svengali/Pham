@@ -499,6 +499,7 @@ protected:
 
 
 
+extern void timeBlocks( const i32 numLoops, const i32 numEnts, u32 *timeSoAIndividualuS, u32 *timeAoSuS, u32 *timeSoA3uS, u32 *timeSoA4uS );
 
 
 
@@ -530,10 +531,10 @@ public:
 
 public:
 
-	typedef float SpecialType;
+	typedef float Scalar;
 
 
-	typedef ComBlocks<ComDynamicBlocks::EDynamicSlots, SpecialType, SpecialType, SpecialType, SpecialType, SpecialType, SpecialType, SpecialType, SpecialType> TCom;
+	typedef ComBlocks<ComDynamicBlocks::EDynamicSlots, Scalar, Scalar, Scalar, Scalar, Scalar, Scalar, Scalar, Scalar> TCom;
 
 	TCom m_com;
 
@@ -545,7 +546,7 @@ public:
 };
 
 
-class ComDynamicBlocksVec
+class ComDynamicBlocksVec3
 {
 public:
 
@@ -560,10 +561,10 @@ public:
 
 public:
 
-	typedef cb::Vec3 SpecialType;
+	typedef cb::Vec3 TVec;
 
 
-	typedef ComBlocks<ComDynamicBlocksVec::EDynamicSlots, SpecialType, SpecialType> TCom;
+	typedef ComBlocks<ComDynamicBlocksVec3::EDynamicSlots, TVec, TVec> TCom;
 
 	TCom m_com;
 
@@ -573,6 +574,37 @@ public:
 
 	void update( const uint64_t dtMs );
 };
+
+
+class ComDynamicBlocksVec4
+{
+public:
+
+
+	enum EDynamicSlots
+	{
+		Status = 0,
+		EntityId = 1,
+		Pos = 2,
+		Delta = 3,
+	};
+
+public:
+
+	typedef cb::Vec4 TVec;
+
+
+	typedef ComBlocks<ComDynamicBlocksVec4::EDynamicSlots, TVec, TVec> TCom;
+
+	TCom m_com;
+
+public:
+
+	int updateBlock( const uint64_t dtMs, TCom::AllBlocks::TBlock &blocks );
+
+	void update( const uint64_t dtMs );
+};
+
 
 /*
 class ComDynamicBlocksXM

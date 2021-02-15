@@ -10,7 +10,7 @@
 #include "com.h"
 
 
-
+/* TRASH
 union Thingy
 {
     int32_t i;
@@ -25,7 +25,7 @@ union Thingy
 };
 
 #define BitwiseCast( f ) (*(int*)&f)
-
+*/
 
 int df::ComDynamicBlocks::updateBlock( const uint64_t dtMs, TCom::AllBlocks::TBlock &blocks )
 {
@@ -37,18 +37,18 @@ int df::ComDynamicBlocks::updateBlock( const uint64_t dtMs, TCom::AllBlocks::TBl
 
     //EBlockStatus *pBS;
     //ent::EntityId *pId;
-	const SpecialType * pSrcX = blocks.src<X, SpecialType>();
-	const SpecialType * pSrcY = blocks.src<Y, SpecialType>();
-	const SpecialType * pSrcZ = blocks.src<Z, SpecialType>();
-	const SpecialType * pSrcW = blocks.src<W, SpecialType>();
-	const SpecialType * pSrcDX = blocks.src<DX, SpecialType>();
-	const SpecialType * pSrcDY = blocks.src<DY, SpecialType>();
-	const SpecialType * pSrcDZ = blocks.src<DZ, SpecialType>();
-	const SpecialType * pSrcDW = blocks.src<DW, SpecialType>();
-    auto * pDstX = (float*)blocks.dst<X, SpecialType>();
-    auto * pDstY = (float*)blocks.dst<Y, SpecialType>();
-    auto * pDstZ = (float*)blocks.dst<Z, SpecialType>();
-    auto * pDstW = (float*)blocks.dst<W, SpecialType>();
+	const Scalar * pSrcX = blocks.src<X, Scalar>();
+	const Scalar * pSrcY = blocks.src<Y, Scalar>();
+	const Scalar * pSrcZ = blocks.src<Z, Scalar>();
+	const Scalar * pSrcW = blocks.src<W, Scalar>();
+	const Scalar * pSrcDX = blocks.src<DX, Scalar>();
+	const Scalar * pSrcDY = blocks.src<DY, Scalar>();
+	const Scalar * pSrcDZ = blocks.src<DZ, Scalar>();
+	const Scalar * pSrcDW = blocks.src<DW, Scalar>();
+    auto * pDstX = (float*)blocks.dst<X, Scalar>();
+    auto * pDstY = (float*)blocks.dst<Y, Scalar>();
+    auto * pDstZ = (float*)blocks.dst<Z, Scalar>();
+    auto * pDstW = (float*)blocks.dst<W, Scalar>();
 
     //auto * pDstDX_debug = (float*)blocks.dst<DX, SpecialType>();
 
@@ -232,7 +232,7 @@ void df::ComDynamicBlocks::update( const uint64_t dtMs )
 
 ////////
 
-int df::ComDynamicBlocksVec::updateBlock( const uint64_t dtMs, TCom::AllBlocks::TBlock &blocks )
+int df::ComDynamicBlocksVec3::updateBlock( const uint64_t dtMs, TCom::AllBlocks::TBlock &blocks )
 {
 	const int hint = _MM_HINT_T0;
 	const int ahead = 96;
@@ -240,10 +240,10 @@ int df::ComDynamicBlocksVec::updateBlock( const uint64_t dtMs, TCom::AllBlocks::
 	int total = 0;
 
 
-	const SpecialType * pSrcPos = blocks.src<Pos, SpecialType>();
-	const SpecialType * pSrcDelta = blocks.src<Delta, SpecialType>();
+	const TVec * pSrcPos = blocks.src<Pos, TVec>();
+	const TVec * pSrcDelta = blocks.src<Delta, TVec>();
 
-	SpecialType * pDstPos = blocks.dst<Pos, SpecialType>();
+  TVec * pDstPos = blocks.dst<Pos, TVec>();
 
 
 	//*
@@ -254,7 +254,7 @@ int df::ComDynamicBlocksVec::updateBlock( const uint64_t dtMs, TCom::AllBlocks::
 	{
 		//const cb::Vec3 dtDelta = ( pSrcDelta[i] * dtSec );
 
-		const SpecialType v = pSrcPos[i] + pSrcDelta[i] * dtSec;
+		const TVec v = pSrcPos[i] + pSrcDelta[i] * dtSec;
 
 		pDstPos[i] = v;
 	}
@@ -268,13 +268,17 @@ int df::ComDynamicBlocksVec::updateBlock( const uint64_t dtMs, TCom::AllBlocks::
 }
 
 
-void df::ComDynamicBlocksVec::update( const uint64_t dtMs )
+void df::ComDynamicBlocksVec3::update( const uint64_t dtMs )
 {
 
 
 	const auto size = (int)m_com.m_blocks.m_block.size();
-
-	async::parallel_for( async::irange( 0, size ), [ this, dtMs ]( int iBlock ) {
+  //*
+  async::parallel_for( async::irange( 0, size ), [ this, dtMs ]( int iBlock ) {
+  /*/
+  for( i32 iBlock = 0; iBlock < size; ++iBlock )
+  {
+  //*/
 		auto &blocks = m_com.m_blocks.m_block[iBlock];
 
 		const auto total = updateBlock( dtMs, *blocks.get() );
@@ -282,8 +286,68 @@ void df::ComDynamicBlocksVec::update( const uint64_t dtMs )
 		//const auto hash = std::hash<std::thread::id>{}( std::this_thread::get_id() );
 
 		//counts[hash % 65536] += total;
-	} );
+	}
+  );
 }
+
+
+
+
+
+int df::ComDynamicBlocksVec4::updateBlock( const uint64_t dtMs, TCom::AllBlocks::TBlock &blocks )
+{
+  const int hint = _MM_HINT_T0;
+  const int ahead = 96;
+
+  int total = 0;
+
+
+  const TVec *pSrcPos = blocks.src<Pos, TVec>();
+  const TVec *pSrcDelta = blocks.src<Delta, TVec>();
+
+  TVec *pDstPos = blocks.dst<Pos, TVec>();
+
+
+  //*
+  const float dtSec = cast<float>( dtMs ) / 1000.0f;
+
+//#pragma loop(no_vector) 
+  for( int32_t i = 0; i < g_blockSize; ++i )
+  {
+    //const cb::Vec3 dtDelta = ( pSrcDelta[i] * dtSec );
+
+    const TVec v = pSrcPos[i] + pSrcDelta[i] * dtSec;
+
+    pDstPos[i] = v;
+  }
+
+
+  blocks.swap();
+
+
+  return total;
+
+}
+
+
+void df::ComDynamicBlocksVec4::update( const uint64_t dtMs )
+{
+
+
+  const auto size = (int)m_com.m_blocks.m_block.size();
+
+  async::parallel_for( async::irange( 0, size ), [this, dtMs]( int iBlock ) {
+    auto &blocks = m_com.m_blocks.m_block[iBlock];
+
+    const auto total = updateBlock( dtMs, *blocks.get() );
+
+    //const auto hash = std::hash<std::thread::id>{}( std::this_thread::get_id() );
+
+    //counts[hash % 65536] += total;
+  } );
+}
+
+
 
 
 
