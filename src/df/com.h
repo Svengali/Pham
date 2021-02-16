@@ -434,7 +434,7 @@ public:
     }
 
 
-    BlockIndex append( ent::EntityId id, Args ...args )
+    BlockIndex append( const ent::EntityId id, Args ...args )
     {
 		return m_blocks.append( id, args... );
     }
@@ -651,18 +651,18 @@ public:
         Pos = 2,
     };
 
-    typedef float SpecialType;
+    typedef float Scalar;
 
 
     struct Physical
     {
-        SpecialType x;
-        SpecialType y;
-        SpecialType z;
+        Scalar x;
+        Scalar y;
+        Scalar z;
         //SpecialType w;
-        SpecialType dx;
-        SpecialType dy;
-        SpecialType dz;
+        Scalar dx;
+        Scalar dy;
+        Scalar dz;
         //SpecialType dw;
     };
 

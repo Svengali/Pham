@@ -83,8 +83,8 @@ void df::timeBlocks( const i32 numLoops, const i32 numEnts, u32 *timeSoAIndividu
 
 		const auto entityId = ent::EntityId::makeNext();
 
-
-		s_blockTest->m_com.append( entityId, nm, 10, 10, 0, nm, 0, 0, 0 );
+		const auto nm_f = cast<float>( nm );
+		s_blockTest->m_com.append( entityId, nm_f, 10, 10, 0, nm_f, 0, 0, 0 );
 		s_blockTestAoS->m_com.append( entityId, df::ComDynamicBlocksAoS::Physical{ 10, 10, 10, 1, 1, 1 } );
 		s_blockTestVec3->m_com.append( entityId, cb::Vec3( 10, 10, 10 ), cb::Vec3( 0, 0, 0 ) );
 		s_blockTestVec4->m_com.append( entityId, cb::Vec4( 10, 10, 10, 0 ), cb::Vec4( 0, 0, 0, 0 ) );
@@ -103,9 +103,9 @@ void df::timeBlocks( const i32 numLoops, const i32 numEnts, u32 *timeSoAIndividu
 			{
 				const auto entityId = ent::EntityId::makeNext();
 
-				df::ComDynamicBlocks::Scalar x = rand() * 2;
-				df::ComDynamicBlocks::Scalar y = rand();
-				df::ComDynamicBlocks::Scalar z = rand() % 16;
+				df::ComDynamicBlocks::Scalar x = cast<float>( rand() * 2 );
+				df::ComDynamicBlocks::Scalar y = cast<float>( rand() );
+				df::ComDynamicBlocks::Scalar z = cast<float>( rand() % 16 );
 
 				df::ComDynamicBlocks::Scalar dx = cast<float>( rand() ) / 4095.0f;
 				df::ComDynamicBlocks::Scalar dy = cast<float>( rand() ) / 4095.0f;
@@ -155,7 +155,7 @@ void df::timeBlocks( const i32 numLoops, const i32 numEnts, u32 *timeSoAIndividu
 
 		if( timeSoAIndividualuS )
 		{
-			*timeSoAIndividualuS = time_update;
+			*timeSoAIndividualuS = (u32)time_update;
 		}
 	}
 	//*/
@@ -173,7 +173,7 @@ void df::timeBlocks( const i32 numLoops, const i32 numEnts, u32 *timeSoAIndividu
 
 		if( timeAoSuS )
 		{
-			*timeAoSuS = timeUpdateAoS;
+			*timeAoSuS = (u32)timeUpdateAoS;
 		}
 	}
 	//*/
@@ -191,7 +191,7 @@ void df::timeBlocks( const i32 numLoops, const i32 numEnts, u32 *timeSoAIndividu
 
 		if( timeSoA3uS )
 		{
-			*timeSoA3uS = timeUpdateVec3;
+			*timeSoA3uS = (u32)timeUpdateVec3;
 		}
 	}
 	//*/
@@ -209,7 +209,7 @@ void df::timeBlocks( const i32 numLoops, const i32 numEnts, u32 *timeSoAIndividu
 
 		if( timeSoA4uS )
 		{
-			*timeSoA4uS = timeUpdateVec4;
+			*timeSoA4uS = (u32)timeUpdateVec4;
 		}
 	}
 	//*/
@@ -332,7 +332,9 @@ void df::timeBlocks( const i32 numLoops, const i32 numEnts, u32 *timeSoAIndividu
 
 	{
 
-		s_blockTest->m_com.append( entityId, nm, 10, 10, 0, nm, 0, 0, 0 );
+		const auto nm_f = cast<f32>( nm );
+
+		s_blockTest->m_com.append( entityId, nm_f, 10, 10, 0, nm_f, 0, 0, 0 );
 	}
 }
 

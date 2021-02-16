@@ -12,12 +12,15 @@ PtrFwd( RenderContext );
 
 
 
-
 class Renderer : public std::enable_shared_from_this<RenderContext>
 {
 public:
 
 	CLASS( Renderer );
+
+	static void SetupSingleton( Renderer * const pRenderer );
+
+	static Renderer &Inst();
 
 	Renderer();
 	virtual ~Renderer();

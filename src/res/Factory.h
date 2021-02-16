@@ -4,8 +4,26 @@
 //
 // copyright 2005-2017 Marc Hernandez
 
-#include "../stdafx.h"
+#pragma once
+
+namespace res
+{
+
+class Factory
+{
+public:
 
 
-#include "verse.h"
+
+
+};
+
+	
+
+
+
+
+
+
+}
 

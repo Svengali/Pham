@@ -43,13 +43,19 @@ inline util::Symbol SClass()
 	return s;
 }
 
-#define REFLECT_BEGIN( _CLASS, _PARENT ) \
+#define OLD_REFLECT_BEGIN( _CLASS, _PARENT ) \
 virtual void Reflection( XMLReader &reader ) { Reflection<XMLReader>(reader); } \
 template <class U> void Reflection(U & functor) { _PARENT::Reflection( functor ); \
-//end #define REFLECT_BEGIN( _CLASS, _PARENT ) \
+//end #define REFLECT_BEGIN( _CLASS, _PARENT )
+
+//TODO Define the various visitor classes when needed, instead of always like in the olden days
+#define REFLECT_BEGIN( _CLASS, _PARENT ) \
+template <class U> void Reflection(U & functor) { _PARENT::Reflection( functor ); \
+//end #define REFLECT_BEGIN( _CLASS, _PARENT )
 
 #define REFLECT_BEGIN_ROOT( _CLASS ) \
-template <class T> void Reflection(T & functor) {
+template <class T> void Reflection(T & functor) { \
+//end #define REFLECT_BEGIN_ROOT( _CLASS )
 
 
 #define REFLECT(x)	functor(#x,x)

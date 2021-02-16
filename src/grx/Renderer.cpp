@@ -9,6 +9,19 @@
 #include "../stdafx.h"
 #include ".\Renderer.h"
 
+Renderer *s_pRenderer;
+
+void Renderer::SetupSingleton( Renderer *const pRenderer )
+{
+  s_pRenderer = pRenderer;
+}
+
+
+Renderer &Renderer::Inst()
+{
+  return *s_pRenderer;
+}
+
 
 
 Renderer::Renderer(void)

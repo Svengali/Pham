@@ -10,13 +10,31 @@
 
 //#include "XMLReader.h"
 
+class Root_XMLReader
+{
+public:
+	template <class U>
+	void Reflection( U &functor );
 
+	virtual void Reflection( XMLReader &reader ) = 0;
+};
 
-class Config : public Resource
+class Does_XMLReader
+{
+public:
+	template <class U>
+	void Reflection( U &functor );
+
+	virtual void Reflection( XMLReader &reader ) { Reflection<XMLReader>( reader ); }
+};
+
+class Config : public Resource, public Root_XMLReader
 {
 public:
 	CLASS( Config, Resource );
 
+
+	virtual void Reflection( XMLReader &reader ) { Reflection<XMLReader>( reader ); }
 	REFLECT_BEGIN( Config, Resource );
 	REFLECT_END();
 
