@@ -43,12 +43,9 @@ inline util::Symbol SClass()
 	return s;
 }
 
-#define OLD_REFLECT_BEGIN( _CLASS, _PARENT ) \
-virtual void Reflection( XMLReader &reader ) { Reflection<XMLReader>(reader); } \
-template <class U> void Reflection(U & functor) { _PARENT::Reflection( functor ); \
-//end #define REFLECT_BEGIN( _CLASS, _PARENT )
 
-//TODO Define the various visitor classes when needed, instead of always like in the olden days
+//DONE Define the various visitor classes when needed, instead of always like in the olden days
+//     This is working well, so Im continuing its use.  
 #define REFLECT_BEGIN( _CLASS, _PARENT ) \
 template <class U> void Reflection(U & functor) { _PARENT::Reflection( functor ); \
 //end #define REFLECT_BEGIN( _CLASS, _PARENT )
@@ -65,3 +62,12 @@ template <class T> void Reflection(T & functor) { \
 #define REFLECT_ARRAY(what)	REFLECT_ARRAYN(what,ARRAY_SIZE(what))
 
 #define REFLECT_END(  ) }
+
+
+
+// We define our reflection at each base class now.  Super simple and allows different 
+// use cases per tree
+#define OLD_REFLECT_BEGIN( _CLASS, _PARENT ) \
+virtual void Reflection( XMLReader &reader ) { Reflection<XMLReader>(reader); } \
+template <class U> void Reflection(U & functor) { _PARENT::Reflection( functor ); \
+//end #define REFLECT_BEGIN( _CLASS, _PARENT )
