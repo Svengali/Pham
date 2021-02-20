@@ -7,6 +7,16 @@
 
 namespace grx
 {
+namespace gen
+{
+
+
+
+  void createCube();
+
+
+
+
 
 typedef unsigned short IndexType;
 
@@ -99,4 +109,6 @@ void CreateIcosahedron(SimpleMesh *pOutMesh)
 
 
 
+
+}
 }

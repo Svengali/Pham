@@ -26,6 +26,23 @@ bool IsSubclassOf( const util::Symbol &s ) {								\
 	  return _Parent::SIsSubclassOf( s ); }							\
 //end #define CLASS( _Class )												\
 
+#define STRUCT( _Class, _Parent )										\
+static util::Symbol SClass()	{														\
+	static util::Symbol s( #_Class ); return s; }						\
+static util::Symbol SParent()	{														\
+	return _Parent::SClass(); }												\
+static bool SIsSubclassOf( const util::Symbol &s ) {				\
+	if( s == _Class::SClass() ) return true;					\
+	  return _Parent::SIsSubclassOf( s ); }							\
+bool IsSubclassOf( const util::Symbol &s ) {								\
+	if( s == _Class::SClass() ) return true;					\
+	  return _Parent::SIsSubclassOf( s ); }							\
+//end #define STRUCT( _Class )												\
+
+
+
+
+
 #define CREATE_BY_NAME( _Class ) \
 //end #define CREATE_BY_NAME( _Class )
 

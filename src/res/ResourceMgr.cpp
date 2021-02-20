@@ -126,6 +126,35 @@ void GetTail( const char * const pStr, char * const pBuf, const int maxLen )
 
 const int c_maxExt = 16;
 
+void ResourceMgr::AddResource( const char *const pResName, const ResourcePtr &ptr )
+{
+	//15 max chars on an extension plus 0
+	char extBuf[c_maxExt];
+
+	GetTail( pResName, extBuf, c_maxExt );
+
+	const util::Symbol extSym( extBuf );
+
+	const util::Symbol resSym( pResName );
+
+
+	const auto it = s_mapSymToResource.find( resSym );
+
+	if( it == s_mapSymToResource.end() )
+	{
+		s_mapSymToResource[resSym] = ptr;
+	}
+	else
+	{
+		// TODO LOG
+		// Replace?
+	}
+}
+
+
+
+
+
 ResourcePtr ResourceMgr::LookupResource( const char * const pResName )
 {
 	//15 max chars on an extension plus 0

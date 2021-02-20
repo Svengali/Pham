@@ -3,6 +3,14 @@
 //   P h a m 
 //
 // copyright 2005-2017 Marc Hernandez
+
+/*
+TODO:
+x) How can we lookup resources that have contexts.  
+x) What about shared generated assets?  Filename->asset maybe?
+x) 
+*/
+
 #pragma once
 
 PtrFwd( Resource );
@@ -20,6 +28,8 @@ namespace ResourceMgr
 
 	//void RegisterCreator( const char * const pExtension, CreatorFuncPtr func );
 	void RegisterCreator( const char * const pExtension, const util::Symbol &type, CreatorFuncPtr func );
+
+	void AddResource( const char *const pResName, const ResourcePtr &ptr );
 
 	//returns resource.  Does not load if not found
 	ResourcePtr LookupResource( const char * const pResName );

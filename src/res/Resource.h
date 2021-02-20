@@ -44,7 +44,7 @@ private:
 template <> 
 struct cb::TypeTraits<Resource>
 {
-    BoolAsType_True     hasReflection;
+    BoolAsType_True		hasReflection;
     BoolAsType_False	isPrimitive;
     BoolAsType_False	ioBytes;
 };
@@ -54,20 +54,3 @@ struct cb::TypeTraits<Resource>
 PtrDef( Resource );
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// -

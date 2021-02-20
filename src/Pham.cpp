@@ -215,34 +215,6 @@ PhamApp::PhamApp()
 
 	scene.set_root_node( scene.create_node() );
 
-	/*
-	for(auto i = 0; i < 1000; ++i)
-	{
-		auto cube = Util::make_abstract_handle<Granite::AbstractRenderable, Granite::SphereMesh>();
-
-		auto node = scene.create_node();
-
-		auto root = scene.get_root_node();
-
-
-		root->add_child(node);      
-
-		node->transform.translation.x = rand() & 511;
-		node->transform.translation.y = rand() & 511;
-		node->transform.translation.z = rand() & 511;
-
-		auto entity = scene.create_renderable( cube, node.get() );
-	}
-	*/
-
-	//node->
-
-	//auto *rpass = entity->allocate_component<Granite::RenderPassComponent>();
-	//rpass->creator = static_cast<Granite::CubeMesh *>( entity.get());
-
-	//auto *rpass = entity.allocate_component<RenderPassComponent>();
-	//rpass->creator = texture_plane;
-
 	// Create a dummy background if there isn't any background.
 	if( scene_loader.get_scene().get_entity_pool().get_component_group<Granite::UnboundedComponent>().empty() )
 	{
