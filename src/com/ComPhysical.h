@@ -16,7 +16,8 @@ class ComPhysicalConfig : public ComponentConfig
 public:
 	CLASS( ComPhysicalConfig, ComponentConfig );
 
-  REFLECT_BEGIN( ComPhysicalConfig, ComponentConfig );
+	virtual void DoReflection( XMLReader &reader ) override { Reflection<XMLReader>( reader ); }
+	REFLECT_BEGIN( ComPhysicalConfig, ComponentConfig );
 		REFLECT( m_AABB );
   REFLECT_END();
 
@@ -40,7 +41,7 @@ public:
 
 	virtual ~ComPhysical();
 
-  REFLECT_BEGIN( ComPhysical, Component );
+	REFLECT_BEGIN( ComPhysical, Component );
 		REFLECT( m_config );
 		REFLECT( m_frame );
   REFLECT_END();

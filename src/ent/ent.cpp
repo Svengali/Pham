@@ -11,7 +11,7 @@
 
 namespace ent
 {
-	SERIALIZABLE( EntityConfig );
+SERIALIZABLE( EntityConfig );
 }
 
 

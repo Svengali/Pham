@@ -10,8 +10,7 @@
 
 #include "./Config.h"
 
-/*
-ResourcePtr Config::Create( const char * const pFilename, const util::Symbol &type )
+ResourcePtr Config::create( const char * const pFilename, const util::Symbol &type )
 {
 	TiXmlDocument doc;
 
@@ -27,13 +26,12 @@ ResourcePtr Config::Create( const char * const pFilename, const util::Symbol &ty
 
 		if( pConfig )
 		{
-			/* PORT: Fix when we get XML reader up and running
+			/* PORT: Fix when we get XML reader up and running */
 			XMLReader reader( pRoot );
 
-			pConfig->Reflection( reader );
+			pConfig->DoReflection( reader );
 
 			return ResourcePtr( pConfig );
-			* /
 
 			return ResourcePtr( nullptr );
 		}
@@ -41,7 +39,6 @@ ResourcePtr Config::Create( const char * const pFilename, const util::Symbol &ty
 	
 	return ResourcePtr( NULL );
 }
-*/
 
 void Config::load( const char * const pFilename )
 {

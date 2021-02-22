@@ -24,6 +24,7 @@ class ComHealthConfig : public ComponentConfig
 public:
 	CLASS( ComHealthConfig, ComponentConfig );
 
+	virtual void DoReflection( XMLReader &reader ) override { Reflection<XMLReader>( reader ); }
 	REFLECT_BEGIN( ComHealthConfig, ComponentConfig );
 		REFLECT( m_maxHealth );
 	REFLECT_END();

@@ -18,6 +18,7 @@ class ComRenderableConfig : public ComponentConfig
 public:
     CLASS(ComRenderableConfig, ComponentConfig);
 
+    virtual void DoReflection( XMLReader &reader ) override { Reflection<XMLReader>( reader ); }
     REFLECT_BEGIN(ComRenderableConfig, ComponentConfig);
         REFLECT(m_geo);
     REFLECT_END();

@@ -18,7 +18,7 @@ public:
 
 	CLASS( Renderer );
 
-	static void SetupSingleton( Renderer * const pRenderer );
+	static void startup( Renderer * const pRenderer );
 
 	static Renderer &Inst();
 

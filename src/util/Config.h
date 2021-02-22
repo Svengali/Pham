@@ -8,38 +8,47 @@
 
 #include "../res/Resource.h"
 
-//#include "XMLReader.h"
+#include "XMLReader.h"
 
-class Root_XMLReader
+class Root
 {
 public:
-	template <class U>
-	void Reflection( U &functor );
+	//template <class T>
+	//void Reflection( T &functor );
+};
+
+class Root_XMLReader : public Root
+{
+public:
+	//template <class T>
+	//void Reflection( T &functor );
 
 	virtual void Reflection( XMLReader &reader ) = 0;
 };
 
-class Does_XMLReader
+/*
+class Does_XMLReader: public Root, public Root_XMLReader
 {
 public:
-	template <class U>
-	void Reflection( U &functor );
+	template <class T>
+	void Reflection( T &functor );
 
-	virtual void Reflection( XMLReader &reader ) { Reflection<XMLReader>( reader ); }
+	virtual void Reflection( XMLReader &reader ) override { Reflection<XMLReader>( reader ); }
 };
+*/
 
-class Config : public Resource, public Root_XMLReader
+class Config : public Resource//, public Root_XMLReader
 {
 public:
 	CLASS( Config, Resource );
 
 
-	virtual void Reflection( XMLReader &reader ) { Reflection<XMLReader>( reader ); }
+	virtual void DoReflection( XMLReader &reader ) = 0;
 	REFLECT_BEGIN( Config, Resource );
 	REFLECT_END();
 
 
-	//static ResourcePtr Create( const char * const pFilename, const util::Symbol &type );
+	static ResourcePtr create( const char * const pFilename, const util::Symbol &type );
 
 	virtual void load( const char * const pFilename );
 
@@ -57,7 +66,7 @@ public:
 };
 
 template< typename T >
-T *LoadTypedConfig( const char * const pResourceName, const TiXmlElement * const pElem )
+T *loadTypedConfig( const char * const pResourceName, const TiXmlElement * const pElem )
 {	
 	XMLReader reader( pElem );
 	
@@ -72,13 +81,13 @@ T *LoadTypedConfig( const char * const pResourceName, const TiXmlElement * const
 }
 
 template< typename T >
-T *LoadTypedConfig( const char * const pFile )
+T *loadTypedConfig( const char * const pFile )
 {
 	TiXmlDocument doc;
 
 	doc.LoadFile( pFile );
 
-	return LoadTypedConfig<T>( pFile, doc.RootElement() );
+	return loadTypedConfig<T>( pFile, doc.RootElement() );
 }
 
 

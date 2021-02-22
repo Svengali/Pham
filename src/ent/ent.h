@@ -28,6 +28,7 @@ class EntityConfig: public Config
 public:
 	CLASS( EntityConfig, Config );
 
+	virtual void DoReflection( XMLReader &reader ) override { Reflection<XMLReader>( reader ); }
 	REFLECT_BEGIN( EntityConfig, Config );
 		REFLECT( m_coms );
 	REFLECT_END();

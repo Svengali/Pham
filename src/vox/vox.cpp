@@ -793,21 +793,21 @@ void vox::CubitArr::genWorld( Plane<Cubit> * pPlane, const CPos pos )
 	for( i32 z = 0; z < k_edgeSize.size; ++z )
 	{
 		const i32 cubeWorldZ = m_gPos.z + z;
-		const f32 worldZ = cubeWorldZ;
+		const f32 worldZ = (f32)cubeWorldZ;
 
 		const f32 perlinZ = worldZ * s_fractalMultZ;
 
 		for( i32 y = 0; y < k_edgeSize.size; ++y )
 		{
 			const i32 cubeWorldY = m_gPos.y + y;
-			const f32 worldY = cubeWorldY;
+			const f32 worldY = (f32)cubeWorldY;
 
 			const f32 perlinY = worldY * s_fractalMultXY;
 
 			for( i32 x = 0; x < k_edgeSize.size; ++x )
 			{
 				const i32 cubeWorldX = m_gPos.x + x;
-				const f32 worldX = cubeWorldX;
+				const f32 worldX = (f32)cubeWorldX;
 
 				const f32 perlinX = worldX * s_fractalMultXY;
 

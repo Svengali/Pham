@@ -226,7 +226,7 @@ void fifo_scheduler::run_all_tasks()
 std::size_t hardware_concurrency() LIBASYNC_NOEXCEPT
 {
 	// Cache the value because calculating it may be expensive
-	static std::size_t value = std::thread::hardware_concurrency();
+	static std::size_t value = 8; //std::thread::hardware_concurrency();
 
 	// Always return at least 1 core
 	return value == 0 ? 1 : value;

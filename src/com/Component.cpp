@@ -13,5 +13,6 @@
 namespace com
 {
 
+//SERIALIZABLE( ComponentConfig );
 
 }

@@ -11,7 +11,7 @@
 
 Renderer *s_pRenderer;
 
-void Renderer::SetupSingleton( Renderer *const pRenderer )
+void Renderer::startup( Renderer *const pRenderer )
 {
   s_pRenderer = pRenderer;
 }

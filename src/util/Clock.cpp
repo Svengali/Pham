@@ -55,7 +55,7 @@ AbsoluteTime Clock::GetAbsoluteTime()
 
 float Clock::dt()
 {
-	return s_deltaTime;
+	return cast<float>( s_deltaTime );
 }
 
 

@@ -19,7 +19,7 @@ typedef unsigned long DWORD;
 
 //std::hash_map< util::Symbol 
 
-typedef stdext::hash_map< util::Symbol, ResourceMgr::CreatorFuncPtr > MapTypeToCreator;
+typedef stdext::hash_map< util::Symbol, ResourceMgr::FnCreator > MapTypeToCreator;
 
 typedef stdext::hash_map< util::Symbol, MapTypeToCreator > MapExtToMapTypeToCreator;
 
@@ -61,7 +61,7 @@ void ResourceMgr::AppStop()
 	
 }
 
-void ResourceMgr::RegisterCreator( const char * const pExt, const util::Symbol &type, CreatorFuncPtr func )
+void ResourceMgr::RegisterCreator( const char * const pExt, const util::Symbol &type, FnCreator func )
 {
 	const util::Symbol extSym( pExt );
 	
@@ -215,7 +215,7 @@ ResourcePtr ResourceMgr::GetResource( const char * const pResName, const util::S
 				
 				if( itCreate != it->second.end() )
 				{					
-					CreatorFuncPtr fnCreator = itCreate->second;
+					FnCreator fnCreator = itCreate->second;
 					
 					res = fnCreator( pResName, type );
 				}
@@ -226,6 +226,8 @@ ResourcePtr ResourceMgr::GetResource( const char * const pResName, const util::S
 					//Create a null resource and return it.
 					res = ResourcePtr( cast<Resource *>( Serialization::CreateClassFromTypeName_base( type ) ) );
 				}
+
+
 					
 			}
 			else
@@ -244,6 +246,10 @@ ResourcePtr ResourceMgr::GetResource( const char * const pResName, const util::S
 				s_mapSymToResource[ resSym ] = res;
 				
 				res->ResourceMgr_setFilename( util::RuntimeString( pResName ) );
+			}
+			else
+			{
+				// @@@@ TODO Add fallback code here.  
 			}
 			
 			return res;

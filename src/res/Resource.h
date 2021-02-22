@@ -41,6 +41,7 @@ private:
 };
 
 
+
 template <> 
 struct cb::TypeTraits<Resource>
 {
@@ -50,7 +51,11 @@ struct cb::TypeTraits<Resource>
 };
 
 
-
 PtrDef( Resource );
 
 
+template<>
+inline std::shared_ptr<Resource> cast_from_string( const char *const pStr )
+{
+	return nullptr;
+}

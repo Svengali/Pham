@@ -24,10 +24,13 @@ namespace ResourceMgr
 	void Tick();
 
 	
-	typedef ResourcePtr (*CreatorFuncPtr) ( const char * const fileName, const util::Symbol &type );
+	//typedef ResourcePtr (*FnCreator) ( const char * const fileName, const util::Symbol &type );
 
-	//void RegisterCreator( const char * const pExtension, CreatorFuncPtr func );
-	void RegisterCreator( const char * const pExtension, const util::Symbol &type, CreatorFuncPtr func );
+	typedef std::function<ResourcePtr(const char * const pFilename, const util::Symbol type)> FnCreator;
+
+
+	//void RegisterCreator( const char * const pExtension, FnCreator func );
+	void RegisterCreator( const char * const pExtension, const util::Symbol &type, FnCreator func );
 
 	void AddResource( const char *const pResName, const ResourcePtr &ptr );
 

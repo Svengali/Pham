@@ -17,7 +17,7 @@ class Geometry : public Resource
 
 public:
 
-	CLASS( Geometry );
+	CLASS( Geometry, Resource );
 
 	Geometry();
 	virtual ~Geometry();
@@ -36,7 +36,8 @@ public:
 	}
 	*/	
 	
-	REFLECT_BEGIN_ROOT( Geometry );
+	//virtual void Reflection( XMLReader &reader ) { Reflection<XMLReader>( reader ); }
+	REFLECT_BEGIN( Geometry, Resource );
 	REFLECT_END();
 
 

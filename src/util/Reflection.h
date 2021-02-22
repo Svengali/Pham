@@ -64,11 +64,11 @@ inline util::Symbol SClass()
 //DONE Define the various visitor classes when needed, instead of always like in the olden days
 //     This is working well, so Im continuing its use.  
 #define REFLECT_BEGIN( _CLASS, _PARENT ) \
-template <class U> void Reflection(U & functor) { _PARENT::Reflection( functor ); \
+template <class V> void Reflection(V & functor) { _PARENT::Reflection( functor ); \
 //end #define REFLECT_BEGIN( _CLASS, _PARENT )
 
 #define REFLECT_BEGIN_ROOT( _CLASS ) \
-template <class T> void Reflection(T & functor) { \
+template <class U> void Reflection(U & functor) { \
 //end #define REFLECT_BEGIN_ROOT( _CLASS )
 
 

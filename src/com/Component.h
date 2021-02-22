@@ -25,6 +25,7 @@ public:
 	CLASS( ComponentConfig, Config );
 
 
+	//virtual void Reflection( XMLReader &reader ) override { Reflection<XMLReader>( reader ); }
 	REFLECT_BEGIN( ComponentConfig, Config );
 	REFLECT_END();
 
