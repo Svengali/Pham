@@ -2,7 +2,7 @@
 //
 // P H A M
 //
-// copyright 2005-2008 Marc Hernandez
+// copyright 2005-2021 Marc Hernandez
 #pragma once
 
 namespace grx

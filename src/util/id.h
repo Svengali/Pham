@@ -2,6 +2,6 @@
 //
 //   P h a m 
 //
-// copyright 2005-2017 Marc Hernandez
+// copyright 2005-2021 Marc Hernandez
 #pragma once
 
