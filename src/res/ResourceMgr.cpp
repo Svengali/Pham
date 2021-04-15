@@ -44,7 +44,7 @@ void ResourceMgr::AppStart()
 	
 	s_watchDir.push_back( "." );
 
-	//s_watcher = cb::StartWatchingDirs( &s_watchDir[0], s_watchDir.size(), 0xf );
+	s_watcher = cb::StartWatchingDirs( &s_watchDir[0], s_watchDir.size(), 0xf );
 	
 }
 
