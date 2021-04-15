@@ -16,6 +16,11 @@ void Renderer::startup( Renderer *const pRenderer )
   s_pRenderer = pRenderer;
 }
 
+void Renderer::shutdown()
+{
+  //delete s_pRenderer;
+}
+
 
 Renderer &Renderer::Inst()
 {

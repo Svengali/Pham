@@ -43,7 +43,14 @@ namespace ResourceMgr
 	template< typename T >
 	std::shared_ptr<T> GetResource( const char * const pResName )
 	{
-		return std::shared_ptr<T>( static_cast< T * >( GetResource( pResName, T::SClass() ).get() ) );
+		ResourcePtr ptr = GetResource(pResName, T::SClass());
+
+		std::shared_ptr<T> ret = std::static_pointer_cast<T>(ptr);
+
+		return ret;
+
+		//This is wrong.
+		//return std::shared_ptr<T>( static_cast< T * >( GetResource( pResName, T::SClass() ).get() ) );
 	}
 	
 	template< typename T >

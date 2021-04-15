@@ -31,7 +31,11 @@ static stdext::hash_map< util::Symbol, ResourcePtr > s_mapSymToResource;
 static AbsoluteTime m_curTime = Clock::GetAbsoluteTime();
 
 
-cb::vector< const char * > s_watchDir;
+const util::Symbol s_DEBUG_breakOn("config/geo/test.xml");
+
+
+
+std::vector< const char * > s_watchDir;
 cb::DirChangeWatcherPtr    s_watcher;
 
 void ResourceMgr::AppStart()
@@ -40,7 +44,7 @@ void ResourceMgr::AppStart()
 	
 	s_watchDir.push_back( "." );
 
-	s_watcher = cb::StartWatchingDirs( &s_watchDir[0], s_watchDir.size(), 0xf );
+	//s_watcher = cb::StartWatchingDirs( &s_watchDir[0], s_watchDir.size(), 0xf );
 	
 }
 
@@ -54,6 +58,10 @@ void ResourceMgr::AppStop()
 
 	s_watcher = NULL;
 	
+	const util::Symbol sym("config/geo/test.xml");
+
+	const auto res = s_mapSymToResource[sym];
+
 	s_mapSymToResource.clear();
 	
 	s_mapExtToCreator.clear();
@@ -137,6 +145,10 @@ void ResourceMgr::AddResource( const char *const pResName, const ResourcePtr &pt
 
 	const util::Symbol resSym( pResName );
 
+	if( s_DEBUG_breakOn == resSym )
+	{
+		int dummy = 0;
+	}
 
 	const auto it = s_mapSymToResource.find( resSym );
 
@@ -243,8 +255,12 @@ ResourcePtr ResourceMgr::GetResource( const char * const pResName, const util::S
 			//TODO: Handle using default resources here.
 			if( res != NULL )
 			{
+				const i64 resCount1 = res.use_count();
+
 				s_mapSymToResource[ resSym ] = res;
-				
+
+				const i64 resCount2 = res.use_count();
+
 				res->ResourceMgr_setFilename( util::RuntimeString( pResName ) );
 			}
 			else

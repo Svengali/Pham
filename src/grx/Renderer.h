@@ -18,7 +18,8 @@ public:
 
 	CLASS( Renderer );
 
-	static void startup( Renderer * const pRenderer );
+	static void startup(Renderer* const pRenderer);
+	static void shutdown();
 
 	static Renderer &Inst();
 

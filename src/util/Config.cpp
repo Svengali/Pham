@@ -33,7 +33,7 @@ ResourcePtr Config::create( const char * const pFilename, const util::Symbol &ty
 
 			return ResourcePtr( pConfig );
 
-			return ResourcePtr( nullptr );
+			//return ResourcePtr( nullptr );
 		}
 	}
 	
