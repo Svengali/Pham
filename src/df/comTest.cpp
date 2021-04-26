@@ -11,15 +11,15 @@
 
 
 i32 s_lastCreatedEntCount = 0;
-df::ComDynamicBlocks		*s_blockTest;
-df::ComDynamicBlocksAoS *s_blockTestAoS;
-df::ComDynamicBlocksVec3 *s_blockTestVec3;
-df::ComDynamicBlocksVec4 *s_blockTestVec4;
+df::ComDynamicBlocks* s_blockTest;
+df::ComDynamicBlocksAoS* s_blockTestAoS;
+df::ComDynamicBlocksVec3* s_blockTestVec3;
+df::ComDynamicBlocksVec4* s_blockTestVec4;
 
 
 
 
-void df::timeBlocks( const i32 numLoops, const i32 numEnts, u32 *timeSoAIndividualuS, u32 *timeAoSuS, u32 *timeSoA3uS, u32 *timeSoA4uS )
+void df::timeBlocks( const i32 numLoops, const i32 numEnts, u32* timeSoAIndividualuS, u32* timeAoSuS, u32* timeSoA3uS, u32* timeSoA4uS )
 {
 
 	//SetThreadAffinityMask( GetCurrentThread(), 1 );
@@ -66,7 +66,7 @@ void df::timeBlocks( const i32 numLoops, const i32 numEnts, u32 *timeSoAIndividu
 
 	//df::ComDynamicBlocksM128 blockTestM128;
 	//df::ComDynamicBlocksXM blockTestXM;
-	
+
 	if( s_lastCreatedEntCount != numEnts )
 	{
 		s_lastCreatedEntCount = numEnts;
@@ -78,10 +78,10 @@ void df::timeBlocks( const i32 numLoops, const i32 numEnts, u32 *timeSoAIndividu
 
 		s_blockTest = new df::ComDynamicBlocks();
 		s_blockTestAoS = new df::ComDynamicBlocksAoS();
-		s_blockTestVec3= new df::ComDynamicBlocksVec3();
-		s_blockTestVec4= new df::ComDynamicBlocksVec4();
+		s_blockTestVec3 = new df::ComDynamicBlocksVec3();
+		s_blockTestVec4 = new df::ComDynamicBlocksVec4();
 
-		const auto entityId = ent::EntityId::makeNext();
+		auto entityId = ent::EntityId::makeNext();
 
 		const auto nm_f = cast<float>( nm );
 		s_blockTest->m_com.append( entityId, nm_f, 10, 10, 0, nm_f, 0, 0, 0 );
@@ -89,16 +89,35 @@ void df::timeBlocks( const i32 numLoops, const i32 numEnts, u32 *timeSoAIndividu
 		s_blockTestVec3->m_com.append( entityId, cb::Vec3( 10, 10, 10 ), cb::Vec3( 0, 0, 0 ) );
 		s_blockTestVec4->m_com.append( entityId, cb::Vec4( 10, 10, 10, 0 ), cb::Vec4( 0, 0, 0, 0 ) );
 
-		/*
-		__m128 val;
-		blockTestM128.m_com.append( entityId, val, val );
 
-		const auto pos = dx::XMVectorSet( 10, 10, 10, 0 );
-		const auto delta = dx::XMVectorSet( 0, 0, 0, 0 );
+		// I N S E R T  T E S T
+		const auto entityId2 = ent::EntityId::makeNext();
+		//Dont add anything here yet
 
-		blockTestXM.m_com.append( entityId, pos, delta );
-		*/
-		const auto time = Timer<>::execution( [&]() {
+		// Appendappendappend
+		entityId = ent::EntityId::makeNext();
+		s_blockTestVec3->m_com.append( entityId, cb::Vec3( 10, 10, 11 ), cb::Vec3( 0, 0, 1 ) );
+
+		entityId = ent::EntityId::makeNext();
+		s_blockTestVec3->m_com.append( entityId, cb::Vec3( 10, 10, 12 ), cb::Vec3( 0, 0, 2 ) );
+
+		entityId = ent::EntityId::makeNext();
+		s_blockTestVec3->m_com.append( entityId, cb::Vec3( 10, 10, 13 ), cb::Vec3( 0, 0, 3 ) );
+
+		s_blockTestVec3->m_com.insert( entityId2, cb::Vec3( 10, 10, 14 ), cb::Vec3( 0, 0, 4 ) );
+
+
+
+			/*
+			__m128 val;
+			blockTestM128.m_com.append( entityId, val, val );
+
+			const auto pos = dx::XMVectorSet( 10, 10, 10, 0 );
+			const auto delta = dx::XMVectorSet( 0, 0, 0, 0 );
+
+			blockTestXM.m_com.append( entityId, pos, delta );
+			*/
+			const auto time = Timer<>::execution( [&]() {
 			for( int32_t i = 0; i < numEnts; ++i )
 			{
 				const auto entityId = ent::EntityId::makeNext();
@@ -132,7 +151,7 @@ void df::timeBlocks( const i32 numLoops, const i32 numEnts, u32 *timeSoAIndividu
 				blockTestXM.m_com.append( entityId, pos, delta );
 				*/
 			}
-		} );
+				} );
 
 		const float fTimeNs = (float)time;
 		const float fTimeMs = fTimeNs / 1000.0f;
@@ -149,9 +168,9 @@ void df::timeBlocks( const i32 numLoops, const i32 numEnts, u32 *timeSoAIndividu
 			{
 				s_blockTest->update( rand() & 7 + 8 ); //, df::EThreading::GrossBlocks );
 			}
-		} );
+			} );
 
-		printf( "Ms to update soa was %i.%.3i\n", (uint32_t)(time_update / 1000), (uint32_t)(time_update % 1000) );
+		printf( "Ms to update soa was %i.%.3i\n", (uint32_t)( time_update / 1000 ), (uint32_t)( time_update % 1000 ) );
 
 		if( timeSoAIndividualuS )
 		{
@@ -167,9 +186,9 @@ void df::timeBlocks( const i32 numLoops, const i32 numEnts, u32 *timeSoAIndividu
 			{
 				s_blockTestAoS->update( rand() & 7 + 8 ); //, df::EThreading::GrossBlocks );
 			}
-		} );
+			} );
 
-		printf( "Ms to update aos was %i.%.3i\n", (uint32_t)(timeUpdateAoS / 1000), (uint32_t)(timeUpdateAoS % 1000) );
+		printf( "Ms to update aos was %i.%.3i\n", (uint32_t)( timeUpdateAoS / 1000 ), (uint32_t)( timeUpdateAoS % 1000 ) );
 
 		if( timeAoSuS )
 		{
@@ -183,11 +202,11 @@ void df::timeBlocks( const i32 numLoops, const i32 numEnts, u32 *timeSoAIndividu
 		const auto timeUpdateVec3 = Timer<>::execution( [&]() {
 			for( int32_t i = 0; i < numLoops; ++i )
 			{
-				s_blockTestVec3->update( rand() & 7 + 8); //, df::EThreading::GrossBlocks );
+				s_blockTestVec3->update( rand() & 7 + 8 ); //, df::EThreading::GrossBlocks );
 			}
-		} );
+			} );
 
-		printf( "Ms to update Vec was %i.%.3i\n", (uint32_t)(timeUpdateVec3 / 1000), (uint32_t)(timeUpdateVec3 % 1000) );
+		printf( "Ms to update Vec was %i.%.3i\n", (uint32_t)( timeUpdateVec3 / 1000 ), (uint32_t)( timeUpdateVec3 % 1000 ) );
 
 		if( timeSoA3uS )
 		{
@@ -203,9 +222,9 @@ void df::timeBlocks( const i32 numLoops, const i32 numEnts, u32 *timeSoAIndividu
 			{
 				s_blockTestVec4->update( rand() & 7 + 8 ); //, df::EThreading::GrossBlocks );
 			}
-		} );
+			} );
 
-		printf( "Ms to update Vec was %i.%.3i\n", (uint32_t)(timeUpdateVec4 / 1000), (uint32_t)(timeUpdateVec4 % 1000) );
+		printf( "Ms to update Vec was %i.%.3i\n", (uint32_t)( timeUpdateVec4 / 1000 ), (uint32_t)( timeUpdateVec4 % 1000 ) );
 
 		if( timeSoA4uS )
 		{
@@ -286,33 +305,33 @@ void df::timeBlocks( const i32 numLoops, const i32 numEnts, u32 *timeSoAIndividu
 	}
 	//*/
 
-/*
-	{
-		const auto timeUpdateM128 = Timer<>::execution([&]() {
-			for (int32_t i = 0; i < k_numLoops; ++i)
-			{
-				blockTestM128.update(rand() & 7 + 8, df::EThreading::FineBlocks);
-			}
-			});
-
-		printf("Ms to update M128 was %i.%.3i\n", (uint32_t)(timeUpdateM128 / 1000), (uint32_t)(timeUpdateM128 % 1000));
-	}
-	//*/
-
 	/*
-	{
-		const auto timeUpdateXM = Timer<>::execution([&]() {
-			for (int32_t i = 0; i < k_numLoops; ++i)
-			{
-				blockTestXM.update(rand() & 7 + 8, df::EThreading::FineBlocks);
-			}
-			});
+		{
+			const auto timeUpdateM128 = Timer<>::execution([&]() {
+				for (int32_t i = 0; i < k_numLoops; ++i)
+				{
+					blockTestM128.update(rand() & 7 + 8, df::EThreading::FineBlocks);
+				}
+				});
 
-		printf("Ms to update XM was %i.%.3i\n", (uint32_t)(timeUpdateXM / 1000), (uint32_t)(timeUpdateXM % 1000));
+			printf("Ms to update M128 was %i.%.3i\n", (uint32_t)(timeUpdateM128 / 1000), (uint32_t)(timeUpdateM128 % 1000));
+		}
+		//*/
 
-		//blockTestXM.printRandom();
-	}
-	//*/
+		/*
+		{
+			const auto timeUpdateXM = Timer<>::execution([&]() {
+				for (int32_t i = 0; i < k_numLoops; ++i)
+				{
+					blockTestXM.update(rand() & 7 + 8, df::EThreading::FineBlocks);
+				}
+				});
+
+			printf("Ms to update XM was %i.%.3i\n", (uint32_t)(timeUpdateXM / 1000), (uint32_t)(timeUpdateXM % 1000));
+
+			//blockTestXM.printRandom();
+		}
+		//*/
 
 
 
@@ -323,9 +342,9 @@ void df::timeBlocks( const i32 numLoops, const i32 numEnts, u32 *timeSoAIndividu
 			for( int32_t i = 0; i < numLoops; ++i )
 			{
 			}
-		} );
+			} );
 
-		printf( "Ms to remove entities was %i.%.3i\n", (uint32_t)(timeRemoveEntities / 1000), (uint32_t)(timeRemoveEntities % 1000) );
+		printf( "Ms to remove entities was %i.%.3i\n", (uint32_t)( timeRemoveEntities / 1000 ), (uint32_t)( timeRemoveEntities % 1000 ) );
 	}
 
 

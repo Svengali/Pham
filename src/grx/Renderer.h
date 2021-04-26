@@ -41,7 +41,7 @@ public:
 
 private:
 
-	std::vector< GeometryWeak > m_geos;
+	std::vector< GeometryPtr > m_geos;
 
 };
 

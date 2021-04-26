@@ -54,6 +54,13 @@ public:
 		return m_index > rhs.m_index;
 	}
 
+
+	bool operator ++()
+	{
+		return ++m_index;
+	}
+
+
 	// ???? :: Should we just auto 
 	operator TBase() const
 	{
