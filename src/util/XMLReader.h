@@ -12,6 +12,12 @@ class TiXmlElement;
 
 #include "../res/ResourceMgr.h"
 
+
+
+
+
+
+
 //
 // Base case.  Try and construct from the string text
 //
@@ -179,11 +185,23 @@ public:
 	}
 
 	template < typename T >
+	void operator() ( const TiXmlElement *const pNamedElem, T &val, CreatorBoolAsType_False )
+	{
+		( *this )( pNamedElem, val, cb::TypeTraits<T>().hasReflection );
+	}
+
+	template < typename T >
+	void operator() ( const TiXmlElement *const pNamedElem, T &val, CreatorBoolAsType_True )
+	{
+		blah2;
+	}
+
+	template < typename T >
 	void operator() ( const TiXmlElement * const pNamedElem, T &val )
 	{
-		//cb::BoolToType< Conversion< T, cb::hasReflection >::exists > has_reflection;
 
-		(*this)( pNamedElem, val, cb::TypeTraits<T>().hasReflection );
+		(*this)( pNamedElem, val, CreatorTraits<T>().hasACustomCreator );
+
 	}	
 
 
@@ -222,34 +240,31 @@ public:
 		}
 		else if( T::SIsSubclassOf( util::Symbol( "Resource" ) ) )
 		{
-			const auto pValType = pNamedElem->Attribute( "t" ) ? util::Symbol( pNamedElem->Attribute( "t" ) ) : T::SClass();
+			const char *const pValCreator = pNamedElem->Attribute( "creator" );
 
-
-			//if( !T::SIsSubclassOf( Symbol( "Config" ) ) )
+			if( !pValCreator )
 			{
+				const auto pValType = pNamedElem->Attribute( "t" ) ? util::Symbol( pNamedElem->Attribute( "t" ) ) : T::SClass();
+
 				val = std::static_pointer_cast<T>( ResourceMgr::GetResource( pValSource, pValType ) );
+
+				return;
 			}
-			/*
 			else
 			{
-				//This bit assumes a config file is read in via an XMLReader.
-				TiXmlDocument doc;
+				ScopedCurElement curElement( this, pNamedElem );
 
-				doc.LoadFile( pValSource );
-				
-				const TiXmlElement * const pRoot = doc.RootElement();
+				//const TiXmlElement *pChild = m_pCurElement->FirstChildElement();
 
-				Symbol type = pRoot->Attribute( "type" ) ? Symbol( pRoot->Attribute( "type" ) ) : T::SClass();
-				
-				val = SPtrCast< SPtr<T> >( ResourceMgr::GetResource( pValSource, type ) );
+				//std::unique_ptr<ResCreator> creator( Serialization::CreateClassFromTypeName<ResCreator>( util::Symbol( pValCreator ) ) );
 
-				XMLReader reader( pRoot );
 
-				val->Reflection( reader );
+				typename CreatorTraits<T>::Creator creator;
+
+				( *this )( pNamedElem, creator );
+
+				val = std::static_pointer_cast<T>( ResourceMgr::GetResource( pValSource, &creator ) );
 			}
-			*/
-			
-			return;
 		}
 		else 
 		{

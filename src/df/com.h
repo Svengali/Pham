@@ -165,9 +165,9 @@ namespace df
 		{
 			const auto &data = std::get<as_int( TEnum::EntityId )>( *m_pDst ).m_data.m_v;
 
-			for( BlockTupleIndex i = (BlockTupleIndex)0; i < max; ++i )
+			for( i32 i = 0; i < (i32)max; ++i )
 			{
-				if( data[i] >= id ) return i;
+				if( data[i] >= id ) return BlockTupleIndex( i );
 			}
 
 			return max;
@@ -261,17 +261,28 @@ namespace df
 			createNewBlock();
 		}
 
-		BlockIndex find( const ent::EntityId entityId )
+		BlockIndex find( const ent::EntityId entityId ) const
 		{
-			for( i32 i = 0; i < m_end.size() - 1; ++i )
+
+
+
+
+			for( i32 i = 0; i < cast<i32>(m_end.size()) - 1; ++i )
 			{
+
+
+
 				if( entityId < m_end[i] )
 				{
 					return BlockIndex(i);
 				}
+
+
+
+
 			}
 
-			return BlockIndex(m_end.size() - 1);
+			return BlockIndex( cast<i32>( m_end.size() ) - 1);
 		}
 
 		BlockIndex createNewBlock()
@@ -344,7 +355,7 @@ namespace df
 
 			const BlockTupleIndex maxIndex = (BlockTupleIndex)m_allocated[bi];
 
-			const BlockTupleIndex tupleIndex =block->findBestIndexFor( entityId, maxIndex );
+			const BlockTupleIndex tupleIndex = block->findBestIndexFor( entityId, maxIndex );
 
 			block->insertAt( tupleIndex, maxIndex, entityId, args...);
 
@@ -354,10 +365,10 @@ namespace df
 		}
 	};
 
-#define Src( COM, TYPE, VAR ) const auto * pSrc##VAR = COM.src<Com##COM::VAR, TYPE>()
+#define Src( COM, TYPE, VAR ) const __restrict auto * pSrc##VAR = COM.src<Com##COM::VAR, TYPE>()
 
 
-#define Dst( COM, TYPE, VAR ) auto * pDst##VAR = COM.dst<Com##COM::VAR, TYPE>()
+#define Dst( COM, TYPE, VAR ) __restrict auto * pDst##VAR = COM.dst<Com##COM::VAR, TYPE>()
 
 
 
@@ -388,11 +399,6 @@ namespace df
 		}
 
 		AllBlocks m_blocks;
-
-	protected:
-
-
-
 	};
 
 

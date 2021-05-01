@@ -22,7 +22,7 @@ public:
 	Geometry();
 	virtual ~Geometry();
 	
-	virtual void render( const RenderContextPtr &rcon, const cb::Frame3 &pos ) = 0;
+	virtual void render( RenderContext *pRC, const cb::Frame3 &pos ) = 0;
 	
 	/*
 	void SetPosition( const Vec3 pos )

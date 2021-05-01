@@ -15,6 +15,54 @@ x)
 
 PtrFwd( Resource );
 
+class ResCreator
+{
+public:
+	virtual ~ResCreator() = default;
+
+	virtual ResourcePtr create() const = 0;
+
+};
+
+class ResNullCreator: public ResCreator
+{
+
+public:
+	ResNullCreator( const char *pStr )
+	{
+		//Do Nothing
+	}
+
+	ResNullCreator() = default;
+
+	virtual ResourcePtr create() const
+	{
+		return nullptr;
+	}
+
+
+};
+
+
+template <bool t_bool>
+struct CreatorBoolToType
+{
+	enum { value = t_bool };
+};
+
+typedef CreatorBoolToType<true>		CreatorBoolAsType_True;
+typedef CreatorBoolToType<false>	CreatorBoolAsType_False;
+
+
+template <typename T>
+struct CreatorTraits
+{
+	CreatorBoolAsType_False hasACustomCreator;
+	typedef ResNullCreator Creator;
+};
+
+
+
 namespace ResourceMgr
 {
 
@@ -40,6 +88,9 @@ namespace ResourceMgr
 	//Loads resource if it doesnt find it.
 	ResourcePtr GetResource( const char * const pResName, const util::Symbol &type );
 	
+	ResourcePtr GetResource( const char *const pResName, const ResCreator * const pCreator );
+
+
 	template< typename T >
 	std::shared_ptr<T> GetResource( const char * const pResName )
 	{

@@ -5,24 +5,21 @@
 // copyright 2005-2021 Marc Hernandez
 #pragma once
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-template< typename TIndex, typename TBase = int32_t >
+template< typename TIndex, typename TBase = uint32_t >
 class Index
 {
 public:
 	typedef typename TBase Base;
+
+	explicit Index( const i32 index )
+		:
+		m_index( cast<TBase>( index ) )
+	{}
+
+	explicit Index( const size_t index )
+		:
+		m_index( cast<TBase>( index ) )
+	{}
 
 	explicit Index( const TBase index )
 		:

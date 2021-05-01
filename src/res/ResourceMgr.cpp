@@ -183,6 +183,46 @@ ResourcePtr ResourceMgr::LookupResource( const char * const pResName )
 	return resource;
 }
 
+ResourcePtr ResourceMgr::GetResource( const char *const pResName, const ResCreator *const pCreator )
+{
+	//15 max chars on an extension plus 0
+	char extBuf[c_maxExt];
+
+	GetTail( pResName, extBuf, c_maxExt );
+
+	const util::Symbol extSym( extBuf );
+
+	const util::Symbol resSym( pResName );
+
+	ResourcePtr resource; // = s_MapTknToResource[ resTkn ];
+
+	//HACK: scripts create new resources when loaded.
+	if( extSym != util::Symbol( "script" ) )
+	{
+		resource = s_mapSymToResource[resSym];
+	}
+
+	if( resource != NULL )
+	{
+		return resource;
+	}
+
+	resource = pCreator->create();
+
+	if( resource != NULL && resSym != util::Symbol::Empty() )
+	{
+		const i64 resCount1 = resource.use_count();
+
+		s_mapSymToResource[resSym] = resource;
+
+		const i64 resCount2 = resource.use_count();
+
+		resource->ResourceMgr_setFilename( util::RuntimeString( pResName ) );
+	}
+
+	return resource;
+}
+
 
 ResourcePtr ResourceMgr::GetResource( const char * const pResName, const util::Symbol &type )
 {
@@ -203,74 +243,73 @@ ResourcePtr ResourceMgr::GetResource( const char * const pResName, const util::S
 		resource = s_mapSymToResource[ resSym ];
 	}
 	
-	if( resource == NULL )
+	if( resource != NULL )
 	{
-		if( extBuf[0] != 0 )
+		return resource;
+	}
+
+	if( extBuf[0] != 0 )
+	{
+		MapExtToMapTypeToCreator::iterator it = s_mapExtToCreator.find( extSym );
+			
+		ResourcePtr res;
+
+		if( it != s_mapExtToCreator.end() )
 		{
-			MapExtToMapTypeToCreator::iterator it = s_mapExtToCreator.find( extSym );
-			
-			ResourcePtr res;
-
-			if( it != s_mapExtToCreator.end() )
+			MapTypeToCreator::iterator itCreate;
+				
+			//HACK:
+			if( it->second.size() == 1 )
 			{
-				MapTypeToCreator::iterator itCreate;
+				itCreate = it->second.begin();
+			}
+			else
+			{
+				itCreate = it->second.find( type );
+			}
 				
-				//HACK:
-				if( it->second.size() == 1 )
-				{
-					itCreate = it->second.begin();
-				}
-				else
-				{
-					itCreate = it->second.find( type );
-				}
-				
-				if( itCreate != it->second.end() )
-				{					
-					FnCreator fnCreator = itCreate->second;
+			if( itCreate != it->second.end() )
+			{					
+				FnCreator fnCreator = itCreate->second;
 					
-					res = fnCreator( pResName, type );
-				}
-				else
-				{
-					ASSERT( false && "False now that we have a useful config system" );
+				res = fnCreator( pResName, type );
+			}
+			else
+			{
+				ASSERT( false && "False now that we have a useful config system" );
 				  
-					//Create a null resource and return it.
-					res = ResourcePtr( cast<Resource *>( Serialization::CreateClassFromTypeName_base( type ) ) );
-				}
-
-
-					
-			}
-			else
-			{
-				// Fall back to serializing the type if you dont have an explicit creator.  
+				//Create a null resource and return it.
 				res = ResourcePtr( cast<Resource *>( Serialization::CreateClassFromTypeName_base( type ) ) );
-
-				res->ResourceMgr_setFilename( util::RuntimeString( pResName ) );
-
-				res->load( pResName );
-			}
-			
-			//TODO: Handle using default resources here.
-			if( res != NULL )
-			{
-				const i64 resCount1 = res.use_count();
-
-				s_mapSymToResource[ resSym ] = res;
-
-				const i64 resCount2 = res.use_count();
-
-				res->ResourceMgr_setFilename( util::RuntimeString( pResName ) );
-			}
-			else
-			{
-				// @@@@ TODO Add fallback code here.  
-			}
-			
-			return res;
+			}					
 		}
-	}	
+		else
+		{
+			// Fall back to serializing the type if you dont have an explicit creator.  
+			res = ResourcePtr( cast<Resource *>( Serialization::CreateClassFromTypeName_base( type ) ) );
+
+			res->ResourceMgr_setFilename( util::RuntimeString( pResName ) );
+
+			res->load( pResName );
+		}
+			
+		//TODO: Handle using default resources here.
+		if( res != NULL )
+		{
+			const i64 resCount1 = res.use_count();
+
+			s_mapSymToResource[ resSym ] = res;
+
+			const i64 resCount2 = res.use_count();
+
+			res->ResourceMgr_setFilename( util::RuntimeString( pResName ) );
+		}
+		else
+		{
+			// @@@@ TODO Add fallback code here.  
+		}
+			
+		return res;
+	}
 	
 	return resource;
 }

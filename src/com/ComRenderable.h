@@ -41,7 +41,7 @@ public:
 
     virtual ~ComRenderable();
 
-    void Render(const RenderContextPtr& rcon, const cb::Frame3& frame);
+    void Render(RenderContext *pRC, const cb::Frame3& frame);
 
     REFLECT_BEGIN(ComRenderable, Component);
     REFLECT_END();
