@@ -30,22 +30,22 @@ namespace df
 	};
 
 
-	static constexpr int32_t g_blockSize = 8192;
+	static constexpr int32_t g_blockSize = 1 * 1024;
 
 	// TODO: Maybe merge Block and BlockData. I foget the split here
 
-	template<typename T, int count = g_blockSize>
+	template<typename T, int max>
 	class BlockData
 	{
 	public:
-		std::array<T, count> m_v;
+		std::array<T, max> m_v;
 	};
 
-	template<typename T, int count = g_blockSize>
+	template<typename T, int max>
 	class Block
 	{
 	public:
-		BlockData<T, count> m_data;
+		BlockData<T, max> m_data;
 	};
 
 	enum class EBlockStatus: uint8_t
@@ -57,10 +57,10 @@ namespace df
 	};
 
 	template <typename Enumeration>
-	constexpr auto as_int(const Enumeration value)
+	constexpr auto as_int( const Enumeration value )
 		-> typename std::underlying_type<Enumeration>::type
 	{
-		return static_cast<typename std::underlying_type<Enumeration>::type>(value);
+		return static_cast<typename std::underlying_type<Enumeration>::type>( value );
 	}
 
 	enum class BlockTupleIndexEnum;
@@ -69,15 +69,15 @@ namespace df
 	//typedef uint32_t BlockTupleIndex;
 
 
-	template<typename TEnum, typename ...Args>
+	template<i32 max, typename TEnum, typename ...Args>
 	class BlockTuple
 	{
 	public:
 		typedef std::tuple<EBlockStatus, ent::EntityId, Args...> TIndividualTuple;
-		typedef std::tuple<Block<EBlockStatus>, Block<ent::EntityId>, Block<Args>...> TBlockTuple;
+		typedef std::tuple<Block<EBlockStatus, max>, Block<ent::EntityId, max>, Block<Args, max>...> TBlockTuple;
 
-		static_assert(as_int(TEnum::Status) == 0, "");
-		static_assert(as_int(TEnum::EntityId) == 1, "");
+		static_assert( as_int( TEnum::Status ) == 0, "" );
+		static_assert( as_int( TEnum::EntityId ) == 1, "" );
 
 		BlockTuple()
 		{
@@ -86,23 +86,23 @@ namespace df
 		}
 
 		template<uint32_t tupleIndex, typename T, typename... TArgs>
-		void setSingle_r(const BlockTupleIndex index, const T v, TArgs... FArgs)
+		void setSingle_r( const BlockTupleIndex index, const T v, TArgs... FArgs )
 		{
-			setSingle_r<tupleIndex>(index, std::move(v));
+			setSingle_r<tupleIndex>( index, std::move( v ) );
 
-			setSingle_r<tupleIndex - 1>(index, FArgs...);
+			setSingle_r<tupleIndex - 1>( index, FArgs... );
 		}
 
 		template<uint32_t tupleIndex, typename T>
-		void setSingle_r(const BlockTupleIndex index, const T v)
+		void setSingle_r( const BlockTupleIndex index, const T v )
 		{
-			std::get<std::tuple_size<TBlockTuple>::value - tupleIndex + 1>(*m_pSrc).m_data.m_v[index] = std::move(v);
-			std::get<std::tuple_size<TBlockTuple>::value - tupleIndex + 1>(*m_pDst).m_data.m_v[index] = std::move(v);
+			std::get<std::tuple_size<TBlockTuple>::value - tupleIndex + 1>( *m_pSrc ).m_data.m_v[index] = std::move( v );
+			std::get<std::tuple_size<TBlockTuple>::value - tupleIndex + 1>( *m_pDst ).m_data.m_v[index] = std::move( v );
 		}
 
-		void init(const BlockTupleIndex index, const ent::EntityId id, Args...args)
+		void init( const BlockTupleIndex index, const ent::EntityId id, Args...args )
 		{
-			setSingle_r<std::tuple_size<TBlockTuple>::value - 1>(index, args...);
+			setSingle_r<std::tuple_size<TBlockTuple>::value - 1>( index, args... );
 
 			std::get<as_int( TEnum::Status )>( *m_pSrc ).m_data.m_v[index] = EBlockStatus::Active;
 			std::get<as_int( TEnum::EntityId )>( *m_pSrc ).m_data.m_v[index] = id;
@@ -111,54 +111,56 @@ namespace df
 			std::get<as_int( TEnum::EntityId )>( *m_pDst ).m_data.m_v[index] = id;
 		}
 
-		void init(const BlockTupleIndex index, const typename TIndividualTuple& tuple)
+		void init( const BlockTupleIndex index, const typename TIndividualTuple &tuple )
 		{
-			setFromTuple<std::tuple_size<TIndividualTuple>::value - 1>(index, tuple);
+			setFromTuple<std::tuple_size<TIndividualTuple>::value - 1>( index, tuple );
 		}
 
+		void debug_get( const BlockTupleIndex index, TIndividualTuple *pTuple )
+		{
+			get<std::tuple_size<TIndividualTuple>::value - 1>( pTuple, index, m_pSrc );
+		}
 
 		template<uint32_t tupleIndex>
-		void makeRoom(const BlockTupleIndex index, const BlockTupleIndex max)
+		void makeRoom( const BlockTupleIndex index, const BlockTupleIndex max )
 		{
 			const i32 count = max - index;
 
 			const i32 dataSize = count * sizeof( decltype( std::get<tupleIndex>( *m_pSrc ).m_data.m_v[index] ) );
 
 			{
-				auto* pStart = &std::get<tupleIndex>( *m_pSrc ).m_data.m_v[index];
-				auto* pDest = pStart + 1;
+				auto *pStart = &std::get<tupleIndex>( *m_pSrc ).m_data.m_v[index];
+				auto *pDest = pStart + 1;
 				memmove( pDest, pStart, dataSize );
 			}
 
 			{
-				auto* pStart = &std::get<tupleIndex>( *m_pDst ).m_data.m_v[index];
-				auto* pDest = pStart + 1;
+				auto *pStart = &std::get<tupleIndex>( *m_pDst ).m_data.m_v[index];
+				auto *pDest = pStart + 1;
 				memmove( pDest, pStart, dataSize );
 			}
-
-
 		}
 
 
 		template<uint32_t tupleIndex>
-		void insertAtBlock(const BlockTupleIndex index, const BlockTupleIndex max)
+		void insertAtBlock( const BlockTupleIndex index, const BlockTupleIndex max )
 		{
-			makeRoom<tupleIndex>(index, max);
+			makeRoom<tupleIndex>( index, max );
 
-			insertAtBlock<tupleIndex - 1>(index, max);
+			insertAtBlock<tupleIndex - 1>( index, max );
 		}
 
 		template<>
-		void insertAtBlock<0>(const BlockTupleIndex index, const BlockTupleIndex max)
+		void insertAtBlock<0>( const BlockTupleIndex index, const BlockTupleIndex max )
 		{
-			makeRoom<0>(index, max);
+			makeRoom<0>( index, max );
 		}
 
-		void insertAt(const BlockTupleIndex index, const BlockTupleIndex max, const ent::EntityId id, Args...args)
+		void insertAt( const BlockTupleIndex index, const BlockTupleIndex max, const ent::EntityId id, Args...args )
 		{
 			insertAtBlock<std::tuple_size<TIndividualTuple>::value - 1>( index, max );
 
-			init( index, id, args...);
+			init( index, id, args... );
 		}
 
 		BlockTupleIndex findBestIndexFor( const ent::EntityId id, const BlockTupleIndex max ) const
@@ -174,15 +176,15 @@ namespace df
 		}
 
 		template<TEnum tIndex, typename T>
-		__declspec(restrict)T* src()
+		__declspec(restrict)T *src()
 		{
-			return std::get<tIndex>(*m_pSrc).m_data.m_v.data();
+			return std::get<tIndex>( *m_pSrc ).m_data.m_v.data();
 		}
 
 		template<TEnum tIndex, typename T>
-		__declspec(restrict)T* dst()
+		__declspec(restrict)T *dst()
 		{
-			return std::get<tIndex>(*m_pDst).m_data.m_v.data();
+			return std::get<tIndex>( *m_pDst ).m_data.m_v.data();
 		}
 
 		void swap()
@@ -196,32 +198,45 @@ namespace df
 
 
 		template <uint32_t tupleIndex >
-		void setFromTuple(const BlockTupleIndex index, const typename TIndividualTuple& tuple)
+		void setFromTuple( const BlockTupleIndex index, const typename TIndividualTuple &tuple )
 		{
-			setFromTuple<tupleIndex - 1>(index, tuple);
+			setFromTuple<tupleIndex - 1>( index, tuple );
 
-			const auto v = std::get<tupleIndex>(tuple);
+			const auto v = std::get<tupleIndex>( tuple );
 
-			std::get<tupleIndex>(*m_pSrc).m_data.m_v[index] = v;
-			std::get<tupleIndex>(*m_pDst).m_data.m_v[index] = v;
+			std::get<tupleIndex>( *m_pSrc ).m_data.m_v[index] = v;
+			std::get<tupleIndex>( *m_pDst ).m_data.m_v[index] = v;
 		}
 
 		template<>
-		void setFromTuple<0>(const BlockTupleIndex index, const typename TIndividualTuple& tuple)
+		void setFromTuple<0>( const BlockTupleIndex index, const typename TIndividualTuple &tuple )
 		{
-			const auto v = std::get<0>(tuple);
+			const auto v = std::get<0>( tuple );
 
-			std::get<0>(*m_pSrc).m_data.m_v[index] = v;
-			std::get<0>(*m_pDst).m_data.m_v[index] = v;
+			std::get<0>( *m_pSrc ).m_data.m_v[index] = v;
+			std::get<0>( *m_pDst ).m_data.m_v[index] = v;
 		}
 
+		template <uint32_t tupleIndex >
+		void get( TIndividualTuple *pTuple, const BlockTupleIndex index, TBlockTuple *pBlock )
+		{
+			const auto v = std::get<tupleIndex>( *pBlock ).m_data.m_v[index];
+			std::get<tupleIndex>( *pTuple ) = v;
+
+			get<tupleIndex - 1>( pTuple, index, m_pSrc );
+		}
+
+		template<>
+		void get<(uint32_t)-1>( TIndividualTuple *pTuple, const BlockTupleIndex index, TBlockTuple *pBlock )
+		{
+		}
 
 		// TODO :: Change these to pointers, so things like introspection or save/load can take snapshots.  
 		TBlockTuple m_blocks_0;
 		TBlockTuple m_blocks_1;
 
-		TBlockTuple* __restrict m_pSrc;
-		TBlockTuple* __restrict m_pDst;
+		TBlockTuple *__restrict m_pSrc;
+		TBlockTuple *__restrict m_pDst;
 
 	};
 
@@ -235,12 +250,12 @@ namespace df
 	// Each block is a non-contiguous set of data.
 	// None of the blocks overlap in ID space.  
 	// ???? :: Is Block Meta just a ComSet?
-	template<typename TEnum, typename ...Args>
+	template<i32 max, typename TEnum, typename ...Args>
 	class BlockMeta
 	{
 	public:
 
-		typedef BlockTuple<TEnum, Args...> TBlock;
+		typedef BlockTuple<max, TEnum, Args...> TBlock;
 
 		// SoA for the allocated blocks
 
@@ -263,52 +278,41 @@ namespace df
 
 		BlockIndex find( const ent::EntityId entityId ) const
 		{
-
-
-
-
-			for( i32 i = 0; i < cast<i32>(m_end.size()) - 1; ++i )
+			for( i32 i = 0; i < cast<i32>( m_end.size() ) - 1; ++i )
 			{
-
-
-
 				if( entityId < m_end[i] )
 				{
-					return BlockIndex(i);
+					return BlockIndex( i );
 				}
-
-
-
-
 			}
 
-			return BlockIndex( cast<i32>( m_end.size() ) - 1);
+			return BlockIndex( cast<i32>( m_end.size() ) - 1 );
 		}
 
 		BlockIndex createNewBlock()
 		{
-			BlockIndex iBlock = BlockIndex(cast<BlockIndex::Base>(m_allocated.size()));
+			BlockIndex iBlock = BlockIndex( cast<BlockIndex::Base>( m_allocated.size() ) );
 
-			m_allocated.push_back(0);
-			m_start.push_back(ent::EntityId::invalid);
-			m_end.push_back(ent::EntityId::invalid);
-			m_block.push_back(std::make_shared<BlockTuple<TEnum, Args...>>());
+			m_allocated.push_back( 0 );
+			m_start.push_back( ent::EntityId::invalid );
+			m_end.push_back( ent::EntityId::invalid );
+			m_block.push_back( std::make_shared<BlockTuple<max, TEnum, Args...>>() );
 
 			return iBlock;
 		}
 
-		BlockIndex append(const ent::EntityId entityId, Args... args)
+		BlockIndex append( const ent::EntityId entityId, Args... args )
 		{
-			auto curBlock = BlockIndex(m_allocated.size() - 1);
+			auto curBlock = BlockIndex( m_allocated.size() - 1 );
 
 			if( m_allocated.back() < g_blockSize )
 			{
-				const auto newIndex = BlockTupleIndex(m_allocated.back());
+				const auto newIndex = BlockTupleIndex( m_allocated.back() );
 
 				m_allocated.back()++;
 
 				m_end.back() = entityId.next();
-				m_block.back()->init(newIndex, entityId, args...);
+				m_block.back()->init( newIndex, entityId, args... );
 
 				return curBlock;
 			}
@@ -317,25 +321,25 @@ namespace df
 
 			m_start.back() = entityId;
 
-			return append(entityId, args...);
+			return append( entityId, args... );
 		}
 
 		// DUPE :: Of above, but with a tuple
-		BlockIndex append(const typename TBlock::TIndividualTuple& tuple)
+		BlockIndex append( const typename TBlock::TIndividualTuple &tuple )
 		{
-			auto curBlock = BlockIndex(cast<BlockIndex::Base>(m_allocated.size() - 1));
+			auto curBlock = BlockIndex( cast<BlockIndex::Base>( m_allocated.size() - 1 ) );
 
-			const auto entId = std::get<1>(tuple);
+			const auto entId = std::get<1>( tuple );
 
 			if( m_allocated.back() < g_blockSize )
 			{
-				const auto newIndex = BlockTupleIndex(m_allocated.back());
+				const auto newIndex = BlockTupleIndex( m_allocated.back() );
 
 
 				m_allocated.back()++;
 
 				m_end.back() = entId.next();
-				m_block.back()->init(newIndex, tuple);
+				m_block.back()->init( newIndex, tuple );
 
 				return curBlock;
 			}
@@ -344,25 +348,37 @@ namespace df
 
 			m_start.back() = entId;
 
-			return append(tuple);
+			return append( tuple );
 		}
 
-		BlockTupleIndex insert(const ent::EntityId entityId, Args... args)
+		BlockTupleIndex insert( const ent::EntityId entityId, Args... args )
 		{
 			const BlockIndex bi = find( entityId );
 
 			const std::shared_ptr<TBlock> &block = m_block[bi];
 
-			const BlockTupleIndex maxIndex = (BlockTupleIndex)m_allocated[bi];
+			const BlockTupleIndex currentlyIndexed = (BlockTupleIndex)m_allocated[bi];
 
-			const BlockTupleIndex tupleIndex = block->findBestIndexFor( entityId, maxIndex );
+			const BlockTupleIndex tupleIndex = block->findBestIndexFor( entityId, currentlyIndexed );
 
-			block->insertAt( tupleIndex, maxIndex, entityId, args...);
+			block->insertAt( tupleIndex, currentlyIndexed, entityId, args... );
 
 			m_allocated[bi]++;
 
 			return tupleIndex;
 		}
+
+		void debug_get( const ent::EntityId entityId, typename TBlock::TIndividualTuple *pTuple )
+		{
+			const BlockIndex bi = find( entityId );
+			const std::shared_ptr<TBlock> &block = m_block[bi];
+			const BlockTupleIndex currentlyIndexed = (BlockTupleIndex)m_allocated[bi];
+			const BlockTupleIndex tupleIndex = block->findBestIndexFor( entityId, currentlyIndexed );
+
+			block->debug_get( tupleIndex, pTuple );
+		}
+
+
 	};
 
 #define Src( COM, TYPE, VAR ) const __restrict auto * pSrc##VAR = COM.src<Com##COM::VAR, TYPE>()
@@ -375,28 +391,37 @@ namespace df
 
 
 	// ???? :: This is just a wrapper for BlockMeta right now.  Remove?
-	template<typename TEnum, typename ...Args>
+	template<i32 max, typename TEnum, typename ...Args>
 	class ComBlocks
 	{
 	public:
-		typedef BlockMeta<TEnum, Args...> AllBlocks;
+		typedef BlockMeta<max, TEnum, Args...> AllBlocks;
 
-		typedef typename AllBlocks::TBlock::TIndividualTuple TTuple;
+		typedef typename AllBlocks::TBlock::TIndividualTuple TIndividualTuple;
 
 		ComBlocks()
 		{
 		}
 
 
-		BlockTupleIndex insert(const ent::EntityId id, Args ...args)
+		BlockTupleIndex insert( const ent::EntityId id, Args ...args )
 		{
-			return m_blocks.insert(id, args...);
+			return m_blocks.insert( id, args... );
 		}
 
-		BlockIndex append(const ent::EntityId id, Args ...args)
+		BlockIndex append( const ent::EntityId id, Args ...args )
 		{
-			return m_blocks.append(id, args...);
+			return m_blocks.append( id, args... );
 		}
+
+		//Dont use this.
+		void debug_get( const ent::EntityId id, TIndividualTuple *pTuple )
+		{
+			m_blocks.debug_get( id, pTuple );
+		}
+
+
+
 
 		AllBlocks m_blocks;
 	};
@@ -443,7 +468,7 @@ namespace df
 	};
 	*/
 
-	extern void timeBlocks(const i32 numLoops, const i32 numEnts, u32* timeSoAIndividualuS, u32* timeAoSuS, u32* timeSoA3uS, u32* timeSoA4uS);
+	extern void timeBlocks( const i32 numLoops, const i32 numEnts, u32 *timeSoAIndividualuS, u32 *timeAoSuS, u32 *timeSoA3uS, u32 *timeSoA4uS );
 
 
 	class ComDynamicBlocks
@@ -470,15 +495,15 @@ namespace df
 		typedef float Scalar;
 
 
-		typedef ComBlocks<ComDynamicBlocks::EDynamicSlots, Scalar, Scalar, Scalar, Scalar, Scalar, Scalar, Scalar, Scalar> TCom;
+		typedef ComBlocks<g_blockSize, ComDynamicBlocks::EDynamicSlots, Scalar, Scalar, Scalar, Scalar, Scalar, Scalar, Scalar, Scalar> TCom;
 
 		TCom m_com;
 
 	public:
 
-		int updateBlock(const uint64_t dtMs, TCom::AllBlocks::TBlock& blocks);
+		int updateBlock( const uint64_t dtMs, TCom::AllBlocks::TBlock &blocks );
 
-		void update(const uint64_t dtMs);
+		void update( const uint64_t dtMs );
 	};
 
 
@@ -500,15 +525,15 @@ namespace df
 		typedef cb::Vec3 TVec;
 
 
-		typedef ComBlocks<ComDynamicBlocksVec3::EDynamicSlots, TVec, TVec> TCom;
+		typedef ComBlocks<g_blockSize, ComDynamicBlocksVec3::EDynamicSlots, TVec, TVec> TCom;
 
 		TCom m_com;
 
 	public:
 
-		int updateBlock(const uint64_t dtMs, TCom::AllBlocks::TBlock& blocks);
+		int updateBlock( const uint64_t dtMs, TCom::AllBlocks::TBlock &blocks );
 
-		void update(const uint64_t dtMs);
+		void update( const uint64_t dtMs );
 	};
 
 
@@ -530,15 +555,15 @@ namespace df
 		typedef cb::Vec4 TVec;
 
 
-		typedef ComBlocks<ComDynamicBlocksVec4::EDynamicSlots, TVec, TVec> TCom;
+		typedef ComBlocks<g_blockSize, ComDynamicBlocksVec4::EDynamicSlots, TVec, TVec> TCom;
 
 		TCom m_com;
 
 	public:
 
-		int updateBlock(const uint64_t dtMs, TCom::AllBlocks::TBlock& blocks);
+		int updateBlock( const uint64_t dtMs, TCom::AllBlocks::TBlock &blocks );
 
-		void update(const uint64_t dtMs);
+		void update( const uint64_t dtMs );
 	};
 
 
@@ -604,15 +629,15 @@ namespace df
 
 	public:
 
-		typedef ComBlocks<ComDynamicBlocksAoS::EDynamicSlots, ComDynamicBlocksAoS::Physical> TCom;
+		typedef ComBlocks<g_blockSize, ComDynamicBlocksAoS::EDynamicSlots, ComDynamicBlocksAoS::Physical> TCom;
 
 		TCom m_com;
 
 	public:
 
-		int updateBlock(const uint64_t dtMs, TCom::AllBlocks::TBlock& blocks);
+		int updateBlock( const uint64_t dtMs, TCom::AllBlocks::TBlock &blocks );
 
-		void update(const uint64_t dtMs);
+		void update( const uint64_t dtMs );
 	};
 
 
