@@ -305,7 +305,7 @@ namespace df
 		{
 			auto curBlock = BlockIndex( m_allocated.size() - 1 );
 
-			if( m_allocated.back() < g_blockSize )
+			if( m_allocated.back() < max )
 			{
 				const auto newIndex = BlockTupleIndex( m_allocated.back() );
 
@@ -331,7 +331,7 @@ namespace df
 
 			const auto entId = std::get<1>( tuple );
 
-			if( m_allocated.back() < g_blockSize )
+			if( m_allocated.back() < max )
 			{
 				const auto newIndex = BlockTupleIndex( m_allocated.back() );
 
@@ -360,6 +360,33 @@ namespace df
 			const BlockTupleIndex currentlyIndexed = (BlockTupleIndex)m_allocated[bi];
 
 			const BlockTupleIndex tupleIndex = block->findBestIndexFor( entityId, currentlyIndexed );
+
+			if( currentlyIndexed >= max )
+			{
+				//2 cases.  We need to append to the next block, or pull the last one and put it in the next block.
+				if( tupleIndex >= max )
+				{
+					//Just call append
+					const auto nbi = append( entityId, args... );
+
+					// @@@ HACK this is just broken
+					return tupleIndex;
+				}
+				else
+				{
+					// PERF We move 1 tuple at a time, since that use case is likely the most common.
+					TBlock::TIndividualTuple tuple;
+					BlockTupleIndex lastIndex( max - 1 );
+
+					block->debug_get( tupleIndex, &tuple );
+
+					// @@@@ HACK! This should be an insert!  
+					append( tuple );
+
+					//Continue down now that we have space.
+				}
+			}
+
 
 			block->insertAt( tupleIndex, currentlyIndexed, entityId, args... );
 
@@ -390,7 +417,7 @@ namespace df
 
 
 
-	// ???? :: This is just a wrapper for BlockMeta right now.  Remove?
+	// ??? :: This is just a wrapper for BlockMeta right now.  Remove?
 	template<i32 max, typename TEnum, typename ...Args>
 	class ComBlocks
 	{
@@ -426,47 +453,6 @@ namespace df
 		AllBlocks m_blocks;
 	};
 
-
-	/*
-	template<typename TPrimary, typename ...Args>
-	class ComSet
-	{
-	public:
-
-
-		template< uint32_t tupleIndex, typename TSecondary >
-		void insertSecondary( const BlockIndex iBlock, const TSecondary * const pSecondary )
-		{
-			if ( pSecondary )
-			{
-				std::get<tupleIndex>( m_secondaries ).m_com.m_blocks.insert( iBlock, *pSecondary );
-			}
-		}
-
-		template< uint32_t tupleIndex, typename TSecondary, typename ...TSecondaryRest >
-		void insertSecondary( const BlockIndex iBlock, const TSecondary * const pSecondary, const TSecondaryRest * const ... pRest )
-		{
-			insertSecondary<tupleIndex>( iBlock, pSecondary );
-
-			insertSecondary<tupleIndex + 1>( iBlock, pRest... );
-		}
-
-
-		template< typename ...TTuples >
-		void insert( const typename TPrimary::TCom::TTuple &primary, const TTuples * const ... pArgs )
-		{
-			const auto primaryBlockIndex = m_primary.m_com.m_blocks.append( primary );
-
-			insertSecondary<0>( primaryBlockIndex, pArgs... );
-
-		}
-
-	protected:
-		TPrimary m_primary;
-		std::tuple<Args...> m_secondaries;
-
-	};
-	*/
 
 	extern void timeBlocks( const i32 numLoops, const i32 numEnts, u32 *timeSoAIndividualuS, u32 *timeAoSuS, u32 *timeSoA3uS, u32 *timeSoA4uS );
 
