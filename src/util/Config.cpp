@@ -26,8 +26,7 @@ ResourcePtr Config::create( const char * const pFilename, const util::Symbol &ty
 
 		if( pConfig )
 		{
-			/* PORT: Fix when we get XML reader up and running */
-			XMLReader reader( pRoot );
+			XMLReader reader( pFilename, pRoot );
 
 			pConfig->DoReflection( reader );
 
@@ -52,7 +51,7 @@ void Config::load( const char * const pFilename )
 	{
 		util::Symbol finalType = pRoot->Attribute( "type" ) ? util::Symbol( pRoot->Attribute( "type" ) ) : Class();
 
-		XMLReader reader( pRoot );
+		XMLReader reader( pFilename, pRoot );
 
 		Reflection( reader );
 

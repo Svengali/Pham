@@ -147,14 +147,29 @@ class XMLReader
 		const TiXmlElement *m_pOldCurElement;
 	};
 
+	const std::string getPathName( const TiXmlElement *const pCurElement )
+	{
+		if( pCurElement == nullptr ) return m_filename;
+
+		const auto pElem = pCurElement->Parent()->ToElement();
+
+		return getPathName( pElem ) + pCurElement->ValueStr();
+	}
+
+
+
+
 public:
+
+	std::string m_filename;
 
 	std::hash_map< int, int > m_ptrs;
 
 	const TiXmlElement *m_pCurElement;
 
-	XMLReader( const TiXmlElement * const pCurElement )
+	XMLReader( const std::string &filename, const TiXmlElement * const pCurElement )
 		:
+		m_filename( filename ),
 		m_pCurElement( pCurElement )
 	{
 		
@@ -227,13 +242,23 @@ public:
 			
 			if( pValType )
 			{
-				ScopedCurElement curElement( this, pNamedElem );
-				
-				T *pT = Serialization::CreateClassFromTypeName< T >( util::Symbol( pValType ) );
-				
-				pT->Reflection( *this );
-				
-				val = std::shared_ptr<T>( pT );
+				const auto pathName = getPathName( pNamedElem );
+
+				val = ResourceMgr::LookupResource<T>(pathName.c_str());
+
+				if( !val )
+				{
+					ScopedCurElement curElement( this, pNamedElem );
+
+					T *pT = Serialization::CreateClassFromTypeName< T >( util::Symbol( pValType ) );
+
+					pT->Reflection( *this );
+
+					val = std::shared_ptr<T>( pT );
+
+					ResourceMgr::AddResource( pathName.c_str(), val );
+				}
+
 			}
 						
 			return;

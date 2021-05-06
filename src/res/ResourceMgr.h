@@ -61,7 +61,10 @@ struct CreatorTraits
 	typedef ResNullCreator Creator;
 };
 
-
+enum class ResFlags
+{
+	fUnique = 1 << 0,
+};
 
 namespace ResourceMgr
 {
@@ -86,8 +89,10 @@ namespace ResourceMgr
 	ResourcePtr LookupResource( const char * const pResName );
 
 	//Loads resource if it doesnt find it.
-	ResourcePtr GetResource( const char * const pResName, const util::Symbol &type );
-	
+	ResourcePtr GetResource( const char *const pResName, const util::Symbol &type );
+
+	void RemResource( const char *const pResName );
+
 	ResourcePtr GetResource( const char *const pResName, const ResCreator * const pCreator );
 
 
@@ -104,6 +109,7 @@ namespace ResourceMgr
 		//return std::shared_ptr<T>( static_cast< T * >( GetResource( pResName, T::SClass() ).get() ) );
 	}
 	
+	/* 
 	template< typename T >
 	std::shared_ptr<T> GetTypedResource( const char * const pResName )
 	{
@@ -113,7 +119,17 @@ namespace ResourceMgr
 		
 		return T::Create( pResName );
 	}
+	*/
 
+	template< typename T >
+	std::shared_ptr<T> LookupResource( const char *const pResName )
+	{
+		ResourcePtr resource = LookupResource( pResName );
+
+		if( resource != NULL ) return std::shared_ptr<T>( static_cast<T *>( resource.get() ) );
+
+		return nullptr;
+	}
 
 
 

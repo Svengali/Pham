@@ -155,6 +155,8 @@ void ResourceMgr::AddResource( const char *const pResName, const ResourcePtr &pt
 	if( it == s_mapSymToResource.end() )
 	{
 		s_mapSymToResource[resSym] = ptr;
+
+		ptr->onPostLoad();
 	}
 	else
 	{
@@ -178,9 +180,14 @@ ResourcePtr ResourceMgr::LookupResource( const char * const pResName )
 
 	const util::Symbol resSym( pResName );
 
-	ResourcePtr resource = s_mapSymToResource[ resSym ];
-	
-	return resource;
+	const auto it = s_mapSymToResource.find( resSym );
+
+	if( it == s_mapSymToResource.end() )
+	{
+		return nullptr;
+	}
+
+	return it->second;
 }
 
 ResourcePtr ResourceMgr::GetResource( const char *const pResName, const ResCreator *const pCreator )
@@ -214,6 +221,7 @@ ResourcePtr ResourceMgr::GetResource( const char *const pResName, const ResCreat
 		const i64 resCount1 = resource.use_count();
 
 		s_mapSymToResource[resSym] = resource;
+		resource->onPostLoad();
 
 		const i64 resCount2 = resource.use_count();
 
@@ -221,6 +229,13 @@ ResourcePtr ResourceMgr::GetResource( const char *const pResName, const ResCreat
 	}
 
 	return resource;
+}
+
+void ResourceMgr::RemResource( const char *const pResName )
+{
+	const util::Symbol resSym( pResName );
+
+	s_mapSymToResource.erase( resSym );
 }
 
 
@@ -289,17 +304,27 @@ ResourcePtr ResourceMgr::GetResource( const char * const pResName, const util::S
 
 			res->ResourceMgr_setFilename( util::RuntimeString( pResName ) );
 
-			res->load( pResName );
+			res->load( pResName, extSym );
 		}
 			
 		//TODO: Handle using default resources here.
 		if( res != NULL )
 		{
-			const i64 resCount1 = res.use_count();
+			// @@@@ PERF HACK
+			//*
+			if( extSym != util::Symbol( "verts" ) && 
+				extSym != util::Symbol( "indices" ) &&
+				resSym != util::Symbol( "config/geo/test.xml" ) 
+					)
+			//*/
+			{
+				const i64 resCount1 = res.use_count();
 
-			s_mapSymToResource[ resSym ] = res;
+				s_mapSymToResource[resSym] = res;
 
-			const i64 resCount2 = res.use_count();
+				const i64 resCount2 = res.use_count();
+
+			}
 
 			res->ResourceMgr_setFilename( util::RuntimeString( pResName ) );
 		}
@@ -352,7 +377,7 @@ void ResourceMgr::Tick()
 						
 						//res->SetRefCount( originalRefCount );
 						
-						res->load( pDir );
+						//res->load( pDir, extSym );
 					}
 				}
 				
