@@ -39,6 +39,10 @@ namespace df
 	{
 	public:
 		std::array<T, max> m_v;
+
+		~BlockData()
+		{
+		}
 	};
 
 	template<typename T, int max>
@@ -85,10 +89,15 @@ namespace df
 			m_pDst = &m_blocks_1;
 		}
 
+		~BlockTuple()
+		{
+
+		}
+
 		template<uint32_t tupleIndex, typename T, typename... TArgs>
 		void setSingle_r( const BlockTupleIndex index, const T v, TArgs... FArgs )
 		{
-			setSingle_r<tupleIndex>( index, std::move( v ) );
+			setSingle_r<tupleIndex>( index, v );
 
 			setSingle_r<tupleIndex - 1>( index, FArgs... );
 		}
@@ -96,8 +105,8 @@ namespace df
 		template<uint32_t tupleIndex, typename T>
 		void setSingle_r( const BlockTupleIndex index, const T v )
 		{
-			std::get<std::tuple_size<TBlockTuple>::value - tupleIndex + 1>( *m_pSrc ).m_data.m_v[index] = std::move( v );
-			std::get<std::tuple_size<TBlockTuple>::value - tupleIndex + 1>( *m_pDst ).m_data.m_v[index] = std::move( v );
+			std::get<std::tuple_size<TBlockTuple>::value - tupleIndex + 1>( *m_pSrc ).m_data.m_v[index] = v;
+			std::get<std::tuple_size<TBlockTuple>::value - tupleIndex + 1>( *m_pDst ).m_data.m_v[index] = v;
 		}
 
 		void init( const BlockTupleIndex index, const ent::EntityId id, Args...args )
@@ -276,6 +285,10 @@ namespace df
 			createNewBlock();
 		}
 
+		~BlockMeta()
+		{
+		}
+
 		BlockIndex find( const ent::EntityId entityId ) const
 		{
 			for( i32 i = 0; i < cast<i32>( m_end.size() ) - 1; ++i )
@@ -427,6 +440,10 @@ namespace df
 		typedef typename AllBlocks::TBlock::TIndividualTuple TIndividualTuple;
 
 		ComBlocks()
+		{
+		}
+
+		~ComBlocks()
 		{
 		}
 
