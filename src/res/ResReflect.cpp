@@ -8,9 +8,9 @@
 
 
 
-#include "./Config.h"
+#include "./ResReflect.h"
 
-ResourcePtr Config::create( const char * const pFilename, const util::Symbol &type )
+ResourcePtr ResReflect::create( const char * const pFilename, const util::Symbol &type )
 {
 	TiXmlDocument doc;
 
@@ -22,7 +22,7 @@ ResourcePtr Config::create( const char * const pFilename, const util::Symbol &ty
 	{
 		util::Symbol finalType = pRoot->Attribute( "type" ) ? util::Symbol( pRoot->Attribute( "type" ) ) : type;
 
-		Config * const pConfig = cast< Config * >( Serialization::CreateClassFromTypeName_base( finalType ) );
+		ResReflect * const pConfig = cast< ResReflect * >( Serialization::CreateClassFromTypeName_base( finalType ) );
 
 		if( pConfig )
 		{
@@ -43,7 +43,7 @@ ResourcePtr Config::create( const char * const pFilename, const util::Symbol &ty
 	return ResourcePtr( NULL );
 }
 
-void Config::load( const char * const pFilename )
+void ResReflect::load( const char * const pFilename )
 {
 	TiXmlDocument doc;
 

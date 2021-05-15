@@ -31,10 +31,11 @@ public:
 	virtual void onPostChange();
 	
 	void use();
+
 		
 	void ResourceMgr_setFilename( const util::RuntimeString &filename );
 	
-private:
+protected:
 	util::RuntimeString  m_filename;
 	AbsoluteTime m_lastUsedTime;
 	

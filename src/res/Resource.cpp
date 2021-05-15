@@ -24,6 +24,7 @@ Resource::~Resource(void)
 {
 }
 
+
 void Resource::ResourceMgr_setFilename( const util::RuntimeString &filename )
 {
 	m_filename = filename;

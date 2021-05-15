@@ -14,24 +14,6 @@
 namespace df
 {
 
-	class Com
-	{
-	};
-
-	template<typename TCOM>
-	class Mgr
-	{
-
-
-	private:
-
-
-
-	};
-
-
-	static constexpr int32_t g_blockSize = 1 * 1024;
-
 	// TODO: Maybe merge Block and BlockData. I foget the split here
 
 	template<typename T, int max>
@@ -52,10 +34,12 @@ namespace df
 		BlockData<T, max> m_data;
 	};
 
+
+
 	enum class EBlockStatus: uint8_t
 	{
-		Invalid = 0,
-		Active = 1,
+		Invalid  = 0,
+		Active   = 1,
 		Inactive = 2,
 
 	};
@@ -67,17 +51,27 @@ namespace df
 		return static_cast<typename std::underlying_type<Enumeration>::type>( value );
 	}
 
+
+
+	enum class BlockIndexEnum;
+	typedef Index<BlockIndexEnum> BlockIndex;
+
+
 	enum class BlockTupleIndexEnum;
-
 	typedef Index<BlockTupleIndexEnum> BlockTupleIndex;
-	//typedef uint32_t BlockTupleIndex;
 
+
+	struct Address
+	{
+		BlockIndex BlockIndex;
+		BlockTupleIndex BlockTupleIndex;
+	};
 
 	template<i32 max, typename TEnum, typename ...Args>
 	class BlockTuple
 	{
 	public:
-		typedef std::tuple<EBlockStatus, ent::EntityId, Args...> TIndividualTuple;
+		typedef std::tuple<EBlockStatus, ent::EntityId, Args...> TTuple;
 		typedef std::tuple<Block<EBlockStatus, max>, Block<ent::EntityId, max>, Block<Args, max>...> TBlockTuple;
 
 		static_assert( as_int( TEnum::Status ) == 0, "" );
@@ -120,14 +114,14 @@ namespace df
 			std::get<as_int( TEnum::EntityId )>( *m_pDst ).m_data.m_v[index] = id;
 		}
 
-		void init( const BlockTupleIndex index, const typename TIndividualTuple &tuple )
+		void init( const BlockTupleIndex index, const typename TTuple &tuple )
 		{
-			setFromTuple<std::tuple_size<TIndividualTuple>::value - 1>( index, tuple );
+			setFromTuple<std::tuple_size<TTuple>::value - 1>( index, tuple );
 		}
 
-		void debug_get( const BlockTupleIndex index, TIndividualTuple *pTuple )
+		void debug_get( const BlockTupleIndex index, TTuple *pTuple )
 		{
-			get<std::tuple_size<TIndividualTuple>::value - 1>( pTuple, index, m_pSrc );
+			get<std::tuple_size<TTuple>::value - 1>( pTuple, index, m_pSrc );
 		}
 
 		template<uint32_t tupleIndex>
@@ -167,7 +161,7 @@ namespace df
 
 		void insertAt( const BlockTupleIndex index, const BlockTupleIndex max, const ent::EntityId id, Args...args )
 		{
-			insertAtBlock<std::tuple_size<TIndividualTuple>::value - 1>( index, max );
+			insertAtBlock<std::tuple_size<TTuple>::value - 1>( index, max );
 
 			init( index, id, args... );
 		}
@@ -207,7 +201,7 @@ namespace df
 
 
 		template <uint32_t tupleIndex >
-		void setFromTuple( const BlockTupleIndex index, const typename TIndividualTuple &tuple )
+		void setFromTuple( const BlockTupleIndex index, const typename TTuple &tuple )
 		{
 			setFromTuple<tupleIndex - 1>( index, tuple );
 
@@ -218,7 +212,7 @@ namespace df
 		}
 
 		template<>
-		void setFromTuple<0>( const BlockTupleIndex index, const typename TIndividualTuple &tuple )
+		void setFromTuple<0>( const BlockTupleIndex index, const typename TTuple &tuple )
 		{
 			const auto v = std::get<0>( tuple );
 
@@ -227,7 +221,7 @@ namespace df
 		}
 
 		template <uint32_t tupleIndex >
-		void get( TIndividualTuple *pTuple, const BlockTupleIndex index, TBlockTuple *pBlock )
+		void get( TTuple *pTuple, const BlockTupleIndex index, TBlockTuple *pBlock )
 		{
 			const auto v = std::get<tupleIndex>( *pBlock ).m_data.m_v[index];
 			std::get<tupleIndex>( *pTuple ) = v;
@@ -235,8 +229,9 @@ namespace df
 			get<tupleIndex - 1>( pTuple, index, m_pSrc );
 		}
 
+		//Template tuple base case
 		template<>
-		void get<(uint32_t)-1>( TIndividualTuple *pTuple, const BlockTupleIndex index, TBlockTuple *pBlock )
+		void get<(uint32_t)-1>( TTuple *pTuple, const BlockTupleIndex index, TBlockTuple *pBlock )
 		{
 		}
 
@@ -250,13 +245,8 @@ namespace df
 	};
 
 
-	enum class BlockIndexEnum;
-
-	typedef Index<BlockIndexEnum> BlockIndex;
-	//typedef uint32_t BlockIndex;
-
 	// The container for managing all the blocks.  
-	// Each block is a non-contiguous set of data.
+	// Each block is a contiguous set of data.
 	// None of the blocks overlap in ID space.  
 	// ???? :: Is Block Meta just a ComSet?
 	template<i32 max, typename TEnum, typename ...Args>
@@ -314,7 +304,7 @@ namespace df
 			return iBlock;
 		}
 
-		BlockIndex append( const ent::EntityId entityId, Args... args )
+		void append( const ent::EntityId entityId, Args... args )
 		{
 			auto curBlock = BlockIndex( m_allocated.size() - 1 );
 
@@ -327,18 +317,18 @@ namespace df
 				m_end.back() = entityId.next();
 				m_block.back()->init( newIndex, entityId, args... );
 
-				return curBlock;
+				return; // curBlock;
 			}
 
 			createNewBlock();
 
 			m_start.back() = entityId;
 
-			return append( entityId, args... );
+			/*return*/ append( entityId, args... );
 		}
 
 		// DUPE :: Of above, but with a tuple
-		BlockIndex append( const typename TBlock::TIndividualTuple &tuple )
+		void append( const typename TBlock::TTuple &tuple )
 		{
 			auto curBlock = BlockIndex( cast<BlockIndex::Base>( m_allocated.size() - 1 ) );
 
@@ -354,17 +344,17 @@ namespace df
 				m_end.back() = entId.next();
 				m_block.back()->init( newIndex, tuple );
 
-				return curBlock;
+				return; // curBlock;
 			}
 
 			createNewBlock();
 
 			m_start.back() = entId;
 
-			return append( tuple );
+			/*return*/ append( tuple );
 		}
 
-		BlockTupleIndex insert( const ent::EntityId entityId, Args... args )
+		void insert( const ent::EntityId entityId, Args... args )
 		{
 			const BlockIndex bi = find( entityId );
 
@@ -380,15 +370,15 @@ namespace df
 				if( tupleIndex >= max )
 				{
 					//Just call append
-					const auto nbi = append( entityId, args... );
+					/*const auto nbi =*/ append( entityId, args... );
 
 					// @@@ HACK this is just broken
-					return tupleIndex;
+					return; // tupleIndex;
 				}
 				else
 				{
 					// PERF We move 1 tuple at a time, since that use case is likely the most common.
-					TBlock::TIndividualTuple tuple;
+					TBlock::TTuple tuple;
 					BlockTupleIndex lastIndex( max - 1 );
 
 					block->debug_get( tupleIndex, &tuple );
@@ -405,10 +395,10 @@ namespace df
 
 			m_allocated[bi]++;
 
-			return tupleIndex;
+			return; // tupleIndex;
 		}
 
-		void debug_get( const ent::EntityId entityId, typename TBlock::TIndividualTuple *pTuple )
+		void debug_get( const ent::EntityId entityId, typename TBlock::TTuple *pTuple )
 		{
 			const BlockIndex bi = find( entityId );
 			const std::shared_ptr<TBlock> &block = m_block[bi];
@@ -437,7 +427,7 @@ namespace df
 	public:
 		typedef BlockMeta<max, TEnum, Args...> AllBlocks;
 
-		typedef typename AllBlocks::TBlock::TIndividualTuple TIndividualTuple;
+		typedef typename AllBlocks::TBlock::TTuple TTuple;
 
 		ComBlocks()
 		{
@@ -448,18 +438,18 @@ namespace df
 		}
 
 
-		BlockTupleIndex insert( const ent::EntityId id, Args ...args )
+		void insert( const ent::EntityId id, Args ...args )
 		{
-			return m_blocks.insert( id, args... );
+			/*return*/ m_blocks.insert( id, args... );
 		}
 
-		BlockIndex append( const ent::EntityId id, Args ...args )
+		void append( const ent::EntityId id, Args ...args )
 		{
-			return m_blocks.append( id, args... );
+			/*return*/ m_blocks.append( id, args... );
 		}
 
 		//Dont use this.
-		void debug_get( const ent::EntityId id, TIndividualTuple *pTuple )
+		void debug_get( const ent::EntityId id, TTuple *pTuple )
 		{
 			m_blocks.debug_get( id, pTuple );
 		}

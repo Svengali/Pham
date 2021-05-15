@@ -14,6 +14,8 @@
 namespace df
 {
 
+	static constexpr int32_t g_blockSize = 1 * 1024;
+
 
 	extern void timeBlocks( const i32 numLoops, const i32 numEnts, u32 *timeSoAIndividualuS, u32 *timeAoSuS, u32 *timeSoA3uS, u32 *timeSoA4uS );
 

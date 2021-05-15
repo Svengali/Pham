@@ -192,6 +192,8 @@ ResourcePtr ResourceMgr::LookupResource( const char * const pResName )
 
 ResourcePtr ResourceMgr::GetResource( const char *const pResName, const ResCreator *const pCreator )
 {
+	lprintf( "Get res %s\n", pResName );
+
 	//15 max chars on an extension plus 0
 	char extBuf[c_maxExt];
 
@@ -218,6 +220,8 @@ ResourcePtr ResourceMgr::GetResource( const char *const pResName, const ResCreat
 
 	if( resource != NULL && resSym != util::Symbol::Empty() )
 	{
+		lprintf( "Storing res %s\n", pResName );
+
 		const i64 resCount1 = resource.use_count();
 
 		s_mapSymToResource[resSym] = resource;
@@ -235,12 +239,16 @@ void ResourceMgr::RemResource( const char *const pResName )
 {
 	const util::Symbol resSym( pResName );
 
-	s_mapSymToResource.erase( resSym );
+	const auto removed = s_mapSymToResource.erase( resSym );
+
+	lprintf( "Remove %I64d res %s\n", removed, pResName );
 }
 
 
 ResourcePtr ResourceMgr::GetResource( const char * const pResName, const util::Symbol &type )
 {
+	lprintf( "Get res %s of type %s\n", pResName, type.GetString() );
+
 	//15 max chars on an extension plus 0
 	char extBuf[ c_maxExt ];
 
@@ -286,32 +294,43 @@ ResourcePtr ResourceMgr::GetResource( const char * const pResName, const util::S
 			if( itCreate != it->second.end() )
 			{					
 				FnCreator fnCreator = itCreate->second;
-					
+
+				lprintf( "Creating new resourcec\n" );
+
 				res = fnCreator( pResName, type );
 			}
 			else
 			{
 				ASSERT( false && "False now that we have a useful config system" );
-				  
+
+				lprintf( "Broken path\n" );
+
 				//Create a null resource and return it.
 				res = ResourcePtr( cast<Resource *>( Serialization::CreateClassFromTypeName_base( type ) ) );
 			}					
 		}
 		else
 		{
+			lprintf( "Fallback to using load\n" );
+
 			// Fall back to serializing the type if you dont have an explicit creator.  
 			res = ResourcePtr( cast<Resource *>( Serialization::CreateClassFromTypeName_base( type ) ) );
 
 			res->ResourceMgr_setFilename( util::RuntimeString( pResName ) );
 
 			res->load( pResName, extSym );
+
 		}
 			
 		//TODO: Handle using default resources here.
 		if( res != NULL )
 		{
+			lprintf( "Storing res %s\n", pResName );
+
+			res->ResourceMgr_setFilename( util::RuntimeString( pResName ) );
+
 			// @@@@ PERF HACK
-			//*
+			/*
 			if( extSym != util::Symbol( "verts" ) && 
 				extSym != util::Symbol( "indices" ) &&
 				resSym != util::Symbol( "config/geo/test.xml" ) 
@@ -321,12 +340,12 @@ ResourcePtr ResourceMgr::GetResource( const char * const pResName, const util::S
 				const i64 resCount1 = res.use_count();
 
 				s_mapSymToResource[resSym] = res;
+				res->onPostLoad();
 
 				const i64 resCount2 = res.use_count();
 
 			}
 
-			res->ResourceMgr_setFilename( util::RuntimeString( pResName ) );
 		}
 		else
 		{
@@ -366,9 +385,10 @@ void ResourceMgr::Tick()
 					
 					if( res != NULL )
 					{
+						lprintf( "Resource has changed %s\n", pDir );
+
 						//Hook recreation here.. 
 						//const int originalRefCount = res->GetRefCount();
-						
 						
 
 						char *pBuf = (char *)Serialization::CreateClassFromTypeName_base( res->Class(), (char *)res.get() );

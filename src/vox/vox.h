@@ -247,6 +247,7 @@ class ChunkHolder: public Chunk<ChunkHolder<CHUNK>, typename CHUNK::Ptr, 16>
 };
 */
 
+/*
 class ChunkMesh
 {
 public:
@@ -261,6 +262,7 @@ public:
 	virtual void release() = 0;
 
 };
+*/
 
 //Like an existance plane
 template<typename CHUNK>
@@ -306,9 +308,9 @@ public:
 
 			const auto lPos = LPos::from( cPos, pos );
 
-			if( lPos.x < 0 | lPos.x > 15 |
-					lPos.y < 0 | lPos.y > 15 | 
-					lPos.z < 0 | lPos.z > 15 )
+			if( (lPos.x < 0) | (lPos.x > 15) |
+					(lPos.y < 0) | (lPos.y > 15) | 
+					(lPos.z < 0) | (lPos.z > 15) )
 			{
 				int dummy = 0;
 			}
@@ -316,7 +318,7 @@ public:
 			return chunk->get_slow( lPos );
 		}
 
-		return CHUNK::T();
+		return CHUNK::T(-1);
 	}
 
 	typename void set_slow( const GPos pos, typename CHUNK::T v )
@@ -341,64 +343,6 @@ protected:
 
 
 
-
-
-
-
-
-
-
-
-class Cubit: public Chunk<Cubit, u16, 16>
-{
-public:
-
-	using Chunk::Chunk;
-
-	virtual void genWorld( Plane<Cubit> * pPlane, const CPos pos );
-	//virtual void genGeo( Plane<Cubit> * pPlane, Vulkan::Device * const pDev, Granite::Scene * const pScene, const CPos pos );
-
-protected:
-	//gr::AbstractRenderableHandle m_geo;
-};
-
-class CubitArr: public Cubit
-{
-public:
-
-	using Cubit::Cubit;
-
-	virtual void set_slow( u16 v, LPos pos ) override;
-	virtual u16 get_slow( LPos pos ) override;
-
-	virtual void genWorld( Plane<Cubit> * pPlane, CPos pos ) override;
-	//virtual void genGeo( Plane<Cubit> * pPlane, Vulkan::Device * const pDev, Granite::Scene * const pScene, const CPos pos ) override;
-
-
-	StorageArr<Cubit> m_arr;
-
-
-private:
-
-	friend class DGChunkMesh;
-
-};
-
-class CubitPlane: public Plane<Cubit>
-{
-public:
-
-
-
-	virtual void genWorld( const cb::Vec3 pos );
-	//virtual void genGeo( Vulkan::Device * const pDev, Granite::Scene * const pScene, const cb::Vec3 pos );
-
-
-
-
-
-private:
-};
 
 
 
