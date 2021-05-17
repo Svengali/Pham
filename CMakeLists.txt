@@ -54,7 +54,7 @@ message("PHAM_SRC: ${PHAM_SRC}")
 add_library(Pham ${PHAM_SRC} ${PHAM_HEADERS})
 
 target_include_directories(Pham PUBLIC ..)
-target_link_libraries(Pham cblib)
+target_link_libraries(Pham cblib enkiTS)
 
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})

@@ -295,7 +295,7 @@ ResourcePtr ResourceMgr::GetResource( const char * const pResName, const util::S
 			{					
 				FnCreator fnCreator = itCreate->second;
 
-				lprintf( "Creating new resourcec\n" );
+				lprintf( "Creating new resource %s\n", type.GetString() );
 
 				res = fnCreator( pResName, type );
 			}

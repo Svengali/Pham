@@ -97,7 +97,7 @@ public:
 
 	static CPos from( const GPos pos )
 	{
-		return CPos( (pos.x - 0) / 16, (pos.y - 0 ) / 16, (pos.z - 0 ) / 16 );
+		return CPos( (pos.x - 0) / 32, (pos.y - 0 ) / 32, (pos.z - 0 ) / 32 );
 	}
 
 };
@@ -312,7 +312,7 @@ public:
 					(lPos.y < 0) | (lPos.y > 15) | 
 					(lPos.z < 0) | (lPos.z > 15) )
 			{
-				int dummy = 0;
+				//int dummy = 0;
 			}
 
 			return chunk->get_slow( lPos );

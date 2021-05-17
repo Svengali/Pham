@@ -14,33 +14,45 @@ ResourcePtr Config::create( const char * const pFilename, const util::Symbol &ty
 {
 	TiXmlDocument doc;
 
-	doc.LoadFile( pFilename );
-	
-	const TiXmlElement * const pRoot = doc.RootElement();
-	
-	if( pRoot )
+	const bool loadRes = doc.LoadFile( pFilename );
+
+	if( loadRes )
 	{
-		util::Symbol finalType = pRoot->Attribute( "type" ) ? util::Symbol( pRoot->Attribute( "type" ) ) : type;
+		const TiXmlElement *const pRoot = doc.RootElement();
 
-		Config * const pConfig = cast< Config * >( Serialization::CreateClassFromTypeName_base( finalType ) );
-
-		if( pConfig )
+		if( pRoot )
 		{
-			XMLReader reader( pFilename, pRoot );
+			util::Symbol finalType = pRoot->Attribute( "type" ) ? util::Symbol( pRoot->Attribute( "type" ) ) : type;
 
-			pConfig->DoReflection( reader );
+			Config *const pConfig = cast< Config * >( Serialization::CreateClassFromTypeName_base( finalType ) );
 
-			return ResourcePtr( pConfig );
+			if( pConfig )
+			{
+				XMLReader reader( pFilename, pRoot );
 
-			//return ResourcePtr( nullptr );
+				pConfig->DoReflection( reader );
+
+				return ResourcePtr( pConfig );
+			}
+			else
+			{
+				lprintf( "%s: Failure creating %s. Could not create class\n", pFilename, type.GetString() );
+			}
+		}
+		else
+		{
+			lprintf( "%s: Failure finding root document\n", pFilename, type.GetString() );
 		}
 	}
 	else
 	{
-		// TODO LOG
+		lprintf( "%s: Loading failed. Got %s\n", pFilename, doc.ErrorDesc() );
 	}
+
+	lprintf( "%s: Returning nullptr of %s\n", pFilename, type.GetString() );
+	Config *const pConfig = nullptr; //cast< Config * >( Serialization::CreateClassFromTypeName_base( type ) );
+	return ResourcePtr( pConfig );
 	
-	return ResourcePtr( NULL );
 }
 
 void Config::load( const char * const pFilename )

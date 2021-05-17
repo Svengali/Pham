@@ -15,6 +15,30 @@ x)
 
 PtrFwd( Resource );
 
+template<typename T>
+void fillInRes( T *pT )
+{
+	lprintf( "Skip fill in %s resource.\n", T::SClass() );
+}
+
+template<typename T>
+void createDefaultRes( T **ppT )
+{
+	T *pT = cast<T*>( Serialization::CreateClassFromTypeName_base( T::SClass() ) );
+	fillInRes( pT );
+	*ppT = pT;
+}
+
+
+
+
+
+
+
+
+
+
+
 class ResCreator
 {
 public:
