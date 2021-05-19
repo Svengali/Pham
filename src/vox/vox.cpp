@@ -12,7 +12,7 @@
 
 
 
-
+/*
 vox::LPos vox::LPos::from( const vox::CPos cPos, const vox::GPos gPos )
 {
 	const auto chunkBase_gPos = GPos::from( cPos );
@@ -44,7 +44,7 @@ vox::GPos vox::GPos::from( const CPos pos )
 	// TODO CHUNK SIZE
 	return GPos( pos.x * 32, pos.y * 32, pos.z * 32 );
 }
-
+*/
 
 
 
@@ -465,3 +465,4 @@ void testImmutables()
 	//p3.name = "badname";
 	
 }
+
