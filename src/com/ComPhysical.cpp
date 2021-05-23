@@ -23,7 +23,7 @@ Component<ComPhysicalConfig> *ComPhysicalConfig::CreateCom( ent::Entity * const 
 }
 */
 
-ComPhysical::ComPhysical( ent::Entity * const pEnt, const ComPhysicalConfigPtr &config )
+ComPhysical::ComPhysical( ent::EntityBase * const pEnt, const ComPhysicalConfigPtr &config )
 	:
 	Component( pEnt, config ),
 	m_frame( cb::Frame3::eIdentity )

@@ -11,13 +11,13 @@ namespace com
 {
 
 //This might be unnecessary
-class ComPhysicalConfig : public ComponentConfig
+class ComPhysicalConfig : public ComponentCfg
 {
 public:
-	CLASS( ComPhysicalConfig, ComponentConfig );
+	CLASS( ComPhysicalConfig, ComponentCfg );
 
 	virtual void DoReflection( XMLReader &reader ) override { Reflection<XMLReader>( reader ); }
-	REFLECT_BEGIN( ComPhysicalConfig, ComponentConfig );
+	REFLECT_BEGIN( ComPhysicalConfig, ComponentCfg );
 		REFLECT( m_AABB );
   REFLECT_END();
 
@@ -37,7 +37,7 @@ class ComPhysical : public Component<ComPhysicalConfig>
 public:
 
 	CLASS( ComPhysical, Component );
-	ComPhysical( ent::Entity* const pEnt = NULL, const ComPhysicalConfigPtr &config = ComPhysicalConfigPtr( NULL ) );
+	ComPhysical( ent::EntityBase* const pEnt = NULL, const ComPhysicalConfigPtr &config = ComPhysicalConfigPtr( NULL ) );
 
 	virtual ~ComPhysical();
 

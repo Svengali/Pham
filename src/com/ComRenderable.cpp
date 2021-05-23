@@ -26,7 +26,7 @@ Component *ComRenderableConfig::CreateCom( ent::Entity * const pEnt )
 }
 */
 
-ComRenderable::ComRenderable( ent::Entity * const pEnt, const ComRenderableConfigPtr &config )
+ComRenderable::ComRenderable( ent::EntityBase * const pEnt, const ComRenderableConfigPtr &config )
 	:
     Component(pEnt, config)
 {

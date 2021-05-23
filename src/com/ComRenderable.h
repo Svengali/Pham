@@ -13,13 +13,13 @@
 namespace com
 {
 
-class ComRenderableConfig : public ComponentConfig
+class ComRenderableConfig : public ComponentCfg
 {
 public:
-    CLASS(ComRenderableConfig, ComponentConfig);
+    CLASS(ComRenderableConfig, ComponentCfg);
 
     virtual void DoReflection( XMLReader &reader ) override { Reflection<XMLReader>( reader ); }
-    REFLECT_BEGIN(ComRenderableConfig, ComponentConfig);
+    REFLECT_BEGIN(ComRenderableConfig, ComponentCfg);
         REFLECT(m_geo);
     REFLECT_END();
 
@@ -37,7 +37,7 @@ class ComRenderable : public Component<ComRenderableConfig>
 public:
     CLASS(ComRenderable, Component);
 
-    ComRenderable( ent::Entity* const pEnt = NULL, const ComRenderableConfigPtr& config = ComRenderableConfigPtr(NULL));
+    ComRenderable( ent::EntityBase* const pEnt = NULL, const ComRenderableConfigPtr& config = ComRenderableConfigPtr(NULL));
 
     virtual ~ComRenderable();
 

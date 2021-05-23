@@ -20,10 +20,24 @@ void ReflectXMLReader##T( T * t, XMLReader &reader ) { t->Reflection( reader ); 
 	void RegClassReflection( const util::Symbol &sym, FnReflectXMLReader fnCreate );
 */
 
+enum class ESerializable
+{
+	eConstruct = 1
+};
+
+
+template<typename T>
+T *construct_for_serialization()
+{
+	return new T();
+}
+
+
+
 #define SERIALIZABLE( T ) \
 void *NewSerializableClass##T() \
 { \
-	return (void *)new T(); \
+	return (void *)construct_for_serialization<T>(); \
 } \
 void *PlacementNewSerializableClass##T( char *buffer ) \
 { \

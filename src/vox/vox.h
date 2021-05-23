@@ -175,7 +175,6 @@ public:
 
 	};
 
-
 	Chunk(CPos pos)
 		:
 		m_cPos( pos ),
@@ -242,6 +241,9 @@ template<typename TCHUNK>
 class StorageArr: Storage<TCHUNK>
 {
 public:
+	
+	StorageArr() {}
+
 
 	//virtual void set_slow( T v, LPos pos ) = 0;
 	//virtual T get_slow( LPos pos ) = 0;
@@ -267,8 +269,6 @@ class Plane
 public:
 	typedef TCHUNK TChunk;
 
-
-
 	typename TCHUNK::Opt get(const typename TCHUNK::CPos pos)
 	{
 		const auto it = m_sparse.find(pos);
@@ -283,13 +283,13 @@ public:
 	{
 		const auto it = m_sparse.find( pos );
 
-		auto oldTCHUNK = TCHUNK::Opt();
+		auto chunkOpt = TCHUNK::Opt();
 
-		if( it != m_sparse.end() ) oldTCHUNK = it->second;
+		if( it != m_sparse.end() ) chunkOpt = it->second;
 
 		m_sparse[pos] = ch;
 
-		return oldTCHUNK;
+		return chunkOpt;
 	}
 
 	typename TCHUNK::T get_slow( const typename TCHUNK::GPos pos )
@@ -317,22 +317,38 @@ public:
 		return TCHUNK::T(-1);
 	}
 
-	typename void set_slow( const typename TCHUNK::GPos pos, typename TCHUNK::T v )
-	{
-	}
-
-
-
 
 protected:
 
 	std::hash_map<typename TCHUNK::CPos,typename TCHUNK::Ptr, PosHash<TCHUNK>> m_sparse;
-	std::hash_map<typename TCHUNK::CPos,typename TCHUNK::Ptr, PosHash<TCHUNK>> m_generateGeo;
 
 
 };
 
 
+//Like an existance plane
+template<typename TCHUNK>
+class FramePlane: public Plane<TCHUNK>
+{
+public:
+
+	
+	typename TChunk::GPos from( const cb::Vec3 worldPos )
+	{
+		const auto trans = worldPos - m_translation;
+
+		const auto scaled= cb::Vec3( trans.x * m_invScaleFactor.x, trans.y * m_invScaleFactor.y, trans.z * m_invScaleFactor.z );
+
+		return typename TChunk::GPos( (i32)scaled.x, (i32)scaled.y, (i32)scaled.z );
+	}
+
+	static cb::Vec3 m_translation; // = cb::Vec3( 0.0f, 0.0f, 0.0f );
+	static cb::Vec3 m_scaleFactor; // = cb::Vec3( 1.0f, 1.0f, 1.0f );
+	static cb::Vec3 m_invScaleFactor;
+
+protected:
+
+};
 
 
 

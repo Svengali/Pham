@@ -42,6 +42,7 @@ class Config : public Resource//, public Root_XMLReader
 public:
 	CLASS( Config, Resource );
 
+	Config() {};
 
 	virtual void DoReflection( XMLReader &reader ) = 0;
 	REFLECT_BEGIN( Config, Resource );

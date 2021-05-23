@@ -9,43 +9,93 @@
 
 namespace ent
 {
-class Entity;
+class EntityBase;
 }
 
 namespace com
 {
 
-template<typename TCFG>
-class Component;
+class ComponentBase;
 
 //This might be unnecessary
-class ComponentConfig: public Config
+class ComponentCfg: public Config
 {
 public:
-	CLASS( ComponentConfig, Config );
+	CLASS( ComponentCfg, Config );
 
+	ComponentCfg() {}
 
 	//virtual void Reflection( XMLReader &reader ) override { Reflection<XMLReader>( reader ); }
-	REFLECT_BEGIN( ComponentConfig, Config );
+	REFLECT_BEGIN( ComponentCfg, Config );
 	REFLECT_END();
 
 };
 
-// ???
-PtrDef( ComponentConfig );
+
+PtrDef( ComponentCfg );
+
+
+
+class ComponentBase : std::enable_shared_from_this<ComponentBase>
+{
+
+public:
+
+	CLASS( ComponentBase );
+
+	ComponentBase() {}
+
+	ComponentBase( ent::EntityBase *const pEnt, const ComponentCfgPtr &cfg )
+		:
+		m_pEntity( pEnt ),
+		m_cfg( cfg )
+	{
+	}
+
+	virtual ~ComponentBase()
+	{
+	}
+
+	ComponentCfgPtr cfg()
+	{
+		return m_cfg;
+	}
+
+	REFLECT_BEGIN_ROOT( Component );
+		REFLECT( m_pEntity );
+		REFLECT( m_cfg );
+	REFLECT_END();
+
+protected:
+	ent::EntityBase *entity() const
+	{
+		return m_pEntity;
+	}
+
+private:
+	//Wholly owned by this guy.  
+	ent::EntityBase *m_pEntity;
+
+	ComponentCfgPtr m_cfg;
+
+};
+
+
+PtrDef( ComponentBase );
 
 template< typename TCFG >
-class Component : std::enable_shared_from_this<Component<TCFG>>
+class Component: public ComponentBase
 {
 
 public:
 
 	CLASS( Component );
 
-	Component( ent::Entity * const pEnt, const std::shared_ptr<TCFG> &config )
+	Component() {}
+
+	Component( ent::EntityBase * const pEnt, const std::shared_ptr<TCFG> &config )
 		:
-		m_pEntity( pEnt ),
-		m_config( config )
+		ComponentBase( pEnt, config )
 	{
 	}
 
@@ -55,26 +105,14 @@ public:
 
 	std::shared_ptr<const TCFG> cfg()
 	{
-		return m_config;
+		return ComponentBase::cfg();
 	}
 
-	REFLECT_BEGIN_ROOT( Component );
-		REFLECT( m_pEntity );
-		REFLECT( m_config );
+	REFLECT_BEGIN( Component, ComponentBase );
 	REFLECT_END();
 
-protected:
-	ent::Entity *entity() const
-	{
-		return m_pEntity;
-	}
 
 private:
-	//Wholly owned by this guy.  
-	ent::Entity *m_pEntity;
-
-	std::shared_ptr<TCFG> m_config;
-
 };
 }
 

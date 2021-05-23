@@ -19,13 +19,15 @@ PPtrFwd( RenderContext );
 namespace com
 {
 
-class ComHealthConfig : public ComponentConfig
+class ComHealthCfg : public ComponentCfg
 {
 public:
-	CLASS( ComHealthConfig, ComponentConfig );
+	CLASS( ComHealthCfg, ComponentCfg );
+
+	ComHealthCfg() {}
 
 	virtual void DoReflection( XMLReader &reader ) override { Reflection<XMLReader>( reader ); }
-	REFLECT_BEGIN( ComHealthConfig, ComponentConfig );
+	REFLECT_BEGIN( ComHealthCfg, ComponentCfg );
 		REFLECT( m_maxHealth );
 	REFLECT_END();
 
@@ -36,20 +38,24 @@ public:
 
 };
 
-PtrDef( ComHealthConfig );
+PtrDef( ComHealthCfg );
 
-class ComHealth : public Component<ComHealthConfig>
+class ComHealth : public Component<ComHealthCfg>
 {
 
 public:
 
 	CLASS( ComHealth, Component );
 
-	ComHealth( ent::Entity * const pEnt = NULL, const ComHealthConfigPtr &config = ComHealthConfigPtr( NULL ) );
+	using Component::Component;
+
+	ComHealth() {}
+
+	ComHealth( ent::EntityBase *const pEnt, const ComHealthCfgPtr &cfg );
 
 	virtual ~ComHealth();
 
-  REFLECT_BEGIN( ComHealth, Component<ComHealthConfig> );
+  REFLECT_BEGIN( ComHealth, Component<ComHealthCfg> );
 	  REFLECT( m_health );
   REFLECT_END();
 

@@ -13,7 +13,8 @@
 	
 namespace com
 {
-	SERIALIZABLE( ComHealthConfig );
+	SERIALIZABLE( ComHealthCfg );
+
 	SERIALIZABLE( ComHealth );
 
 /*
@@ -23,11 +24,11 @@ Component *ComHealthConfig::CreateCom( ent::Entity * const pEnt )
 }
 */
 
-ComHealth::ComHealth( ent::Entity * const pEnt, const ComHealthConfigPtr &config )
+ComHealth::ComHealth( ent::EntityBase * const pEnt, const ComHealthCfgPtr &cfg )
 	:
-	Component( pEnt, config )
+	Component( pEnt, cfg )
 {
-	m_health = config->m_maxHealth;
+	m_health = cfg->m_maxHealth;
 }
 
 ComHealth::~ComHealth()
