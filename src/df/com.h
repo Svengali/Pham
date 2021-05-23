@@ -398,6 +398,24 @@ namespace df
 			return; // tupleIndex;
 		}
 
+		void remove( const ent::EntityId id )
+		{
+			const BlockIndex bi = find( id );
+
+			const std::shared_ptr<TBlock> &block = m_block[bi];
+
+			const BlockTupleIndex indexedCount = (BlockTupleIndex)m_allocated[bi];
+
+			const BlockTupleIndex tupleIndex = block->findBestIndexFor( entityId, indexedCount );
+
+			if( tupleIndex != max )
+			{
+				m_allocated[bi]--;
+
+				block->setSingle_r<0, EBlockStatus>( tupleIndex, EBlockStatus::Inactive );
+			}
+		}
+
 		void debug_get( const ent::EntityId entityId, typename TBlock::TTuple *pTuple )
 		{
 			const BlockIndex bi = find( entityId );
@@ -447,6 +465,12 @@ namespace df
 		{
 			/*return*/ m_blocks.append( id, args... );
 		}
+
+		void remove( const ent::EntityId id )
+		{
+			/*return*/ m_blocks.insert( id, args... );
+		}
+
 
 		//Dont use this.
 		void debug_get( const ent::EntityId id, TTuple *pTuple )

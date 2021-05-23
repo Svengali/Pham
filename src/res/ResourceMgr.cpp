@@ -48,6 +48,7 @@ void ResourceMgr::AppStart()
 	
 }
 
+
 void ResourceMgr::AppStop()
 {
 	//stdext::hash_map< util::Symbol, ResourcePtr >::iterator it = s_mapSymToResource.begin();
@@ -164,9 +165,6 @@ void ResourceMgr::AddResource( const char *const pResName, const ResourcePtr &pt
 		// Replace?
 	}
 }
-
-
-
 
 
 ResourcePtr ResourceMgr::LookupResource( const char * const pResName )
