@@ -318,10 +318,10 @@ public:
 	}
 
 
-protected:
 
 	std::hash_map<typename TCHUNK::CPos,typename TCHUNK::Ptr, PosHash<TCHUNK>> m_sparse;
 
+protected:
 
 };
 

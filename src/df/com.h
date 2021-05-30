@@ -129,6 +129,8 @@ namespace df
 		{
 			const i32 count = max - index;
 
+			if( !count ) return;
+
 			const i32 dataSize = count * sizeof( decltype( std::get<tupleIndex>( *m_pSrc ).m_data.m_v[index] ) );
 
 			{
@@ -179,7 +181,7 @@ namespace df
 		}
 
 		template<TEnum tIndex, typename T>
-		__declspec(restrict)T *src()
+		__declspec(restrict) const T *src()
 		{
 			return std::get<tIndex>( *m_pSrc ).m_data.m_v.data();
 		}
@@ -398,7 +400,7 @@ namespace df
 			return; // tupleIndex;
 		}
 
-		void remove( const ent::EntityId id )
+		bool remove( const ent::EntityId id )
 		{
 			const BlockIndex bi = find( id );
 
@@ -406,14 +408,21 @@ namespace df
 
 			const BlockTupleIndex indexedCount = (BlockTupleIndex)m_allocated[bi];
 
-			const BlockTupleIndex tupleIndex = block->findBestIndexFor( entityId, indexedCount );
+			const BlockTupleIndex tupleIndex = block->findBestIndexFor( id, indexedCount );
 
 			if( tupleIndex != max )
 			{
 				m_allocated[bi]--;
 
-				block->setSingle_r<0, EBlockStatus>( tupleIndex, EBlockStatus::Inactive );
+				const TBlock *pBlock = block.get();
+
+				std::get<0>( *pBlock->m_pSrc ).m_data.m_v[tupleIndex] = EBlockStatus::Inactive;
+				std::get<0>( *pBlock->m_pDst ).m_data.m_v[tupleIndex] = EBlockStatus::Inactive;
+
+				return true;
 			}
+
+			return false;
 		}
 
 		void debug_get( const ent::EntityId entityId, typename TBlock::TTuple *pTuple )
@@ -466,9 +475,9 @@ namespace df
 			/*return*/ m_blocks.append( id, args... );
 		}
 
-		void remove( const ent::EntityId id )
+		bool remove( const ent::EntityId id )
 		{
-			/*return*/ m_blocks.insert( id, args... );
+			return m_blocks.remove( id );
 		}
 
 

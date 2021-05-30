@@ -763,7 +763,7 @@ int df::ComDynamicBlocksAoS::updateBlock( const uint64_t dtMs, TCom::AllBlocks::
 
 	//EBlockStatus *pBS;
 	//ent::EntityId *pId;
-	Physical *pSrc = blocks.src<Pos, Physical>();
+	const Physical *pSrc = blocks.src<Pos, Physical>();
 	Physical *pDst = blocks.dst<Pos, Physical>();
 
 	//blocks.m_pSrc->

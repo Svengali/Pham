@@ -33,8 +33,8 @@ public:
 
     static EntityId makeNext()
     {
-        const EntityId next = s_nextId;
-        s_nextId = next.next();
+        const EntityId next = s_nextId.fetch_add( 1 );
+
         return next;
     }
 
@@ -63,7 +63,7 @@ private:
     {
     }
 
-    static EntityId s_nextId;
+    static std::atomic_uint64_t s_nextId;
 
     uint64_t m_id;
 };

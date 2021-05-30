@@ -190,7 +190,7 @@ ResourcePtr ResourceMgr::LookupResource( const char * const pResName )
 
 ResourcePtr ResourceMgr::GetResource( const char *const pResName, const ResCreator *const pCreator )
 {
-	lprintf( "Get res %s\n", pResName );
+	//lprintf( "Get res %s\n", pResName );
 
 	//15 max chars on an extension plus 0
 	char extBuf[c_maxExt];
@@ -245,7 +245,7 @@ void ResourceMgr::RemResource( const char *const pResName )
 
 ResourcePtr ResourceMgr::GetResource( const char * const pResName, const util::Symbol &type )
 {
-	lprintf( "Get res %s of type %s\n", pResName, type.GetString() );
+	//lprintf( "Get res %s of type %s\n", pResName, type.GetString() );
 
 	//15 max chars on an extension plus 0
 	char extBuf[ c_maxExt ];
