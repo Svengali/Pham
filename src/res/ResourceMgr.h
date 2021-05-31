@@ -42,6 +42,8 @@ void createDefaultRes( T **ppT )
 class ResCreator
 {
 public:
+	CLASS( ResCreator );
+
 	virtual ~ResCreator() = default;
 
 	virtual ResourcePtr create() const = 0;
@@ -54,7 +56,7 @@ class ResNullCreator: public ResCreator
 public:
 	ResNullCreator( const char *pStr )
 	{
-		//Do Nothing
+		lprinterr( "Error trying to create %s\n", pStr );
 	}
 
 	ResNullCreator() = default;
