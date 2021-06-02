@@ -78,6 +78,8 @@ class Chunk
 {
 public:
 
+	//I generally dont like to put APIs in headers like this, but these need to be relative to chunks, as well as 
+	//inlined.
 	typedef TIN T;
 
 	static const ChunkSize<k_edgeSizeIn> kChunkSize;
@@ -102,24 +104,33 @@ public:
 		// DOC eps?  I presume its to make sure 
 		static GPos from( const cb::Vec3 pos, const float eps = 1.0f / (f32)k_edgeSizeIn )
 		{
-			return GPos( cast<i32>( pos.x + eps ), cast<i32>( pos.y + eps ), cast<i32>( pos.z + eps ) );
+			const auto untrans = pos - FramePlane<Cubit>::m_translation;
+
+			const auto untransUnscale  = cb::Vec3(
+				untrans.x * FramePlane<Cubit>::m_invScaleFactor.x,
+				untrans.y * FramePlane<Cubit>::m_invScaleFactor.y,
+				untrans.z * FramePlane<Cubit>::m_invScaleFactor.z );
+
+			return GPos( cast<i32>( untransUnscale.x + eps ), cast<i32>( untransUnscale.y + eps ), cast<i32>( untransUnscale.z + eps ) );
 		}
 
-		GPos operator +( const LPos pos ) const
-		{
-			return GPos( x + pos.x, y + pos.y, z + pos.z );
-		}
 
 		LPos operator -( const GPos pos ) const
 		{
 			return LPos( x - pos.x, y - pos.y, z - pos.z );
 		}
 
-		GPos operator +( const cb::Vec3i pos ) const
+		//*
+		GPos operator +( const LPos pos ) const
 		{
 			return GPos( x + pos.x, y + pos.y, z + pos.z );
 		}
 
+		GPos operator +( const cb::Vec3i pos ) const
+		{
+			return GPos( x + pos.x, y + pos.y, z + pos.z );
+		}
+		//*/
 
 		static GPos from( const CPos pos )
 		{
@@ -127,7 +138,26 @@ public:
 		}
 
 
-		static GPos from( const CPos cPos, const LPos lPos );
+		cb::Vec3 toWorld() const
+		{
+			const auto worldPosRaw = cb::Vec3( (f32)x, (f32)y, (f32)z );
+
+			const auto worldPosScaled = cb::Vec3(
+				worldPosRaw.x * FramePlane<Cubit>::m_scaleFactor.x,
+				worldPosRaw.y * FramePlane<Cubit>::m_scaleFactor.y,
+				worldPosRaw.z * FramePlane<Cubit>::m_scaleFactor.z );
+
+			const auto worldPos = worldPosScaled + FramePlane<Cubit>::m_translation;
+
+			return worldPos;
+		}
+
+		static GPos from( const CPos cPos, const LPos lPos )
+		{
+			return GPos( lPos.x + cPos.x * k_edgeSizeIn, lPos.y + cPos.y * k_edgeSizeIn, lPos.z + cPos.z * k_edgeSizeIn );
+		}
+
+
 	};
 
 	class LPos: public cb::Vec3i
@@ -145,6 +175,25 @@ public:
 			const auto lPos = gPos - chunkBase_gPos;
 
 			return lPos;
+		}
+
+		__forceinline static const LPos MakeMin( const LPos &a, const LPos &b )
+		{
+			ASSERT( a.IsValid() && b.IsValid() );
+			return LPos(
+				MIN( a.x, b.x ),
+				MIN( a.y, b.y ),
+				MIN( a.z, b.z )
+			);
+		}
+		__forceinline static const LPos MakeMax( const LPos &a, const LPos &b )
+		{
+			ASSERT( a.IsValid() && b.IsValid() );
+			return LPos(
+				MAX( a.x, b.x ),
+				MAX( a.y, b.y ),
+				MAX( a.z, b.z )
+			);
 		}
 
 	};
@@ -167,6 +216,15 @@ public:
 			return gPos + pos;
 		}
 
+		bool operator <=( const CPos rhs ) const
+		{
+			return ( x <= rhs.x ) & ( y <= rhs.y ) & ( z <= rhs.z );
+		}
+
+		bool operator >=( const CPos rhs ) const
+		{
+			return ( x >= rhs.x ) & ( y >= rhs.y ) & ( z >= rhs.z );
+		}
 
 		static CPos from( const GPos pos )
 		{
@@ -174,6 +232,11 @@ public:
 		}
 
 	};
+
+
+	static inline const LPos LMax = LPos( k_edgeSize, k_edgeSize, k_edgeSize );
+
+
 
 	Chunk(CPos pos)
 		:

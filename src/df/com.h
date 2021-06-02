@@ -429,11 +429,27 @@ namespace df
 		{
 			const BlockIndex bi = find( entityId );
 			const std::shared_ptr<TBlock> &block = m_block[bi];
-			const BlockTupleIndex currentlyIndexed = (BlockTupleIndex)m_allocated[bi];
-			const BlockTupleIndex tupleIndex = block->findBestIndexFor( entityId, currentlyIndexed );
+			const BlockTupleIndex indexedCount = (BlockTupleIndex)m_allocated[bi];
+			const BlockTupleIndex tupleIndex = block->findBestIndexFor( entityId, indexedCount );
 
 			block->debug_get( tupleIndex, pTuple );
 		}
+
+		template<TEnum col, typename T>
+		bool debug_set( const ent::EntityId entityId, const T &v )
+		{
+			const BlockIndex bi = find( entityId );
+			const std::shared_ptr<TBlock> &block = m_block[bi];
+			const BlockTupleIndex indexedCount = (BlockTupleIndex)m_allocated[bi];
+			const BlockTupleIndex tupleIndex = block->findBestIndexFor( entityId, indexedCount );
+
+			if( tupleIndex == indexedCount ) return false;
+
+			block->setSingle_r<col, T>( tupleIndex, v );
+
+			return true;
+		}
+
 
 
 	};
@@ -480,6 +496,11 @@ namespace df
 			return m_blocks.remove( id );
 		}
 
+		template<TEnum col, typename T>
+		bool debug_set( const ent::EntityId id, const T &v )
+		{
+			return m_blocks.debug_set<col, T>( id, v );
+		}
 
 		//Dont use this.
 		void debug_get( const ent::EntityId id, TTuple *pTuple )

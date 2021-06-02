@@ -44,7 +44,7 @@ vox::GPos vox::GPos::from( const CPos pos )
 	// TODO CHUNK SIZE
 	return GPos( pos.x * 32, pos.y * 32, pos.z * 32 );
 }
-*/
+//*/
 
 
 
