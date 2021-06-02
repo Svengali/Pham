@@ -103,6 +103,15 @@ namespace df
 			std::get<std::tuple_size<TBlockTuple>::value - tupleIndex + 1>( *m_pDst ).m_data.m_v[index] = v;
 		}
 
+
+		template<uint32_t tupleIndex, typename T>
+		void setSingle( const BlockTupleIndex index, const T &v )
+		{
+			std::get<tupleIndex>( *m_pSrc ).m_data.m_v[index] = v;
+			std::get<tupleIndex>( *m_pDst ).m_data.m_v[index] = v;
+		}
+
+
 		void init( const BlockTupleIndex index, const ent::EntityId id, Args...args )
 		{
 			setSingle_r<std::tuple_size<TBlockTuple>::value - 1>( index, args... );
@@ -445,7 +454,7 @@ namespace df
 
 			if( tupleIndex == indexedCount ) return false;
 
-			block->setSingle_r<col, T>( tupleIndex, v );
+			block->setSingle<col>( tupleIndex, v );
 
 			return true;
 		}
