@@ -117,7 +117,7 @@ namespace ResourceMgr
 	//Loads resource if it doesnt find it.
 	ResourcePtr GetResource( const char *const pResName, const util::Symbol &type );
 
-	void RemResource( const char *const pResName );
+	bool RemResource( const char *const pResName );
 
 	ResourcePtr GetResource( const char *const pResName, const ResCreator * const pCreator );
 

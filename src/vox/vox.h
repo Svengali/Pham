@@ -204,6 +204,10 @@ public:
 	public:
 		using cb::Vec3i::Vec3i;
 
+		using cb::Vec3i::operator -;
+		using cb::Vec3i::operator +;
+
+
 		bool operator ==( const CPos &r )
 		{
 			return x == r.x && y == r.y && z == r.z;
@@ -265,7 +269,7 @@ private:
 template <typename TCHUNK>
 struct PosHash
 {
-	static const size_t bucket_size = 16;
+	static const size_t bucket_size = 2;
 
 	std::size_t operator()( const typename TCHUNK::CPos &k ) const
 	{
@@ -363,7 +367,7 @@ public:
 
 		if( TCHUNKOpt.has_value() )
 		{
-			const auto TCHUNK = TCHUNKOpt.value();
+			const auto tcVal = TCHUNKOpt.value();
 
 			const auto lPos = typename TCHUNK::LPos::from( cPos, pos );
 
@@ -374,7 +378,7 @@ public:
 				lprinterr( "Local pos is (%s)\n", lPos );
 			}
 
-			return TCHUNK->get_slow( lPos );
+			return tcVal->get_slow( lPos );
 		}
 
 		return TCHUNK::T(-1);

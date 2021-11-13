@@ -22,7 +22,7 @@ public:
 	REFLECT_END();
 	
 	// @@@@ TODO Not a fan of this at all.
-	virtual void load( const char * const pFilename, const util::Symbol type ) {}
+	virtual void load( const char * const pFilename ) {}
 	
 	virtual void onPreLoad();
 	virtual void onPostLoad();

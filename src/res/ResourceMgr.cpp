@@ -218,7 +218,7 @@ ResourcePtr ResourceMgr::GetResource( const char *const pResName, const ResCreat
 
 	if( resource != NULL && resSym != util::Symbol::Empty() )
 	{
-		lprintf( "Storing res %s\n", pResName );
+		//lprintf( "Storing res %s\n", pResName );
 
 		const i64 resCount1 = resource.use_count();
 
@@ -233,13 +233,15 @@ ResourcePtr ResourceMgr::GetResource( const char *const pResName, const ResCreat
 	return resource;
 }
 
-void ResourceMgr::RemResource( const char *const pResName )
+bool ResourceMgr::RemResource( const char *const pResName )
 {
 	const util::Symbol resSym( pResName );
 
 	const auto removed = s_mapSymToResource.erase( resSym );
 
-	lprintf( "Remove %I64d res %s\n", removed, pResName );
+	//lprintf( "Remove %I64d res %s\n", removed, pResName );
+
+	return removed;
 }
 
 
@@ -293,7 +295,7 @@ ResourcePtr ResourceMgr::GetResource( const char * const pResName, const util::S
 			{					
 				FnCreator fnCreator = itCreate->second;
 
-				lprintf( "Creating new resource %s\n", type.GetString() );
+				//lprintf( "Creating new resource %s\n", type.GetString() );
 
 				res = fnCreator( pResName, type );
 			}
@@ -309,6 +311,7 @@ ResourcePtr ResourceMgr::GetResource( const char * const pResName, const util::S
 		}
 		else
 		{
+			ASSERT( false && "FALLBACK" );
 			lprintf( "Fallback to using load\n" );
 
 			// Fall back to serializing the type if you dont have an explicit creator.  
@@ -316,14 +319,15 @@ ResourcePtr ResourceMgr::GetResource( const char * const pResName, const util::S
 
 			res->ResourceMgr_setFilename( util::RuntimeString( pResName ) );
 
-			res->load( pResName, extSym );
+			//res->load( pResName, extSym );
+			res->load( pResName );
 
 		}
 			
 		//TODO: Handle using default resources here.
 		if( res != NULL )
 		{
-			lprintf( "Storing res %s\n", pResName );
+			//lprintf( "Storing res %s\n", pResName );
 
 			res->ResourceMgr_setFilename( util::RuntimeString( pResName ) );
 
@@ -385,17 +389,33 @@ void ResourceMgr::Tick()
 					{
 						lprintf( "Resource has changed %s\n", pDir );
 
+						res->load( pDir );
+
+						res->onPostLoad();
+
+#if 0
+						//const auto resRemoved = RemResource( pDir );
+
+						//const auto &newRes = GetResource( pDir, res->Class() );
+
+
+
 						//Hook recreation here.. 
 						//const int originalRefCount = res->GetRefCount();
 						
 
-						char *pBuf = (char *)Serialization::CreateClassFromTypeName_base( res->Class(), (char *)res.get() );
+						//char *pBuf = (char *)Serialization::CreateClassFromTypeName_base( res->Class(), (char *)res.get() );
 						
-						ASSERT( pBuf == (char *)res.get() );
+						//ASSERT( pBuf == (char *)res.get() );
 						
 						//res->SetRefCount( originalRefCount );
 						
 						//res->load( pDir, extSym );
+#endif
+					}
+					else
+					{
+						lprintf( "Could not find resource %s\n", pDir );
 					}
 				}
 				
