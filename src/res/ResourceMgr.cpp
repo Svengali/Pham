@@ -28,10 +28,10 @@ static MapExtToMapTypeToCreator s_mapExtToCreator;
 
 static stdext::hash_map< util::Symbol, ResourcePtr > s_mapSymToResource;
 
-static AbsoluteTime m_curTime = Clock::GetAbsoluteTime();
+static AbsoluteTime s_curTime = Clock::GetAbsoluteTime();
 
 
-const util::Symbol s_DEBUG_breakOn("config/geo/test.xml");
+const util::Symbol s_DEBUG_breakOn( "config/geo/test.xml" );
 
 
 
@@ -40,11 +40,11 @@ cb::DirChangeWatcherPtr    s_watcher;
 
 void ResourceMgr::AppStart()
 {
-	m_curTime = Clock::GetAbsoluteTime();
+	s_curTime = Clock::GetAbsoluteTime();
 	
 	s_watchDir.push_back( "." );
 
-	s_watcher = cb::StartWatchingDirs( &s_watchDir[0], s_watchDir.size(), 0xf );
+	s_watcher = cb::StartWatchingDirs( &s_watchDir[0], (i32)s_watchDir.size(), 0xf );
 	
 }
 
@@ -72,6 +72,8 @@ void ResourceMgr::AppStop()
 
 void ResourceMgr::RegisterCreator( const char * const pExt, const util::Symbol &type, FnCreator func )
 {
+	lprintf( "Registering ext %s for type %s", pExt, type.GetString() );
+
 	const util::Symbol extSym( pExt );
 	
 	/*

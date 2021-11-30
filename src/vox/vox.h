@@ -381,7 +381,7 @@ public:
 			return tcVal->get_slow( lPos );
 		}
 
-		return TCHUNK::T(-1);
+		return TCHUNK::T(0);
 	}
 
 
