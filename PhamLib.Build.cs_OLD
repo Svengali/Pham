@@ -3,24 +3,23 @@
 using System.IO;
 using UnrealBuildTool;
 
-public class Pham : ModuleRules
+public class PhamLib : ModuleRules
 {
-	public Pham(ReadOnlyTargetRules Target) : base(Target)
+	public PhamLib(ReadOnlyTargetRules Target) : base(Target)
 	{
 		Type = ModuleType.External;
 
 		if (Target.Platform == UnrealTargetPlatform.Win64)
 		{
 			// Add the import library
-			PublicAdditionalLibraries.Add(Path.Combine(ModuleDirectory, "x64", "Release", "Pham.lib"));
+			PublicAdditionalLibraries.Add(Path.Combine(ModuleDirectory, "x64", "Release", "pham.lib"));
 
 			// Delay-load the DLL, so we can load it from the right place first
-			PublicDelayLoadDLLs.Add("Pham.dll");
+			//PublicDelayLoadDLLs.Add("pham.dll");
 
 			// Ensure that the DLL is staged along with the executable
-			RuntimeDependencies.Add("$(PluginDir)/Binaries/ThirdParty/Pham/Win64/Pham.dll");
+			//RuntimeDependencies.Add("$(PluginDir)/Binaries/ThirdParty/PhamLibrary/Win64/ExampleLibrary.dll");
         }
-		/*
         else if (Target.Platform == UnrealTargetPlatform.Mac)
         {
             PublicDelayLoadDLLs.Add(Path.Combine(ModuleDirectory, "Mac", "Release", "libExampleLibrary.dylib"));
@@ -33,6 +32,5 @@ public class Pham : ModuleRules
 			PublicDelayLoadDLLs.Add(ExampleSoPath);
 			RuntimeDependencies.Add(ExampleSoPath);
 		}
-		*/
 	}
 }

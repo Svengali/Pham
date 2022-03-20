@@ -70,6 +70,28 @@
 #include <array>
 #include <thread>		// partly for __WINPTHREADS_VERSION if on MinGW-w64 w/ POSIX threading
 
+#ifndef MCDBGQ_NOLOCKFREE_FREELIST
+#define MCDBGQ_NOLOCKFREE_FREELIST 0
+#endif
+
+#ifndef MCDBGQ_TRACKMEM
+#define MCDBGQ_TRACKMEM 0
+#endif
+
+#ifndef MCDBGQ_NOLOCKFREE_IMPLICITPRODBLOCKINDEX
+#define MCDBGQ_NOLOCKFREE_IMPLICITPRODBLOCKINDEX 0
+#endif
+
+#ifndef MCDBGQ_NOLOCKFREE_IMPLICITPRODHASH
+#define MCDBGQ_NOLOCKFREE_IMPLICITPRODHASH 0
+#endif
+
+#ifndef MCDBGQ_USEDEBUGFREELIST
+#define MCDBGQ_USEDEBUGFREELIST 0
+#endif
+
+
+
 // Platform-specific definitions of a numeric thread ID type and an invalid value
 namespace moodycamel {
     namespace details {
