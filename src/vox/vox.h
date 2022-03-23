@@ -6,7 +6,10 @@
 #pragma once
 
 
-//class ChunkMesh;
+#include <optional>
+
+
+typedef std::optional<int> OptTest;
 
 
 namespace vox
@@ -34,7 +37,6 @@ public:
 	*/
 };
 
-
 /*
 template<i32 t_level>
 class TPos: public cb::Vec3i
@@ -59,15 +61,7 @@ public:
 };
 */
 
-
-
-
-
-
-
-
 }
-
 
 namespace vox
 {
@@ -89,6 +83,8 @@ public:
 	static const i32 k_chunkSize = k_edgeSize * k_platSize;
 
 	typedef std::shared_ptr<TSUB> Ptr;
+	
+	// PORT FIX UE4
 	typedef std::optional<Ptr>    Opt;
 
 	//These are now defined Chunk type relative which means theyre always correct with respect to edge size
